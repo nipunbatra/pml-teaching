@@ -28,8 +28,16 @@
 
 \begin{frame}{General Form}
 The general form of Monte Carlo methods is:
+The expectation of a function $f(x)$ with respect to a distribution $p(x)$ is given by:
 \begin{equation}
-    \mathbb{E}[f(X)] = \int f(x) p(x) dx \approx \frac{1}{N} \sum_{i=1}^N f(x_i)
+    % Expectation of f(x) with respect to p(x)
+    \mathbb{E}_{x \sim p(x)}[f(x)] = \int f(x) p(x) dx
+\end{equation}
+
+Using Monte Carlo methods, we can estimate the above expectation by sampling $x_i$ from $p(x)$ and computing the average of $f(x_i)$.
+\begin{equation}
+    % Monte Carlo estimate of expectation of f(x) with respect to p(x)
+    \mathbb{E}_{x \sim p(x)}[f(x)] \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i)
 \end{equation}
 where $x_i \sim p(x)$.
 \end{frame}
@@ -37,7 +45,7 @@ where $x_i \sim p(x)$.
     We can estimate the value of pi using Monte Carlo methods by considering a unit square with a quarter circle inscribed within it.
     
     \begin{itemize}
-        \item Let $p(x)$ be defined over the unit square using the uniform distribution in two dimensions, i.e., $p(x) = 1$ for $x \in [0, 1]^2$.
+        \item Let $p(x)$ be defined over the unit square using the uniform distribution in two dimensions, i.e., $p(x) = U(x) = 1$ for $x \in [0, 1]^2$.
         \item Let $f(x)$ be the indicator function defined as follows:
             \[
             f(x) = \begin{cases}
@@ -45,6 +53,23 @@ where $x_i \sim p(x)$.
                         \text{\textcolor{red}{Red}} (0), & \text{otherwise}.
                    \end{cases}
             \]
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}[fragile]{Estimating Pi using Monte Carlo (Part 1)}
+
+    \begin{itemize}
+    \item Or, we can write $f(x)$ to be the following:
+        \[
+        f(x) = \begin{cases}
+                    1, & \text{if } x_1^2 + x_2^2 \leq 1, \\
+                    0, & \text{otherwise}.
+               \end{cases}
+        \]
+    \item Or, using the indicator function, we can write $f(x)$ to be the following:
+        \[
+        f(x) = \mathbb{I}(x_1^2 + x_2^2 \leq 1)
+        \]
     \end{itemize}
     
     \begin{center}
@@ -66,6 +91,23 @@ where $x_i \sim p(x)$.
 
     \end{tikzpicture}
     \end{center}
+    \end{frame}
+
+    \begin{frame}{Estimaing prior predictive distribution}
+        \begin{itemize}
+            \item Let $p(\theta)$ be the prior distribution of parameter $\theta \in R^2$. Say, for example, $p(\theta_i) = \mathcal{N}(0, 1) \forall i$.
+            \item Let $p(y |\theta, x)$ be the likelihood function. Say, for example, $p(y|\theta, x) = \mathcal{N}(\theta_0 + \theta_1 x, 1)$.
+            \item Then, the prior predictive distribution is given by:
+        \end{itemize}
+
+            \begin{equation}
+                p(y|x) = \int p(y|\theta, x) p(\theta) d\theta 
+            \end{equation}
+
+            \begin{equation}
+                p(y|x) \approx \frac{1}{N} \sum_{i=1}^{N} p(y|\theta_i, x)
+            \end{equation}
+            where $\theta_i \sim p(\theta)$.
     \end{frame}
     
 
