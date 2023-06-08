@@ -63,15 +63,19 @@ P(D|\theta) = \mathcal{L}(\mu, \sigma^2) = \prod_{i=1}^n f(x_i|\mu, \sigma^2)
         &= \sum_{i=1}^n \left( -\frac{1}{2} \log (2\pi\sigma^2) -\frac{(x_i-\mu)^2}{2\sigma^2} \right) \\
         &= -\frac{n}{2} \log (2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i-\mu)^2
         \end{align*}
-
-        % Put final equation in a box
         \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Univariate Normal Distribution]
-            Log-likelihood function for normally distributed data is given by:
-            \begin{equation*}
-                \log \mathcal{L}(\mu, \sigma^2) = -\frac{n}{2} \log (2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i-\mu)^2
-            \end{equation*}
+            Log-likelihood function for normally distributed data is:
+            \[
+                \log \mathcal{L}(\mu, \sigma^2) = -\frac{n}{2} \log(2\pi) - n\log(\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i-\mu)^2
+                \]
         \end{tcolorbox}
 \end{frame}
+
+
+
+
+
+
 
 
 \begin{frame}
@@ -108,34 +112,42 @@ P(D|\theta) = \mathcal{L}(\mu, \sigma^2) = \prod_{i=1}^n f(x_i|\mu, \sigma^2)
 \end{frame}
 
 \begin{frame}{MLE for $\sigma$ for normally distributed data}
-    Continuing from the previous equation, we can simplify the expression by substituting $t = \sigma^2$:
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Univariate Normal Distribution]
+        Log-likelihood function for normally distributed data is:
+        \[
+            \log \mathcal{L}(\mu, \sigma^2) = -\frac{n}{2} \log(2\pi) - n\log(\sigma) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i-\mu)^2
+            \]
+    \end{tcolorbox}
 
-    \begin{align*}
-        \frac{\partial \log \mathcal{L}(\mu, \sigma^2)}{\partial \sigma^2} &= \sum_{i=1}^n \frac{\partial \log f(x_i|\mu, \sigma^2)}{\partial \sigma^2} \\
-        &= \sum_{i=1}^n \frac{\partial}{\partial \sigma^2}\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) \\
-        &= \sum_{i=1}^n \frac{(x_i-\mu)^2}{2(\sigma^2)^2} - \frac{1}{2\sigma^2}
-    \end{align*}
-
-    Substituting $t = \sigma^2$, we have:
-
-    \begin{align*}
-        \frac{\partial \log \mathcal{L}(\mu, t)}{\partial t} &= \sum_{i=1}^n \frac{(x_i-\mu)^2}{2t^2} - \frac{1}{2t}
-    \end{align*}
-
-    To find the maximum likelihood estimate of $\sigma^2$, we set the derivative equal to zero:
-
-    \begin{equation*}
-        \sum_{i=1}^n \frac{(x_i-\mu)^2}{2t^2} - \frac{1}{2t} = 0
-    \end{equation*}
-    
-    Solving for $t$, we get:
-
-    \begin{equation*}
-        \hat{t}_{\text{MLE}} = \frac{1}{n} \sum_{i=1}^n (x_i - \mu)^2
-    \end{equation*}
-
-    Finally, the maximum likelihood estimate of $\sigma^2$, denoted as $\hat{\sigma}^2_{\text{MLE}}$, is obtained by substituting back $t = \hat{t}_{\text{MLE}}$ into the expression.
+Now, we can differentiate the log-likelihood function with respect to $\sigma$ and equate it to zero.
 \end{frame}
+
+\begin{frame}{MLE for $\sigma$ for normally distributed data}
+
+    
+        \[
+        \frac{{\partial}}{{\partial \sigma}} \log \mathcal{L}(\mu, \sigma^2) = -\frac{n}{\sigma} + \frac{1}{\sigma^3} \sum_{i=1}^n (x_i-\mu)^2 = 0
+        \]
+    
+        Multiplying through by $\sigma^3$, we have:
+    
+        \[
+        -n \sigma^2 + \sum_{i=1}^n (x_i-\mu)^2 = 0
+        \]
+    
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\sigma^2$]
+            MLE of $\sigma^2$, denoted as $\hat{\sigma}^2_{\text{MLE}}$, is given by:
+            \[
+                \sigma^2 = \frac{1}{n} \sum_{i=1}^n (x_i-\mu)^2
+                \]
+        \end{tcolorbox}
+    
+       
+
+    \end{frame}
+    
+
+
 
 
     
