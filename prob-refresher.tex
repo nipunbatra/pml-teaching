@@ -29,6 +29,13 @@
 % Section 1
 \section{Introduction}
 
+\begin{frame}{References}
+\begin{itemize}
+\item MIT OCW MIT RES.6-012 Introduction to Probability, Spring 2018. (https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-041sc-probabilistic-systems-analysis-and-applied-probability-fall-2013/unit-i/lecture-1-introduction-to-probability/)
+\end{itemize}
+    
+\end{frame}
+
 \begin{frame}{Sample Space}
 \begin{itemize}
 \item A sample space is a set of all possible outcomes of an experiment.
@@ -304,6 +311,19 @@
         
          \end{figure}
       
+    
+\end{frame}
+
+\begin{frame}{Expected Value}
+    \begin{itemize}
+        \item The expected value of a random variable $X$ is defined as $E[X] = \sum_{x \in \mathcal{X}} x.p_X(x)$.
+        \item For example, consider a random variable $X$ that follows a Bernoulli distribution with parameter $p$. 
+        \begin{itemize}
+            \item The expected value of $X$ is $E[X] = 0 \times (1 - p) + 1 \times p = p$.
+        \end{itemize}
+        \item Consider a random variable $X$ that follows a uniform distribution over the set $\{1, 2, 3, 4, 5, 6\}$.
+        \item The expected value of $X$ is $E[X] = \frac{1}{6} \times 1 + \frac{1}{6} \times 2 + \frac{1}{6} \times 3 + \frac{1}{6} \times 4 + \frac{1}{6} \times 5 + \frac{1}{6} \times 6 = 3.5$.
+    \end{itemize}
     
 \end{frame}
 
