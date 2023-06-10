@@ -158,5 +158,104 @@
     
 \end{frame}
 
+\begin{frame}{Code Length}
+Let us assume our symbols are: A, B, C, D. Let us assume that the probability of each of these symbols is $0.25$. 
+Let us assume we use the following code to encode these symbols:
+\begin{align*}
+    A &\rightarrow 00 \\
+    B &\rightarrow 01 \\
+    C &\rightarrow 10 \\
+    D &\rightarrow 11
+\end{align*}
+What is the expected code length?
+
+Expected code length = $\sum_{i=1}^4 p_i \times l_i = 2$ bits.
+    
+\end{frame}
+
+\begin{frame}{Code Length}
+    Let us assume our symbols are: A, B, C, D. Let us assume that the probability of these symbols is $0.5$, $0.25$, $0.125$, and $0.125$. 
+    Let us assume we use the following code to encode these symbols:
+    \begin{align*}
+        A &\rightarrow 00 \\
+        B &\rightarrow 01 \\
+        C &\rightarrow 10 \\
+        D &\rightarrow 11
+    \end{align*}
+    What is the expected code length?
+    
+    Expected code length = $\sum_{i=1}^4 p_i \times l_i = 2$ bits.
+    But, is this the most efficient code?
+    \pause No! What is the entropy of this random variable?
+    \pause $H(X) = 1.75$ bits.
+        
+    \end{frame}
+
+    \begin{frame}{Code Length}
+        Let us assume our symbols are: A, B, C, D. Let us assume that the probability of these symbols is $0.5$, $0.25$, $0.125$, and $0.125$. 
+        Using fixed length codes, we need $2$ bits to encode each symbol.
+
+        Key idea: Use shorter codes for more frequent symbols and longer codes for less frequent symbols.
+
+        How about the following code?
+        \begin{align*}
+            A &\rightarrow 0 \\
+            B &\rightarrow 10 \\
+            C &\rightarrow 110 \\
+            D &\rightarrow 111
+        \end{align*}
+
+        Expected code length = $\sum_{i=1}^4 p_i \times l_i = 1.75$ bits.
+        
+    \end{frame}
+
+    \begin{frame}{Huffman Encoding}
+        \begin{itemize}
+            \item Huffman encoding is a method to construct a variable length code for a random variable.
+            \item The code is constructed such that the expected code length is equal to the entropy of the random variable.
+            \item The code is constructed such that the code is a prefix code.
+        \end{itemize}
+        
+    \end{frame}
+
+    \begin{frame}{KL divergence}
+        Suppose we have four symbols A, B, C, D with probabilities $0.5$, $0.25$, $0.125$, and $0.125$ respectively. Let us call this distribution $p(x)$.
+        We want to transmit some data using these symbols. 
+        The optimum encoding scheme is:
+        \begin{align*}
+            A &\rightarrow 0 \\
+            B &\rightarrow 10 \\
+            C &\rightarrow 110 \\
+            D &\rightarrow 111
+        \end{align*}
+            
+        But, for some reason, we believe that the four symbols are distributed as per $q(x)$: $0.25$, $0.25$, $0.25$, and $0.25$. For this distribution, the optimum encoding scheme is:
+        \begin{align*}
+            A &\rightarrow 00 \\
+            B &\rightarrow 01 \\
+            C &\rightarrow 10 \\
+            D &\rightarrow 11
+        \end{align*}
+
+        Now, if we transmit our data (distributed as per $p(x)$) using the encoding scheme for $q(x)$, what is the expected code length?
+
+        Code length = $\sum_{i=1}^4 p_i \times l_i  = 2$ bits.
+
+        \pause 
+        Now, we discuss KL divergence.
+
+        We can say that the KL divergence between $p(x)$ and $q(x)$ is $0.25$ bits. Or, $D_{KL}(p||q) = 0.25$ bits.
+        In general, the KL divergence between two distributions $p(x)$ and $q(x)$ is:
+        \begin{align*}
+            D_{KL}(p||q) = \sum_{i=1}^n p_i \log_2 \frac{p_i}{q_i}
+        \end{align*}
+
+        Or, in terms of self information:
+        \begin{align*}
+            D_{KL}(p||q) = \sum_{i=1}^n p_i \log_2 \frac{1}{q_i} - \sum_{i=1}^n p_i \log_2 \frac{1}{p_i}
+        \end{align*}
+        
+    
+    \end{frame}
 
 \end{document}
