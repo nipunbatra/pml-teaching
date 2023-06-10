@@ -1,0 +1,162 @@
+\documentclass[handout]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{pgfplots}
+% compatibility of pgfplots
+\pgfplotsset{compat=1.16}
+\usepackage{tikz}
+\usepackage{pgf}
+\definecolor{metropolisblue}{RGB}{39, 59, 94}
+
+
+
+% Begin document
+\begin{document}
+
+% Title page
+\title{Information Theory for Machine Learning}
+\author{Nipun Batra}
+\date{\today}
+\institute{IIT Gandhinagar}
+\maketitle
+
+
+\begin{frame}{The Data Compression Problem}
+    % Draw a TikZ figure showing the message, the source, the encoder, the message, the decoder, and the reconstructed message.
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[node distance=2cm, auto]
+          % Nodes
+          \node (message) {``hello"};
+          % source is 0.5 cm below message
+            \node[draw, rectangle, below of=message] (source) {Source};
+          \node[draw, rectangle, right of=source] (encoder) {Encoder};
+          \node[below of=encoder] (unique) {Unique characters and bit sequence};
+          \node[draw, rectangle, right of=unique] (messagebox) {Message};
+          \node[draw, rectangle, right of=messagebox] (decoder) {Decoder};
+          \node[above of=decoder] (receiver) {Receiver};
+      
+          % Arrows
+          
+          \draw[->] (source) -- (encoder);
+          \draw[->] (encoder) -- (unique);
+          \draw[->] (unique) -- (messagebox);
+          \draw[->] (messagebox) -- (decoder);
+          \draw[->] (decoder) -- (receiver);
+        \end{tikzpicture}
+        \caption{Data Compression Problem}
+      \end{figure}
+    
+\end{frame}
+
+
+\begin{frame}{Self Information}
+\begin{itemize}
+    \item What is more surprising: Snowing in Kashmir or Snowing in Gandhinagar?
+    \item To formalize, let us assume that the probability of snowing in Kashmir is $p_1$ and that in Gandhinagar is $p_2$, and that $p_1 >> p_2$.
+    \item How can we quantify the surprise?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Self Information}
+    \begin{itemize}
+        \item Events that are less likely to occur are more surprising.
+        \item Also, if an event is 100\% likely to occur, it is not surprising at all.
+        \item Also, if two events are independent, then the surprise of both of them occurring together is the sum of the surprise of each of them occurring individually.
+        \item So, we need a function that maps probability to a number. Function  should be: monotonic, and additive, and is 0 when the probability is 1.
+        \item The function is $I(x) = -\log_2(x)$ also called the self information or surprisal.
+    \end{itemize}
+    \end{frame}
+
+\begin{frame}{Self Information}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{notebooks/figures/information-theory/self-information.pdf}
+        \caption{Self Information}
+        \label{fig:self_info}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Self Information}
+    Consider a categorical random variable $X$ with $4$ possible outcomes: A, B, C, D. The probability of each of these outcomes is $0.25$. What is the self information of each of these outcomes?
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{notebooks/figures/information-theory/categorical-uniform.pdf}
+        \label{fig:self_info_categorical_uniform}
+    \end{figure}
+
+    $I(A) = I(B) = I(C) = I(D) = 2$ bits.
+
+\end{frame}
+
+\begin{frame}{Self Information}
+    Consider a categorical random variable $X$ with $4$ possible outcomes: A, B, C, D. The probability these outcomes is $0.5$, $0.25$, $0.125$, and $0.125$. What is the self information of each of these outcomes?
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{notebooks/figures/information-theory/categorical-nonuniform.pdf}
+        \label{fig:self_info_categorical_nonuniform}
+    \end{figure}
+
+    $I(A) = 1$ bit, $I(B) = 2$ bits, $I(C) = I(D) = 3$ bits.
+
+\end{frame}
+
+\begin{frame}{Self Information}
+    Proof on additivity of self information:
+    Consider two independent random variables $X$ and $Y$ with PMFs $p_X(x)$ and $p_Y(y)$ respectively. The joint PMF is $p_{X, Y}(x, y) = p_X(x)p_Y(y)$. The self information of the joint PMF is:
+    \begin{align*}
+        I(X=x, Y=y)=& -\log_2(p_X(x)p_Y(y)) \\
+        &= -\log_2(p_X(x)) - \log_2(p_Y(y))\\ &= I(X=x) + I(Y=y)
+    \end{align*}
+    
+\end{frame}
+
+\begin{frame}{Entropy}
+    \begin{itemize}
+        \item The entropy of a random variable is the expected value of the self information.
+        \item $H(X) = \mathbb{E}_{X \sim p(x)}[I(X)] = \mathbb{E}_{X \sim p(x)}[-\log_2(p(x))]$
+        \item The entropy of a random variable is the expected number of bits required to encode the random variable.
+        \item The entropy of a random variable is the minimum number of bits required to encode the random variable.
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Entropy}
+    For a Bernoulli random variable $X$ with probability $p$ of success, the entropy is:
+    \begin{align*}
+        H(X) &= \mathbb{E}_{X \sim p(x)}[-\log_2(p(x))] \\
+        &= -\log_2(p) \times p - \log_2(1-p) \times (1-p) \\
+        &= -p\log_2(p) - (1-p)\log_2(1-p)
+    \end{align*}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{notebooks/figures/information-theory/entropy-bernoulli.pdf}
+        \caption{Entropy}
+        \label{fig:entropy}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}{Entropy}
+    For a $k$ class categorical random variable $X$ with probability $p_i$ of class $i$, the entropy is:
+    \begin{align*}
+        H(X) &= \mathbb{E}_{X \sim p(x)}[-\log_2(p(x))] \\
+        &= -\sum_{i=1}^k p_i \log_2(p_i)
+    \end{align*}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{notebooks/figures/information-theory/categorical-entropy.pdf}
+        \caption{Entropy}
+        \label{fig:entropy_categorical}
+    \end{figure}
+    
+\end{frame}
+
+
+\end{document}
