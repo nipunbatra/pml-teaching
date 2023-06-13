@@ -30,24 +30,19 @@
     % Draw a TikZ figure showing the message, the source, the encoder, the message, the decoder, and the reconstructed message.
     \begin{figure}[h]
         \centering
-        \begin{tikzpicture}[node distance=2cm, auto]
+        \begin{tikzpicture}[node distance=2cm,auto]
           % Nodes
-          \node (message) {``hello"};
-          % source is 0.5 cm below message
-            \node[draw, rectangle, below of=message] (source) {Source};
+          \node[draw, rectangle] (source) {Source};
+          \node[below of=source, node distance=1.5cm] (message) {Message};
           \node[draw, rectangle, right of=source] (encoder) {Encoder};
-          \node[below of=encoder] (unique) {Unique characters and bit sequence};
-          \node[draw, rectangle, right of=unique] (messagebox) {Message};
-          \node[draw, rectangle, right of=messagebox] (decoder) {Decoder};
-          \node[above of=decoder] (receiver) {Receiver};
+          \node[draw, rectangle, right of=encoder] (decoder) {Decoder};
+          \node[right of=decoder] (reconstructed) {Reconstructed Message};
       
           % Arrows
-          
+          \draw[->] (message) -- (source);
           \draw[->] (source) -- (encoder);
-          \draw[->] (encoder) -- (unique);
-          \draw[->] (unique) -- (messagebox);
-          \draw[->] (messagebox) -- (decoder);
-          \draw[->] (decoder) -- (receiver);
+          \draw[->] (encoder) -- (decoder);
+          \draw[->] (decoder) -- (reconstructed);
         \end{tikzpicture}
         \caption{Data Compression Problem}
       \end{figure}
@@ -169,7 +164,7 @@ Let us assume we use the following code to encode these symbols:
 \end{align*}
 What is the expected code length?
 
-Expected code length = $\sum_{i=1}^4 p_i \times l_i = 2$ bits.
+Expected code length = $L(X) = \sum_{i=1}^4 p_i \times l_i = 2$ bits.
     
 \end{frame}
 
@@ -209,6 +204,23 @@ Expected code length = $\sum_{i=1}^4 p_i \times l_i = 2$ bits.
         
     \end{frame}
 
+    \begin{frame}{Optimum Code Length}
+        By definition, we saw that the entropy of a random variable is the minimum number of bits required to encode the random variable.
+
+        This means that the expected code length of any code is always greater than or equal to the entropy of the random variable.
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Relationship between entropy and expected code length}]
+        \begin{equation}
+            L(X) = \sum_{i=1}^n p_i \times l_i \geq H(X)
+        \end{equation}
+        \end{tcolorbox}
+
+        Optimum length for each symbol is given by:
+        \begin{equation}
+            l_i = -\log_2(p_i)
+        \end{equation}
+        
+    \end{frame}
+
     \begin{frame}{Huffman Encoding}
         \begin{itemize}
             \item Huffman encoding is a method to construct a variable length code for a random variable.
@@ -218,44 +230,70 @@ Expected code length = $\sum_{i=1}^4 p_i \times l_i = 2$ bits.
         
     \end{frame}
 
-    \begin{frame}{KL divergence}
+    \begin{frame}{Cross Entropy}
         Suppose we have four symbols A, B, C, D with probabilities $0.5$, $0.25$, $0.125$, and $0.125$ respectively. Let us call this distribution $p(x)$.
         We want to transmit some data using these symbols. 
+
         The optimum encoding scheme is:
-        \begin{align*}
-            A &\rightarrow 0 \\
-            B &\rightarrow 10 \\
-            C &\rightarrow 110 \\
-            D &\rightarrow 111
-        \end{align*}
+        A: 0, B: 10, C: 110, D: 111.
             
-        But, for some reason, we believe that the four symbols are distributed as per $q(x)$: $0.25$, $0.25$, $0.25$, and $0.25$. For this distribution, the optimum encoding scheme is:
-        \begin{align*}
-            A &\rightarrow 00 \\
-            B &\rightarrow 01 \\
-            C &\rightarrow 10 \\
-            D &\rightarrow 11
-        \end{align*}
-
-        Now, if we transmit our data (distributed as per $p(x)$) using the encoding scheme for $q(x)$, what is the expected code length?
-
-        Code length = $\sum_{i=1}^4 p_i \times l_i  = 2$ bits.
-
-        \pause 
-        Now, we discuss KL divergence.
-
-        We can say that the KL divergence between $p(x)$ and $q(x)$ is $0.25$ bits. Or, $D_{KL}(p||q) = 0.25$ bits.
-        In general, the KL divergence between two distributions $p(x)$ and $q(x)$ is:
-        \begin{align*}
-            D_{KL}(p||q) = \sum_{i=1}^n p_i \log_2 \frac{p_i}{q_i}
-        \end{align*}
-
-        Or, in terms of self information:
-        \begin{align*}
-            D_{KL}(p||q) = \sum_{i=1}^n p_i \log_2 \frac{1}{q_i} - \sum_{i=1}^n p_i \log_2 \frac{1}{p_i}
-        \end{align*}
+        \pause But, for some reason, we believe that the four symbols are distributed as per $q(x)$: $0.25$, $0.25$, $0.25$, and $0.25$. 
         
+        For this distribution, the optimum encoding scheme is:
+        A: 00, B: 01, C: 10, D: 11.
+
+    \end{frame}
+        
+    \begin{frame}{Cross Entropy}
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Cross Entropy $H(p,q)$}]
+            The cross-entropy between two probability distributions $p$ and $q$ over the same underlying set of events measures the \textbf{average} number of bits needed to identify an event drawn from the set if a coding scheme used for the set is optimized for an estimated probability distribution $q$, rather than the true distribution $p$.
+        \end{tcolorbox}
+
+
+    \end{frame}
+
+    \begin{frame}{Cross Entropy}
+
+        \textbf{Cross Entropy} $H(p, q)$: Optimum code length for transmitting data distributed as per $p$ via a code as per $q$ = $\sum_{i=1}^4 p_i \times l_i$. $l_q(A) = l_q(B) = l_q(C) = l_q(D) = -\log_2(q(D)) = 2$ bits. 
+        
+        $H(p, q) = 2$ bits.
+
+        \textbf{Entropy} $H(p)$: Code length for transmitting data distributed as per $p$ via a code as per $p$ = $\sum_{i=1}^4 p_i \times l_i  = 1.75$ bits.
+
+
+    \end{frame}
+        
+    \begin{frame}{KL divergence}
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={KL Divergence $D_{KL}(p||q)$}]
+            The KL divergence between two probability distributions $p$ and $q$ over the same underlying set of events measures the \textbf{difference} in the \textbf{average} number of bits needed to identify an event drawn from the set if a coding scheme used for the set is optimized for an estimated probability distribution $q$, rather than the true distribution $p$.
+            \begin{align*}
+                D_{KL}(p||q) &= \sum_{i=1}^k p_i \log_2\frac{p_i}{q_i} \\
+                &= \sum_{i=1}^k p_i \log_2 p_i - \sum_{i=1}^k p_i \log_2 q_i \\
+                &= H(p, q) - H(p)
+            \end{align*}
+        \end{tcolorbox}
     
+    \end{frame}
+
+    \begin{frame}{Example relating KL divergence and Cross Entropy}
+      True probability distribution $p$: A: 0.4, B: 0.3, C: 0.2, D: 0.1 \\
+      Estimated probability distribution $q$: A: 0.15, B: 0.55, C: 0.05, D: 0.25. \\
+
+      \pause Entropy $H(p) = 1.8464$ bits. \\
+      \pause Cross Entropy $H(p, q) = 2.4179$ bits. \\ 
+      \pause Huffman code for $p$: A: 0, B: 10, C: 110, D: 111. \\
+    \pause Huffman code for $q$: A: 10, B: 0, C: 110, D: 111. \\  
+      \pause Average code length for transmitting data distributed as per $p$ via code as per $p$ is:      
+   0.4*1 + 0.3*2 + 0.2*3 + 0.1*3 = 1.9 bits. \\
+      \pause Average code length for transmitting data distributed as per $p$ via code as per $q$ is:
+    0.4*2 + 0.3*1 + 0.2*3 + 0.1*3 = 2.2 bits. \\
+        \pause $D_{KL}(p||q) = 2.4179 - 1.8464 = 0.5714$ bits.
+    \end{frame}
+
+    \begin{frame}{Relationship between KL divergence and Maximum Likelihood Estimation}
+        Let us assume we have a dataset $D = \{x_1, x_2, \ldots, x_n\}$ for a two class classification problem. 
+        Let us assume that the class labels are $y_1, y_2, \ldots, y_n$.
+        
     \end{frame}
 
 \end{document}

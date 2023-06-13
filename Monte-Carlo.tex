@@ -109,6 +109,48 @@ where $x_i \sim p(x)$.
             \end{equation}
             where $\theta_i \sim p(\theta)$.
     \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{itemize}
+            \item Let $p(x)$ be the target distribution from which we want to sample.
+            \item Let $q(x)$ be a proposal distribution from which we can sample.
+            \item Let $M$ be a constant such that $M \geq \frac{p(x)}{q(x)} \forall x$.
+            \item Then, we can sample from $p(x)$ by sampling from $q(x)$ and accepting the sample with probability $\frac{p(x)}{M q(x)}$.
+        \end{itemize}
+        
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{notebooks/figures/sampling/rejection-sampling--1.0-False-False-False-False-False-False.pdf}
+        \end{figure}
+        
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{notebooks/figures/sampling/rejection-sampling--1.0-True-False-False-False-False-False.pdf}
+        \end{figure}
+        
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{notebooks/figures/sampling/rejection-sampling--1.0-True-True-False-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+        
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{notebooks/figures/sampling/rejection-sampling--1.0-True-True-True-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+        
+    
     
 
 \end{document}
