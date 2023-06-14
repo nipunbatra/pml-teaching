@@ -16,15 +16,22 @@
 \begin{document}
 
 % Title page
-\title{Monte Carlo Methods}
-\subtitle{Univariate}
+\title{Sampling Methods}
 \author{Nipun Batra}
 \date{\today}
 \institute{IIT Gandhinagar}
 \maketitle
 
+\begin{frame}{Topics}
+    %TOC with enumerated items
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tableofcontents[hideallsubsections]
+
+\end{frame}
+
+
 % Section 1
-\section{Introduction}
+\section{Monte Carlo Simulation}
 
 \begin{frame}{General Form}
 The general form of Monte Carlo methods is:
@@ -109,6 +116,9 @@ where $x_i \sim p(x)$.
             \end{equation}
             where $\theta_i \sim p(\theta)$.
     \end{frame}
+
+    \section{Rejection Sampling}
+
 
     \begin{frame}{Rejection Sampling}
         \begin{itemize}
