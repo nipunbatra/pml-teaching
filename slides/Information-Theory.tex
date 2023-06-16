@@ -30,20 +30,7 @@
     % Draw a TikZ figure showing the message, the source, the encoder, the message, the decoder, and the reconstructed message.
     \begin{figure}[h]
         \centering
-        \begin{tikzpicture}[node distance=2cm,auto]
-          % Nodes
-          \node[draw, rectangle] (source) {Source};
-          \node[below of=source, node distance=1.5cm] (message) {Message};
-          \node[draw, rectangle, right of=source] (encoder) {Encoder};
-          \node[draw, rectangle, right of=encoder] (decoder) {Decoder};
-          \node[right of=decoder] (reconstructed) {Reconstructed Message};
-      
-          % Arrows
-          \draw[->] (message) -- (source);
-          \draw[->] (source) -- (encoder);
-          \draw[->] (encoder) -- (decoder);
-          \draw[->] (decoder) -- (reconstructed);
-        \end{tikzpicture}
+        \includegraphics{../diagrams/information-compression.pdf}
         \caption{Data Compression Problem}
       \end{figure}
     
