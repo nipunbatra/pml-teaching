@@ -10,3 +10,4 @@ There are several excellent resources I heavily relied on to create this course.
 6. Richard McElreath course on Statistical Rethinking
 7. Allen Downey (Olin College) excellent book on the same subject
 8. Sargur Srihari (University at Buffalo) [excellent course and slides](https://cedar.buffalo.edu/~srihari/CSE574/) on the same subject
+9. Felix Machine Learning and Simulation YouTube [channel](https://www.youtube.com/@MachineLearningSimulation)
