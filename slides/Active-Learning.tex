@@ -1,0 +1,35 @@
+\documentclass[handout]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\definecolor{metropolisblue}{RGB}{39, 59, 94}
+
+
+
+% Begin document
+\begin{document}
+
+% Title page
+\title{Active Learning}
+\author{Nipun Batra}
+\date{\today}
+\institute{IIT Gandhinagar}
+\maketitle
+
+% Section 1
+\section{Introduction}
+
+\begin{frame}{Main Idea}
+    \begin{itemize}
+        \item Main problem: We have a lot of unlabeled data, but labeling is expensive
+        \item Key idea: We can choose which data to label
+        \item We define an acquisition function $\alpha(x)$ which tells us how useful it is to label a particular data point $x$
+    \end{itemize}
+    
+\end{frame}
+
+\end{document}
