@@ -8,7 +8,31 @@
 \usepackage{tcolorbox}
 \usepackage{tikz}
 \usepackage{multirow}
+\usepackage{listings}
 
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue},
+    stringstyle=\color{orange},
+    commentstyle=\color{green!70!black},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=1,
+}
+
+
+\tcbset{
+    colback=white,
+    colframe=black!70,
+    sharp corners,
+    boxrule=0.5pt,
+    left=0pt,
+    right=0pt,
+    top=0pt,
+    bottom=0pt,
+    boxsep=1pt,
+}
 
 \definecolor{metropolisblue}{RGB}{39, 59, 94}
 
@@ -33,6 +57,49 @@ For every unit change in $x$, the value of $f(x)$ changes by $6x$.
     
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Derivative}
+    \begin{columns}[t]
+        \column{0.5\textwidth}
+        \begin{tcolorbox}
+        \textbf{JAX}
+        \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-40pt]
+        import jax
+        import jax.numpy as np
+        
+        def f(x):
+            return 3 * x ** 2
+        
+        grad_f = jax.grad(f)
+        
+        x = 2.0
+        derivative = grad_f(x)
+        
+        print("f'(x) =", derivative)
+        \end{lstlisting}
+        \end{tcolorbox}
+        
+        \column{0.5\textwidth}
+        \begin{tcolorbox}
+        \textbf{Torch}
+        \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-40pt]
+        import torch
+        
+        def f(x):
+            return 3 * x ** 2
+        
+        x = torch.tensor(2.0, requires_grad=True)
+        y = f(x)
+        
+        y.backward()
+        derivative = x.grad
+        
+        print("f'(x) =", derivative)
+        \end{lstlisting}
+        \end{tcolorbox}
+        \end{columns}
+    \end{frame}
+
 \begin{frame}{Partial Derivative}
 The partial derivative of a function of several variables is its derivative with respect to one of those variables, with the others held constant (as opposed to the total derivative, in which all variables are allowed to vary).
 
@@ -40,12 +107,102 @@ Let us assume a function $f(x,y) = 2x^2 + 3y$. The partial derivative of this fu
 
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Partial Derivative}
+    
+    \begin{columns}[t]
+    \column{0.5\textwidth}
+    \begin{tcolorbox}
+    \textbf{JAX}
+    \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    f = lambda x, y: 2 * x ** 2 + 3 * y
+    
+    grad_f_x = jax.grad(f, argnums=0)
+    grad_f_y = jax.grad(f, argnums=1)
+    
+    x = 2.0
+    y = 1.5
+    
+    derivative_x = grad_f_x(x, y)
+    derivative_y = grad_f_y(x, y)
+    
+    print("df/dx =", derivative_x)
+    print("df/dy =", derivative_y)
+    \end{lstlisting}
+    \end{tcolorbox}
+    
+    \column{0.5\textwidth}
+    \begin{tcolorbox}
+    \textbf{Torch}
+    \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    f = lambda x, y: 2 * x ** 2 + 3 * y
+    
+    x = torch.tensor(2.0, requires_grad=True)
+    y = torch.tensor(1.5, requires_grad=True)
+    z = f(x, y)
+    
+    z.backward()
+    
+    derivative_x = x.grad
+    derivative_y = y.grad
+    
+    print("df/dx =", derivative_x)
+    print("df/dy =", derivative_y)
+    \end{lstlisting}
+    \end{tcolorbox}
+    \end{columns}
+    \end{frame}
+    
+
 \begin{frame}{Gradient}
 The gradient is a multi-variable generalization of the derivative. While a derivative can be defined on functions of a single variable, for functions of several variables, the gradient takes its place. The gradient is a vector-valued function, as opposed to a derivative, which is scalar-valued.
 
 Let us assume a function $f(x,y) = 2x^2 + 3y$. The gradient of this function is given by: $\nabla f = \begin{bmatrix} 4x \\ 3 \end{bmatrix}$.
     
 \end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Gradient}
+    
+    \begin{columns}[t]
+    \column{0.5\textwidth}
+    \begin{tcolorbox}
+    \textbf{JAX}
+    \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    f = lambda x, y: 2 * x ** 2 + 3 * y
+    
+    grad_f = jax.grad(f, argnums=[0, 1])
+    
+    x = 2.0
+    y = 1.5
+    
+    gradient = grad_f(x, y)
+    
+    print("Gradient =", gradient)
+    \end{lstlisting}
+    \end{tcolorbox}
+    
+    \column{0.5\textwidth}
+    \begin{tcolorbox}
+    \textbf{Torch}
+    \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    f = lambda x, y: 2 * x ** 2 + 3 * y
+    
+    x = torch.tensor(2.0, requires_grad=True)
+    y = torch.tensor(1.5, requires_grad=True)
+    
+    z = f(x, y)
+    z.backward()
+    
+    gradient = torch.tensor([x.grad, y.grad])
+    
+    print("Gradient =", gradient)
+    tensor([8., 3.])
+    \end{lstlisting}
+    \end{tcolorbox}
+    \end{columns}
+    \end{frame}
+    
 
 \begin{frame}{Jacobian}
     The Jacobian is a matrix that contains the partial derivatives of a vector-valued function with respect to its input variables. 
