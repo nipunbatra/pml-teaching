@@ -295,7 +295,6 @@ $h_2 = \mathrm{ReLU}(w_{12} x + =b_2)$
 
 Now, let us consider the vector $h = \begin{bmatrix} h_1 \\ h_2 \end{bmatrix}$.
 
-The Jacobian of this vector is given by: $J_h = \begin{bmatrix} \frac{\partial h_1}{\partial x} & \frac{\partial h_1}{\partial b_1} & \frac{\partial h_1}{\partial w_{11}} & \frac{\partial h_1}{\partial w_{12}} \\ \frac{\partial h_2}{\partial x} & \frac{\partial h_2}{\partial b_2} & \frac{\partial h_2}{\partial w_{21}} & \frac{\partial h_2}{\partial w_{22}} \end{bmatrix} = \begin{bmatrix} w_{11} & 0 & x & 0 \\ 0 & w_{12} & 0 & x \end{bmatrix}$.
 
 \end{frame}
 
