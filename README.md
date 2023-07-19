@@ -1,5 +1,9 @@
 Slides and Notebooks for my Probabilistic Machine Learning Course
 
+<details>
+<summary>References and Acknowledgments</summary>
+
+
 There are several excellent resources I heavily relied on to create this course. I would like to thank the authors of these resources for making them available to the public (in no particular order)
 
 1. Piyush Rai (IIT Kanpur) excellent course and slides on the same subject
@@ -11,3 +15,16 @@ There are several excellent resources I heavily relied on to create this course.
 7. Allen Downey (Olin College) excellent book on the same subject
 8. Sargur Srihari (University at Buffalo) [excellent course and slides](https://cedar.buffalo.edu/~srihari/CSE574/) on the same subject
 9. Felix Machine Learning and Simulation YouTube [channel](https://www.youtube.com/@MachineLearningSimulation)
+
+</details>
+
+
+<details>
+<summary> Course Outline </summary>
+
+1. Introduction and Logistics [[slides](slides/introduction.pdf)][[notebook](notebooks/cats-dogs.ipynb)]
+
+2. Maximum Likelihood Estimation [[slides](slides/mle.pdf)][[notebook](notebooks/mle.ipynb)]
+</details>
+
+
