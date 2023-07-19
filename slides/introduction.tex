@@ -20,7 +20,22 @@
 \institute{IIT Gandhinagar}
 \maketitle
 
-\begin{frame}{Cats v/s Dogs}
+\begin{frame}{What}
+    \begin{itemize}
+        \item Predict with uncertainty
+        \item Optimize any black box function
+        \item Efficiently create a training set
+        \item Generative modelling
+    \end{itemize}
+
+    
+\end{frame}
+
+\begin{frame}{Predict with Uncertainty: Classification}
+    
+\end{frame}
+
+\begin{frame}{Predict with Uncertainty: Regression}
     
 \end{frame}
 
@@ -28,30 +43,29 @@
 \begin{frame}{Questions}
     \begin{itemize}
         \item We used squared error loss function for linear regression. Why?
+        \item We used cross entropy loss function for logistic regression. Why?
         \item How does np.random.randn work?
         \item np.std(x) and pd.std(x) give different results. Why?
-        \item What is the link between atom bomb and this course?
-        \item Given a set of hyperparameters, we previously used grid search to find the best hyperparameters. Is there a better way?
-        \item Active Learning
+
     \end{itemize}
     
 \end{frame}
 
-\begin{frame}{Bayes Rule}
+\begin{frame}{How: Bayes Rule}
     \begin{equation*}
         P(A|B) = \frac{P(B|A)P(A)}{P(B)}
     \end{equation*}
     
-    Rewriting it using the ML notation:
+=    Rewriting it using the ML notation:
     \begin{equation*}
-        P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}
+        \textcolor{blue}{P(\theta|D)} = \frac{\textcolor{green}{P(D|\theta)} \cdot \textcolor{red}{P(\theta)}}{\textcolor{purple}{P(D)}}
     \end{equation*}
-
+    
     \begin{itemize}
-        \item $P(\theta|D)$ is called the posterior
-        \item $P(D|\theta)$ is called the likelihood
-        \item $P(\theta)$ is called the prior
-        \item $P(D)$ is called the evidence
+        \item $\textcolor{blue}{P(\theta|D)}$ is called the posterior
+        \item $\textcolor{green}{P(D|\theta)}$ is called the likelihood
+        \item $\textcolor{red}{P(\theta)}$ is called the prior
+        \item $\textcolor{purple}{P(D)}$ is called the evidence
     \end{itemize}
     
 \end{frame}
