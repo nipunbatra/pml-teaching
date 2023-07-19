@@ -22,9 +22,10 @@ There are several excellent resources I heavily relied on to create this course.
 <details>
 <summary> Course Outline </summary>
 
-1. Introduction and Logistics [[slides](slides/introduction.pdf)][[notebook](notebooks/cats-dogs.ipynb)]
+- Introduction and Logistics [[slides](slides/introduction.pdf)][[notebook](notebooks/cats-dogs.ipynb)]
+- Distributions, Refresher [[notebook](notebooks/distributions.ipynb)]
+- Maximum Likelihood Estimation [[slides](slides/mle.pdf)][[notebook](notebooks/mle.ipynb)]
 
-2. Maximum Likelihood Estimation [[slides](slides/mle.pdf)][[notebook](notebooks/mle.ipynb)]
 </details>
 
 
