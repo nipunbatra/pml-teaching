@@ -22,9 +22,20 @@ There are several excellent resources I heavily relied on to create this course.
 <details>
 <summary> Course Outline </summary>
 
-- Introduction and Logistics [[slides](slides/introduction.pdf)][[notebook](notebooks/cats-dogs.ipynb)]
+- Introduction and Logistics [[slides](slides/introduction.pdf)][[notebook](notebooks/cats-dogs.ipynb)], [AL notebook], [BO notebook]
 - Distributions, Refresher [[notebook](notebooks/distributions.ipynb)]
-- Maximum Likelihood Estimation [[slides](slides/mle.pdf)][[notebook](notebooks/mle.ipynb)]
+- Maximum Likelihood Estimation for Univariate [[slides](slides/mle.pdf)][[notebook](notebooks/mle-univariate.ipynb)]
+- MLE Multivariate
+- MAP estimation
+- Bayesian Inference with conjugate priors
+- MLE, MAP for Linear Regression
+- Bayesian Linear Regression
+- MLE, MAP for Logistic Regression
+- Bayesian Logistic Regression (with Laplace Approximation for posterior)
+- Bayesian Logistic Regression (with Probit apprximation for predictive)
+- Sampling Methods (Monte Carlo, Rejection Sampling)
+- Markov Chain Monte Carlo (Metropolis-Hastings)
+
 
 </details>
 
