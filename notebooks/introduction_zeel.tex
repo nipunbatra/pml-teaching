@@ -1,0 +1,64 @@
+\documentclass[handout]{beamer}
+\input{../themes/theme.tex}
+
+\begin{document}
+
+\newcommand{\uncertaintyTable}{\begin{table}
+        \begin{tabular}{|r|c|l|r|c|}
+            \hline
+            Age & Gender & Height & FVC & Respiratory health \\
+            \hline
+            21  & M      & 1.60   & 5.2 & Good               \\
+            35  & M      & 1.50   & 4.8 & OK                 \\
+            15  & F      & 1.70   & 3.2 & Good               \\
+            45  & M      & 1.60   & 2.8 & Poor               \\
+            \hline
+            9   & F      & 1.0    & 2.2 & ?                  \\
+            \hline
+        \end{tabular}
+    \end{table}}
+
+\begin{frame}{Uncertainty applications}
+    We can not afford to be overconfident in medical applications.
+
+    \uncertaintyTable
+
+\end{frame}
+
+\begin{frame}{Uncertainty applications}
+    We can not afford to be overconfident in medical applications.
+
+    \uncertaintyTable
+
+    \begin{itemize}
+        \item Deterministic model: ``Poor'' with 90\% probability.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Uncertainty applications}
+    We can not afford to be overconfident in medical applications.
+
+    \uncertaintyTable
+
+    \begin{itemize}
+        \item Deterministic model: ``Poor'' with 90\% probability.
+        \item Probabilistic model: Since the point is OOD, ``Good'' with 30\% probability, ``OK'' with 30\% probability, ``Poor'' with 40\% probability.
+    \end{itemize}
+
+\end{frame}
+
+\newcommand{\StudyQ}{Q: You took a course at IITGN where final exam has very high weightage. You gave the exam and it didn't go well. What will be your grade?\\
+    Options: (1) 10, (2) 9, (3) 8, (4) 7}
+
+\begin{frame}{Grade}
+    \StudyQ
+\end{frame}
+
+\begin{frame}{Grade}
+    \StudyQ \\
+    \hfill \\
+    Hint: In the previous year, the median grade was 9.
+\end{frame}
+
+\end{document}
