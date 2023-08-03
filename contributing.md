@@ -2,6 +2,7 @@
 * Have the initial discussion in the issue itself.
 * Once you are clear on To Dos, fork this repo. It will create a replica of this repo in your GitHub account.
 * Never work on the `main` branch. Create a new branch to solve a new issue.
+* Before making a commit, verify that your commit only modfies the files that are required to solve the issue. If you have made any other changes, remove them from the commit. Usually, modifying uncessary files would be the root cause of merge conflicts.
 * After the initial part of work is done, open a PR to this repo and instructors will review the PR.
 
 ## Guidelines
