@@ -39,21 +39,46 @@
         Assume model parameters are $\theta$ and data is $D  $. We can write the joint probability distribution as:
 
         \begin{tikzpicture}
+            \node[obs]                               (x1) {$x_1$};
+                    \node[const, right=0.5cm of x1]                               (dots) {$\cdots$};
+                    \node[obs, right=0.5cm of dots]                               (xn) {$x_N$};
+                    \node[latent, above=of dots] (mu) {$\mathbf{\mu}$};
+                    
+                    
+                    \edge {mu} {x1,dots,xn} ; %
                 
-                
-            \node[obs]                               (xn) {$x_n$};
-            \node[latent, above=of xn] (mu) {$\mathbf{\mu}$};
-            \factor[above=of xn] {y-f} {left:${Ber}$} {} {} ; %
-            \node[const, above=1 of mu, xshift=0.5cm] (beta) {$\mathbf{\beta}$};
-            \node[const, above=1 of mu, xshift=-0.5cm] (alpha) {$\mathbf{\alpha}$};
-            \factor[above=of mu] {mu-f} {left:${Beta}$} {} {} ; %
+            
+            \factor[above=of xn] {y-f} {left:${\mathcal{N}}$} {} {} ; %
+            \node[const, above=1 of xn, xshift=0.5cm] (sigma) {$\mathbf{\sigma}$};
+            \node[const, above=1 of xn, xshift=-0.5cm] (mu) {$\mathbf{\mu}$};
             \plate{}{(xn)}{$n = 1, \cdots, N$};
             
             
             
-            \edge {mu} {xn} ; %
-            \edge {alpha,beta} {mu-f} ; %
-            \edge  {mu-f}{mu} ; %
+            \edge {y-f} {xn} ; %
+            \edge {mu, sigma} {y-f} ; %
+            
+            
+        \end{tikzpicture}
+        
+    \end{frame}
+
+    \begin{frame}{Graphical model}
+        Assume model parameters are $\theta$ and data is $D  $. We can write the joint probability distribution as:
+
+        \begin{tikzpicture}
+                
+                
+            \node[obs]                               (xn) {$x_n$};
+            \factor[above=of xn] {y-f} {left:${\mathcal{N}}$} {} {} ; %
+            \node[const, above=1 of xn, xshift=0.5cm] (sigma) {$\mathbf{\sigma}$};
+            \node[const, above=1 of xn, xshift=-0.5cm] (mu) {$\mathbf{\mu}$};
+            \plate{}{(xn)}{$n = 1, \cdots, N$};
+            
+            
+            
+            \edge {y-f} {xn} ; %
+            \edge {mu, sigma} {y-f} ; %
             
             
         \end{tikzpicture}
