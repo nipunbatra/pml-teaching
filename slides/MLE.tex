@@ -6,6 +6,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
 \definecolor{metropolisblue}{RGB}{39, 59, 94}
 
 
@@ -35,6 +37,26 @@
 
     \begin{frame}{Graphical model}
         Assume model parameters are $\theta$ and data is $D  $. We can write the joint probability distribution as:
+
+        \begin{tikzpicture}
+                
+                
+            \node[obs]                               (xn) {$x_n$};
+            \node[latent, above=of xn] (mu) {$\mathbf{\mu}$};
+            \factor[above=of xn] {y-f} {left:${Ber}$} {} {} ; %
+            \node[const, above=1 of mu, xshift=0.5cm] (beta) {$\mathbf{\beta}$};
+            \node[const, above=1 of mu, xshift=-0.5cm] (alpha) {$\mathbf{\alpha}$};
+            \factor[above=of mu] {mu-f} {left:${Beta}$} {} {} ; %
+            \plate{}{(xn)}{$n = 1, \cdots, N$};
+            
+            
+            
+            \edge {mu} {xn} ; %
+            \edge {alpha,beta} {mu-f} ; %
+            \edge  {mu-f}{mu} ; %
+            
+            
+        \end{tikzpicture}
         
     \end{frame}
 
