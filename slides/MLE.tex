@@ -13,13 +13,40 @@
 % Begin document
 \begin{document}
 
+
 % Title page
 \title{Maximum Likelihood Estimation}
-\subtitle{Univariate}
 \author{Nipun Batra}
 \date{\today}
 \institute{IIT Gandhinagar}
 \maketitle
+\setbeamercovered{invisible}
+\begin{frame}
+    \frametitle{Agenda}
+    \tableofcontents[hidesubsections]
+    \end{frame}
+    
+\begin{section}{Revision - Prior, Posterior, MLE, MAP}
+\end{section}
+\begin{section}{Distributions, IID}
+    \begin{frame}
+        Notebook
+    \end{frame}
+\end{section}
+
+\section{MLE}
+\begin{frame}{Pop Quiz}
+    We have three courses: C1, C2, C3. Assume no student takes more than one course.
+    The scores of students in these courses are normally distributed with the following parameters:
+    \begin{itemize}
+        \item C1: $\mu_1 = 80, \sigma_1 = 10$
+        \item C2: $\mu_2 = 70, \sigma_2 = 10$
+        \item C3: $\mu_3 = 90, \sigma_3 = 5$
+    \end{itemize}
+
+
+    
+\end{frame}
 
 \begin{frame}{Pop Quiz}
     We have three courses: C1, C2, C3. Assume no student takes more than one course.
@@ -29,9 +56,30 @@
         \item C2: $\mu_2 = 70, \sigma_2 = 10$
         \item C3: $\mu_3 = 90, \sigma_3 = 5$
     \end{itemize}
-    I randomly pick up a student and ask them their marks. They say 82. Which course do you think they are from? 
+
+   
+    I randomly pick up a student and ask them their marks. They say 82. Which course do you think they are from?
+    To keep things simple, for now assume that all three courses have equal number of students.
     
-    \pause Most likely C1. But why?
+    
+    
+\end{frame}
+
+\begin{frame}{Pop Quiz}
+    We have three courses: C1, C2, C3. Assume no student takes more than one course.
+    The scores of students in these courses are normally distributed with the following parameters:
+    \begin{itemize}
+        \item C1: $\mu_1 = 80, \sigma_1 = 10$
+        \item C2: $\mu_2 = 70, \sigma_2 = 10$
+        \item C3: $\mu_3 = 90, \sigma_3 = 5$
+    \end{itemize}
+
+   
+    I randomly pick up a student and ask them their marks. They say 82. Which course do you think they are from?
+    
+    
+    
+    Most likely C1. But why?
     
 \end{frame}
 
@@ -51,15 +99,48 @@
     
 \end{frame}
 
+\begin{frame}
+  Notebook  
+\end{frame}
+
 \begin{frame}{Pop Quiz 2}
     Let us say we observed a value of 20. We know it came from a normal distribution with $\sigma=1$. What is the most likely value of $\mu$?
     
-    \pause 20. But why?
+
+
+\end{frame}
+
+\begin{frame}{Pop Quiz 2}
+    Let us say we observed a value of 20. We know it came from a normal distribution with $\sigma=1$. What is the most likely value of $\mu$?
+    
+    20. But why?
+
+
+\end{frame}
+
+\begin{frame}{Pop Quiz 2}
+    Let us say we observed a value of 20. We know it came from a normal distribution with $\sigma=1$. What is the most likely value of $\mu$?
+    
+    20. But why?
+
+    Let us evaluate probability density function at 20 for different values of $\mu$ for $\sigma=1$, i.e., $f(x=20|\mu, \sigma=1)$.
+
+
+\end{frame}
+
+\begin{frame}{Pop Quiz 2}
+    Let us say we observed a value of 20. We know it came from a normal distribution with $\sigma=1$. What is the most likely value of $\mu$?
+    
+    20. But why?
 
     Let us evaluate probability density function at 20 for different values of $\mu$ for $\sigma=1$, i.e., $f(x=20|\mu, \sigma=1)$.
 
     Importantly, this is a function of $\mu$ and not $x$ (which is fixed at 20).
 
+\end{frame}
+
+\begin{frame}
+    Notebook
 \end{frame}
 
 \begin{frame}{Pop Quiz 3}
