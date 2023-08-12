@@ -139,7 +139,7 @@
 \begin{frame}{Pop Quiz}
     Let us plot the probability density functions of the three courses. 
     \begin{figure}
-        \includegraphics[width=\textwidth]{figures/mle/mle-example.pdf}
+        \includegraphics[width=\textwidth]{../figures/mle/mle-example.pdf}
     \end{figure}
     
 \end{frame}
@@ -147,7 +147,7 @@
 \begin{frame}{Pop Quiz}
     Let us plot the probability density functions of the three courses. 
     \begin{figure}
-        \includegraphics[width=\textwidth]{figures/mle/mle-example-2.pdf}
+        \includegraphics[width=\textwidth]{../figures/mle/mle-example-2.pdf}
     \end{figure}
     
 \end{frame}
@@ -276,7 +276,7 @@ P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
         &= \sum_{i=1}^n \left (\frac{x_{i}-\theta}{\theta(1-\theta)} \right)\\
         &= \sum_{i=1}^n \left (x_{i}-\theta \right)=0\\
         &= \sum_{i=1}^n x_{i} - \sum_{i=1}^n\theta=0\\
-        &= \sum_{i=1}^n x_{i} - N\theta=0\\
+        &= \sum_{i=1}^n x_{i} - n\theta=0\\
     \end{align*}
     
     
@@ -285,12 +285,12 @@ P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
 \begin{frame}
         
     \begin{align*}
-        \theta=\frac{\sum_{i=1}^n x_{i}}{N}\\
+        \theta=\frac{\sum_{i=1}^n x_{i}}{n}\\
     \end{align*}
     \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\theta$]
         MLE of $\theta$, denoted as $\hat{\theta}_{\text{MLE}}$, is given by:
         \begin{equation*}
-            \hat{\theta}_{\text{MLE}} = \frac{\sum_{i=1}^n x_{i}}{N}
+            \hat{\theta}_{\text{MLE}} = \frac{\sum_{i=1}^n x_{i}}{n}
         \end{equation*}
     \end{tcolorbox}
     
@@ -303,6 +303,7 @@ For example if we have a Bernoulli Distribution with $\theta=0.2,$ the likelihoo
 \end{figure}
     
 \end{frame}
+
 
 
 % Section 1
@@ -429,6 +430,118 @@ Now, we can differentiate the log-likelihood function with respect to $\sigma$ a
        
 
     \end{frame}
+
+\section{MLE for Multivariate Normal Distribution}
+\begin{frame}{MLE for Multivariate Normal Distribution}
+The probability density function of a multivariate normal distribution is given by:
+
+\begin{equation}
+f(x|\mu, \Sigma) = (2\pi)^{-\frac{k}{2}}\det(\Sigma)^{-\frac{1}{2}}exp^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}
+\end{equation}
+
+Let us assume we have a dataset $D = \{x_1, x_2, \ldots, x_n\}$, where each $x_i$ is an independent sample from the above distribution.
+We want to estimate the parameters $\theta = {\mu, \sigma}$ from the data.
+
+Our likelihood function is given by:
+\begin{equation}
+P(D|\theta) = \mathcal{L}(\mu, \Sigma) = \prod_{i=1}^n f(x_i|\mu, \Sigma)
+\end{equation}
+
+\end{frame}
+
+\begin{frame}
+    For example: A bivariate Normal distribution can be visualized as given below:
+    \begin{figure}
+                \centerline{\includegraphics[scale = 0.75]{../figures/mle/bivariate_normal.pdf}}
+\end{figure}
+    
+\end{frame}
+
+\begin{frame}{Log Likelihood Function}
+    Log-likelihood function:
+    \begin{equation}
+        \log \mathcal{L}(\mu, \Sigma) = \sum_{i=1}^n \log f(x_i|\mu, \Sigma)
+    \end{equation}
+
+    Simplifying the above equation, we get:
+    \begin{align*}
+        \log \mathcal{L}(\mu, \Sigma) &= \sum_{i=1}^n \log f(x_i|\mu, \Sigma) \\
+        &= \sum_{i=1}^n \log \left((2\pi)^{-\frac{k}{2}}\det(\Sigma)^{-\frac{1}{2}}exp^{-\frac{1}{2}(x_i-\mu)^{T}\Sigma^{-1}(x_i-\mu)} \right) \\
+        &= \sum_{i=1}^n \log ((2\pi)^{-\frac{k}{2}}) + \sum_{i=1}^n \log (\det(\Sigma)^{-\frac{1}{2}}) + \\ & \ \ \ \sum_{i=1}^n \log(exp^{-\frac{1}{2}(x_i-\mu)^{T}\Sigma^{-1}(x_i-\mu)} )) 
+        \end{align*}
+\end{frame}
+
+\begin{frame}
+    Continuing, we get:
+    \begin{align*}
+        = -\frac{kn}{2}\log(2\pi) -\frac{n}{2}\log(\Sigma) -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)  
+        \end{align*}
+
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Multivariate Normal Distribution]
+            Log-likelihood function for multivariate normally distributed data is:
+            \[
+                -\frac{kn}{2}\log(2\pi) -\frac{n}{2}\log(\Sigma) -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)
+                \]
+        \end{tcolorbox}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Maximum Likelihood Estimate for $\mu$}
+    
+    To find the MLE for $\mu$, we differentiate the log-likelihood function with respect to $\mu$ and set it to zero:
+    
+    \begin{align*}
+      &=\frac{\partial}{\partial \mu} \left(-\frac{kn}{2}\log(2\pi) -\frac{n}{2}\log(\Sigma) -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\right) \\
+      &= \frac{\partial}{\partial \mu} \left(-\frac{1}{2} \sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\right) \\
+      &= -\frac{1}{2}\sum_{i=1}^n \left(\Sigma^{-1}(x_i-\mu) + (x_i-\mu)^T\Sigma^{-1} \right) = 0\\
+      &= -\frac{1}{2} \sum_{i=1}^n 2\Sigma^{-1}(x_i-\mu) = 0 
+    \end{align*} \centerline{as $(x_i-\mu)^{T}\Sigma^{-1} = \Sigma^{-1}(x_i-\mu)$}
+    
+\end{frame}
+
+\begin{frame}
+    
+    \begin{align*}
+      &=\Sigma^{-1}\sum_{i=1}^n(x_i-\mu) = 0 \\
+      &=\sum_{i=1}^n(x_i) - n\mu = 0 \\
+      &\mu = \frac{\sum_{i=1}^n x_i}{n}      
+    \end{align*} 
+
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\mu$]
+        MLE of $\mu$, denoted as $\hat{\mu}_{\text{MLE}}$, is given by:
+        \begin{equation*}
+            \hat{\mu}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i
+        \end{equation*}
+    \end{tcolorbox}
+    
+\end{frame}
+
+\begin{frame}{MLE for $\Sigma$ for multivariate normally distributed data}
+    Recall that the log-likelihood function is given by:
+    \begin{equation}
+        \log \mathcal{L}(\mu, \Sigma) = \sum_{i=1}^n \log f(x_i|\mu, \Sigma)
+    \end{equation}
+
+    Let us find the maximum likelihood estimate of $\Sigma$ now. We can do this by taking the derivative of the log-likelihood function with respect to $\Sigma$ and equating it to zero.   
+
+    \begin{equation}
+        \frac{\partial \log \mathcal{L}(\mu, \Sigma)}{\partial \Sigma} = \sum_{i=1}^n \frac{\partial \log f(x_i|\mu, \Sigma)}{\partial \Sigma} = 0
+    \end{equation}
+    
+\end{frame}
+\begin{frame}
+    After differentiating and simplifying, we get:
+    \begin{align*}
+      \Sigma = \frac{1}{n}\sum_{i=1}^n(x_i-\mu)(x_i-\mu)^T  
+    \end{align*} 
+
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\Sigma$]
+        MLE of $\Sigma$, denoted as $\hat{\Sigma}_{\text{MLE}}$, is given by:
+        \begin{equation*}
+            \hat{\Sigma}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i-\mu)(x_i-\mu)^T
+        \end{equation*}
+    \end{tcolorbox}
+\end{frame}
     
 
     \begin{frame}{Bias of an Estimator}
