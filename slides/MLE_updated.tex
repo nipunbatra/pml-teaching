@@ -609,6 +609,42 @@ P(D|\theta) = \prod_{i=1}^n\frac{1}{\sqrt{2\pi\sigma^2}}exp^{-\frac{1}{2\sigma^2
                 \includegraphics[scale=0.35]{../figures/mle/linear_reg.pdf}
     \end{figure}
 \end{frame}
+
+\section{MLE for Logistic Regression}
+\begin{frame}{MLE for Logistic Regression}
+The probability distribution in case of Logistic Regression considering two classes is Bernoulli distribution but there is a slight difference. The probability is now the output of the logistic function.
+Parameters are $\theta=[\beta_0,\beta_1]$.
+\begin{equation}
+p = P(Y=1|X) = \frac{1}{1+e^{-(\beta_0+\beta_1X)}}
+\end{equation}
+
+
+\end{frame}
+
+\begin{frame}
+Rewriting the likelihood in this manner:
+\begin{align*}
+    \mathbb{L}(\beta)&= \prod_{y_i=1}p(x_i)\prod_{y_i=0}(1-p(x_i))\\
+    &=\prod\left(p(x_i)^{y_i}(1-p(x_i))^{1-y_i}\right)
+\end{align*}
+Taking log on both sides:\\
+\begin{align*}
+    L(\beta) &= \sum_{i=1}^n y_i\log(p(x_i)) + (1-y_i)\log(1-p(x_i))
+\end{align*}
+Substituting p from above equation. 
+\begin{align}
+    L(\beta) &= \sum_{i=1}^ny_i\log\left(\frac{1}{1+e^{-\beta x_i}}\right) + (1-y_i)\log\left(\frac{e^{-\beta x_i}}{1+e^{-\beta x_i}}\right)
+\end{align}
+\end{frame}
+
+\begin{frame}
+    Now if we differentiate this wrt $\beta$, it is difficult to find a analytical solution with it.
+    Thus in order to solve for MLE for logistic regression, methods like Gradient Descent, Newton-Raphson, etc. are used. For example through Gradient descent, the below decision boundary i.e. $\beta$ has been calculated.
+    \begin{figure}
+                \includegraphics[scale=0.8]{../figures/mle/log_reg.pdf}
+            \end{figure}
+\end{frame}
+
     \begin{frame}{Random variable and Random sample}
     Random variable: $X:\Omega\rightarrow\mathbb{R}$ is a function from the sample space to the real line. \\ 
     \addlinespace
