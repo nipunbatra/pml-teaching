@@ -542,6 +542,73 @@ P(D|\theta) = \mathcal{L}(\mu, \Sigma) = \prod_{i=1}^n f(x_i|\mu, \Sigma)
         \end{equation*}
     \end{tcolorbox}
 \end{frame}
+
+\section{MLE for Gaussian Linear Regression}
+\begin{frame}{MLE for Gaussian Linear Regression}
+Let us assume we have a dataset $D = \{(x_1, y_1), (x_2,y_2), \ldots, (x_n, y_n)\}$, where $x_i\in R^d, y_i\in R$. Also $Y\sim N(w^Tx, \sigma^2), Y_1, \ldots, Y_n$ are independent i.e. $Y_i\sim N(w^Tx_i, \sigma^2)$. Assume $\sigma^2$ is known.
+We want to estimate the parameters $\theta = W$ from the data.
+
+Our likelihood function (Normal distribution) is given by:
+\begin{equation}
+P(D|\theta) = P(y_1,\ldots,y_n|x_1,\ldots,x_n,\theta) = \prod_{i=1}^n p(y_i|x_i, \theta) 
+\end{equation}
+\begin{equation}
+P(D|\theta) = \prod_{i=1}^n\frac{1}{\sqrt{2\pi\sigma^2}}exp^{-\frac{1}{2\sigma^2}(y_i-w^Tx_i)^2}
+\end{equation}
+
+\end{frame}
+
+\begin{frame}
+    Continuing, we get:
+    \begin{align*}
+        P(D|\theta) &= \prod_{i=1}^n\frac{1}{\sqrt{2\pi\sigma^2}}exp^{-\frac{1}{2\sigma^2}(y_i-w^Tx_i)^2} \\
+        &= \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^{n}exp^{-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-w^Tx_i)^2} 
+    \end{align*}
+    Since $w^Tx_i$ is a scalar, $w^Tx_i = x_i^Tw$(transpose of a scalar is the scalar itself):
+    \begin{align*}
+        \sum_{i=1}^n(y_i-w^Tx_i)^2 &= (y-Xw)^T(y-Xw) =||y-Xw||^2
+    \end{align*}
+    \begin{align*}
+         P(D|\theta) &= \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^{n}exp^{-\frac{1}{2\sigma^2}(y-Xw)^T(y-Xw)} 
+    \end{align*}
+\end{frame}
+
+\begin{frame}
+    To maximize $P(D|\theta),$ we need to minimize $(y-Xw)^T(y-Xw).$
+    \begin{align*}
+        \mathcal{L}(w) &= (y-Xw)^T(y-Xw) \\
+        &= y^Ty - 2y^TXw + w^TX^TXw
+    \end{align*}
+    Since $w$ is a matrix, we follow these two rules:
+    \begin{equation}
+        \frac{\partial(A\theta)}{\partial\theta} = A^T 
+    \end{equation}
+    \begin{equation}
+        Z&=X^TX, \frac{\partial(\theta^TZ\theta)}{\partial\theta} = 2Z^T\theta        
+    \end{equation}
+    Differentiating with respect to $w$, we get:
+    \begin{align*}
+        -2X^Ty + 2X^TXw &= 0 \\
+    \end{align*}
+\end{frame}
+\begin{frame}
+    Thus, we get:
+    \begin{equation}
+        w &= (X^TX)^{-1}X^Ty
+    \end{equation}
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $w$]
+        MLE of $\w$, denoted as $\hat{w}_{\text{MLE}}$, is given by:
+        \begin{equation*}
+            \hat{w}_{\text{MLE}} = (X^TX)^{-1}X^Ty
+        \end{equation*}
+    \end{tcolorbox}
+    
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \includegraphics[scale=0.35]{../figures/mle/linear_reg.pdf}
+    \end{figure}
+\end{frame}
     
 
     \begin{frame}{Bias of an Estimator}
