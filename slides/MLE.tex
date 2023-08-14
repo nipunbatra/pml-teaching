@@ -35,29 +35,28 @@
         Notebook
     \end{frame}
 
-    \begin{frame}{Graphical model}
-        Assume model parameters are $\theta$ and data is $D  $. We can write the joint probability distribution as:
+    \begin{frame}{IID}
+        \href{https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables}{Wiki Link}
+    \end{frame}
+        
 
+
+    
+    \begin{frame}{Graphical model}
+        Assume model parameters are $\theta$ and data is $D  $. We can write the joint probability distribution as: \\
+        \vspace{10pt}
         \begin{tikzpicture}
-            \node[obs]                               (x1) {$x_1$};
-                    \node[const, right=0.5cm of x1]                               (dots) {$\cdots$};
-                    \node[obs, right=0.5cm of dots]                               (xn) {$x_N$};
-                    \node[latent, above=of dots] (mu) {$\mathbf{\mu}$};
-                    
-                    
-                    \edge {mu} {x1,dots,xn} ; %
-                
+            \node[obs] (x1) {$x_1$};
+            \node[const, right=0.5cm of x1]                               (dots) {$\cdots$};
+            \node[obs, right=0.5cm of dots]                               (xn) {$x_N$};
             
-            \factor[above=of xn] {y-f} {left:${\mathcal{N}}$} {} {} ; %
-            \node[const, above=1 of xn, xshift=0.5cm] (sigma) {$\mathbf{\sigma}$};
-            \node[const, above=1 of xn, xshift=-0.5cm] (mu) {$\mathbf{\mu}$};
-            \plate{}{(xn)}{$n = 1, \cdots, N$};
-            
-            
-            
+            \factor[above=1 of dots] {y-f} {left:${\mathcal{N}}$} {} {} ; %
+            \node[const, above=1.5 of dots, xshift=0.5cm] (sigma) {$\mathbf{\sigma}$};
+            \node[const, above=1.5 of dots, xshift=-0.5cm] (mu) {$\mathbf{\mu}$};
+            \edge {y-f} {dots} ;
             \edge {y-f} {xn} ; %
-            \edge {mu, sigma} {y-f} ; %
-            
+            \edge {y-f} {x1} ;
+            \edge {mu, sigma} {y-f} ; %           
             
         \end{tikzpicture}
         
@@ -85,7 +84,7 @@
         
     \end{frame}
 
-    \begin{frame}{Factorisation}
+    \begin{frame}{Factorisation of Likelihood}
         \begin{align*}
             P(D|\theta) & = P(x_1, x_2, \ldots, x_n | \theta) \\
             & = P(x_1|\theta) \cdot P(x_2|\theta) \cdot \ldots \cdot P(x_n|\theta)
@@ -424,9 +423,257 @@ Correction multiplactive factor for variance:
     
 \end{frame}
 
-\begin{frame}
+    
+\begin{frame}{Bias of an Estimator: $\hat{\mu}_{MLE}$}
+
+    \href{https://online.stat.psu.edu/stat415/lesson/1/1.3}{Reference}
+        
+    % \begin{align*}
+    %     \mathbb{E}(\hat{\mu}_{MLE}) &= \mathbb{E}(\Bar{X}) \\
+    %     &=\mathbb{E}\left(\frac{1}{n}\sum_{i=1}^nX_i\right) \\
+    %     &=\frac{1}{n}\sum_{i=1}^n\mathbb{E}(X_i) \\
+    %     &=\frac{1}{n}(n\mu) = \mu
+    % \end{align*}
+    
+    
+    % % Add tcolorbox here
+    % \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title= Estimator $\hat{\mu}_{MLE}$ is unbiased]
+    %     $\mathbb{E}(\hat{\mu}_{MLE}) = \mu$
+    % \end{tcolorbox}
+
     
 \end{frame}
+\begin{frame}{MLE for Bernoulli Distribution}
+    The probability mass function of a bernoulli distribution is given by:
+    
+    \begin{equation}
+    f(x|\theta) = \theta^x(1-\theta)^{(1-x)}
+    \end{equation}
+    
+    Let us assume we have a dataset $D = \{x_1, x_2, \ldots, x_n\}$, where each $x_i$ is an independent sample from the above distribution and $x_i\in\{0, 1\}$.
+    We want to estimate the parameter $\theta$ from the data.
+    
+    Our likelihood function is given by:
+    \begin{equation}
+    P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
+    \end{equation}
+    \end{frame}
+
+
+
+    \begin{frame}{Graphical model}
+        Assume model parameters are $\theta$ and data is $D  $. We can write the joint probability distribution as:
+
+        \begin{tikzpicture}
+                
+                
+            \node[obs]                               (xn) {$x_n$};
+            \factor[above=of xn] {y-f} {left:${\mathcal{B}}$} {} {} ; %
+            \node[const, above=1 of xn] (theta) {$\mathbf{\theta}$};
+            \plate{}{(xn)}{$n = 1, \cdots, N$};
+            
+            
+            
+            \edge {y-f} {xn} ; %
+            \edge {theta} {y-f} ; %
+            
+            
+        \end{tikzpicture}
+        
+    \end{frame}
+    
+    \begin{frame}{Log Likelihood Function}
+        Log-likelihood function:
+        \begin{equation}
+            \log \mathcal{L}(\theta) = \sum_{i=1}^n \log f(x_i|\theta)
+        \end{equation}
+    
+        Simplifying the above equation, we get:
+        \begin{align*}
+            \log \mathcal{L}(\theta) &= \sum_{i=1}^n \log f(x_i|\theta) \\
+            &= \sum_{i=1}^n \log \left (\theta^{x_{i}}(1-\theta)^{(1-x_{i})} \right) \\
+            &= \sum_{i=1}^n \left( \log \left( \theta^{x_{i}} \right) + \log \left( (1-\theta)^{(1-x_{i})}  \right) \right) \\
+            \end{align*}
+    \end{frame}
+    \begin{frame}
+       
+        \begin{align*}
+            \log \mathcal{L}(\theta) &= \sum_{i=1}^n \left (x_{i}\log \left( \theta \right) + (1-x_{i})\log \left(1-\theta \right) \right)\\
+            \end{align*}
+            \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Bernoulli Distribution]
+                Log-likelihood function for bernoulli distributed data is:
+                \[
+                    \log \mathcal{L}(\theta) = \sum_{i=1}^n  (x_{i}\log(\theta) + (1-x_{i})\log(1-\theta))
+                    \]
+            \end{tcolorbox}
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Maximum Likelihood Estimate for $\theta$}
+        
+        To find the MLE for $\theta$, we differentiate the log-likelihood function with respect to $\theta$ and set it to zero:
+        
+        \begin{align*}
+            \frac{\partial \log \mathcal{L}(\theta)}{\partial \theta} &= \frac{\partial}{\partial \theta} \left (\sum_{i=1}^n \left (x_{i}\log \left( \theta \right) + (1-x_{i})\log \left(1-\theta \right) \right)\right)\\
+            &= \sum_{i=1}^n \left (\frac{\partial}{\partial \theta}(x_{i}\log \left( \theta \right)) + \frac{\partial}{\partial \theta}(1-x_{i})\log \left(1-\theta \right) \right)\\
+            &= \sum_{i=1}^n \left (x_{i}\frac{\partial}{\partial \theta}\log \left( \theta \right) + (1-x_{i})\frac{\partial}{\partial \theta}\log \left(1-\theta \right) \right)\\
+            &= \sum_{i=1}^n \left (\frac{x_{i}}{\theta} - \frac{(1-x_{i})}{1-\theta} \right)=0\\
+        \end{align*}
+        
+        
+        \end{frame}
+    
+    \begin{frame}
+            
+        \begin{align*}
+            \frac{\partial \log \mathcal{L}(\theta)}{\partial \theta} &=  \sum_{i=1}^n \left (\frac{x_{i}(1-\theta)-\theta(1-x_{i})}{\theta(1-\theta)} \right)=0\\
+            &= \sum_{i=1}^n \left (\frac{x_{i}-x_{i}\theta-\theta+\theta x_{i}}{\theta(1-\theta)} \right)\\
+            &= \sum_{i=1}^n \left (\frac{x_{i}-\theta}{\theta(1-\theta)} \right)\\
+            &= \sum_{i=1}^n \left (x_{i}-\theta \right)=0\\
+            &= \sum_{i=1}^n x_{i} - \sum_{i=1}^n\theta=0\\
+            &= \sum_{i=1}^n x_{i} - n\theta=0\\
+        \end{align*}
+        
+        
+        \end{frame}
+    
+    \begin{frame}
+            
+        \begin{align*}
+            \theta=\frac{\sum_{i=1}^n x_{i}}{n}\\
+        \end{align*}
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\theta$]
+            MLE of $\theta$, denoted as $\hat{\theta}_{\text{MLE}}$, is given by:
+            \begin{equation*}
+                \hat{\theta}_{\text{MLE}} = \frac{\sum_{i=1}^n x_{i}}{n}
+            \end{equation*}
+        \end{tcolorbox}
+        
+        \end{frame}
+    
+    \begin{frame}
+    For example if we have a Bernoulli Distribution with $\theta=0.2,$ the likelihood, $P(D|\theta)$ is given below:
+    \begin{figure}
+                    \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood.pdf}}
+    \end{figure}
+        
+    \end{frame}
+
+    \section{MLE for Multivariate Normal Distribution}
+\begin{frame}{MLE for Multivariate Normal Distribution}
+The probability density function of a multivariate normal distribution is given by:
+
+\begin{equation}
+f(x|\mu, \Sigma) = (2\pi)^{-\frac{k}{2}}\det(\Sigma)^{-\frac{1}{2}}exp^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}
+\end{equation}
+
+Let us assume we have a dataset $D = \{x_1, x_2, \ldots, x_n\}$, where each $x_i$ is an independent sample from the above distribution.
+We want to estimate the parameters $\theta = {\mu, \sigma}$ from the data.
+
+Our likelihood function is given by:
+\begin{equation}
+P(D|\theta) = \mathcal{L}(\mu, \Sigma) = \prod_{i=1}^n f(x_i|\mu, \Sigma)
+\end{equation}
+
+\end{frame}
+
+\begin{frame}
+    For example: A bivariate Normal distribution can be visualized as given below:
+    \begin{figure}
+                \centerline{\includegraphics[scale = 0.75]{../figures/mle/bivariate_normal.pdf}}
+\end{figure}
+    
+\end{frame}
+
+\begin{frame}{Log Likelihood Function}
+    Log-likelihood function:
+    \begin{equation}
+        \log \mathcal{L}(\mu, \Sigma) = \sum_{i=1}^n \log f(x_i|\mu, \Sigma)
+    \end{equation}
+
+    Simplifying the above equation, we get:
+    \begin{align*}
+        \log \mathcal{L}(\mu, \Sigma) &= \sum_{i=1}^n \log f(x_i|\mu, \Sigma) \\
+        &= \sum_{i=1}^n \log \left((2\pi)^{-\frac{k}{2}}\det(\Sigma)^{-\frac{1}{2}}exp^{-\frac{1}{2}(x_i-\mu)^{T}\Sigma^{-1}(x_i-\mu)} \right) \\
+        &= \sum_{i=1}^n \log ((2\pi)^{-\frac{k}{2}}) + \sum_{i=1}^n \log (\det(\Sigma)^{-\frac{1}{2}}) + \\ & \ \ \ \sum_{i=1}^n \log(exp^{-\frac{1}{2}(x_i-\mu)^{T}\Sigma^{-1}(x_i-\mu)} )) 
+        \end{align*}
+\end{frame}
+
+\begin{frame}
+    Continuing, we get:
+    \begin{align*}
+        = -\frac{kn}{2}\log(2\pi) -\frac{n}{2}\log(\Sigma) -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)  
+        \end{align*}
+
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Multivariate Normal Distribution]
+            Log-likelihood function for multivariate normally distributed data is:
+            \[
+                -\frac{kn}{2}\log(2\pi) -\frac{n}{2}\log(\Sigma) -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)
+                \]
+        \end{tcolorbox}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Maximum Likelihood Estimate for $\mu$}
+    
+    To find the MLE for $\mu$, we differentiate the log-likelihood function with respect to $\mu$ and set it to zero:
+    
+    \begin{align*}
+      &=\frac{\partial}{\partial \mu} \left(-\frac{kn}{2}\log(2\pi) -\frac{n}{2}\log(\Sigma) -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\right) \\
+      &= \frac{\partial}{\partial \mu} \left(-\frac{1}{2} \sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\right) \\
+      &= -\frac{1}{2}\sum_{i=1}^n \left(\Sigma^{-1}(x_i-\mu) + (x_i-\mu)^T\Sigma^{-1} \right) = 0\\
+      &= -\frac{1}{2} \sum_{i=1}^n 2\Sigma^{-1}(x_i-\mu) = 0 
+    \end{align*} \centerline{as $(x_i-\mu)^{T}\Sigma^{-1} = \Sigma^{-1}(x_i-\mu)$}
+    
+\end{frame}
+
+\begin{frame}
+    
+    \begin{align*}
+      &=\Sigma^{-1}\sum_{i=1}^n(x_i-\mu) = 0 \\
+      &=\sum_{i=1}^n(x_i) - n\mu = 0 \\
+      &\mu = \frac{\sum_{i=1}^n x_i}{n}      
+    \end{align*} 
+
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\mu$]
+        MLE of $\mu$, denoted as $\hat{\mu}_{\text{MLE}}$, is given by:
+        \begin{equation*}
+            \hat{\mu}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n x_i
+        \end{equation*}
+    \end{tcolorbox}
+    
+\end{frame}
+
+\begin{frame}{MLE for $\Sigma$ for multivariate normally distributed data}
+    Recall that the log-likelihood function is given by:
+    \begin{equation}
+        \log \mathcal{L}(\mu, \Sigma) = \sum_{i=1}^n \log f(x_i|\mu, \Sigma)
+    \end{equation}
+
+    Let us find the maximum likelihood estimate of $\Sigma$ now. We can do this by taking the derivative of the log-likelihood function with respect to $\Sigma$ and equating it to zero.   
+
+    \begin{equation}
+        \frac{\partial \log \mathcal{L}(\mu, \Sigma)}{\partial \Sigma} = \sum_{i=1}^n \frac{\partial \log f(x_i|\mu, \Sigma)}{\partial \Sigma} = 0
+    \end{equation}
+    
+\end{frame}
+\begin{frame}
+    After differentiating and simplifying, we get:
+    \begin{align*}
+      \Sigma = \frac{1}{n}\sum_{i=1}^n(x_i-\mu)(x_i-\mu)^T  
+    \end{align*} 
+
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\Sigma$]
+        MLE of $\Sigma$, denoted as $\hat{\Sigma}_{\text{MLE}}$, is given by:
+        \begin{equation*}
+            \hat{\Sigma}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n (x_i-\mu)(x_i-\mu)^T
+        \end{equation*}
+    \end{tcolorbox}
+\end{frame}
+
+    
+    
+    
 
 % \begin{frame}
 %     \frametitle{References}
