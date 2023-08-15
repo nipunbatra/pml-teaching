@@ -678,11 +678,11 @@ This is none other than squared error loss! To minimize this, we differentiate w
 
 
 
-
+Binary Classification:\\
 The probability distribution in case of Logistic Regression considering two classes is Bernoulli distribution but there is a slight difference. The probability is now the output of the logistic function.
-Parameters are $\theta=[\beta_0,\beta_1]$.
+Parameters are $\theta=[\theta_0,\theta_1]$.
 \begin{equation}
-p = P(Y=1|X) = \frac{1}{1+e^{-(\beta_0+\beta_1X)}}
+p = P(Y=1|X) = \frac{1}{1+e^{-(\theta_0+\theta_1X)}}
 \end{equation}
 
 
@@ -691,25 +691,99 @@ p = P(Y=1|X) = \frac{1}{1+e^{-(\beta_0+\beta_1X)}}
 \begin{frame}
 Rewriting the likelihood in this manner:
 \begin{align*}
-    \mathbb{L}(\beta)&= \prod_{y_i=1}p(x_i)\prod_{y_i=0}(1-p(x_i))\\
+    L(\theta)&= \prod_{y_i=1}p(x_i)\prod_{y_i=0}(1-p(x_i))\\
     &=\prod\left(p(x_i)^{y_i}(1-p(x_i))^{1-y_i}\right)
 \end{align*}
 Taking log on both sides:\\
 \begin{align*}
-    L(\beta) &= \sum_{i=1}^n y_i\log(p(x_i)) + (1-y_i)\log(1-p(x_i))
+    \log(L(\theta)) &= \sum_{i=1}^n y_i\log(p(x_i)) + (1-y_i)\log(1-p(x_i))
 \end{align*}
-Substituting p from above equation. 
-\begin{align}
-    L(\beta) &= \sum_{i=1}^ny_i\log\left(\frac{1}{1+e^{-\beta x_i}}\right) + (1-y_i)\log\left(\frac{e^{-\beta x_i}}{1+e^{-\beta x_i}}\right)
-\end{align}
+If we multiply this by $-\frac{1}{n},$this is nothing but the binary cross entropy loss function!
+
+\end{frame}
+\begin{frame}{Coin toss V/s Binary Logistic Regression}
+\begin{center}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Coin toss} & \textbf{Binary Logistic Regression} \\
+    \hline
+    Likelihood=$\theta^{t}(1-\theta)^{1-t}$& Likelihood=$(\sigma(x^T\theta))^t(1-\sigma(x^T\theta))^{1-t}$ \\
+    \pause
+    Outcome is Head/Tail & Outcome is out of two possible classes \\
+    \pause
+    Parameter is scalar & Parameter is vector with two values\\
+    \hline
+  \end{tabular}
+\end{center}    
 \end{frame}
 
 \begin{frame}
-    Now if we differentiate this wrt $\beta$, it is difficult to find a analytical solution with it.
-    Thus in order to solve for MLE for logistic regression, methods like Gradient Descent, Newton-Raphson, etc. are used. For example through Gradient descent, the below decision boundary i.e. $\beta$ has been calculated.
-    \begin{figure}
-                \includegraphics[scale=0.8]{../figures/mle/log_reg.pdf}
-            \end{figure}
+
+
+\begin{tikzpicture}
+
+\node[obs] (x_i_theta) {$x_i\theta$};
+\node[const, left=of x_i_theta] (xi) {$\mathbf{x_i}$};
+\node[const, above=of x_i_theta] (theta) {$\mathbf{\theta}$};
+\node[const, right=of x_i_theta] (pxi) {$p(x_i)$};
+\node[const, right=of pxi] (beta) {$\beta$};
+\node[obs, right=of beta] (yi_out) {$y_i$};
+\plate {plate1} {(xi)(x_i_theta)(yi_out)} {$i = 1, \cdots, N$};
+
+\draw[->] (xi) -- (x_i_theta);
+\draw[->] (theta) -- (x_i_theta);
+\draw[->] (x_i_theta) -- node[above] {$s$} (pxi); % Adding "sigma" text
+\draw[->] (pxi) -- (beta);
+\draw[->] (beta) -- (yi_out);
+
+\end{tikzpicture}
+
+
+
+
+
+Multi-class Classification:\\
+The probability distribution in case of Logistic Regression considering more than two classes is Categorical distribution. The probability is now the output of the softmax function.
+Parameters are $\theta=[\theta_0,\theta_1,\ldots, \theta_k]$.
+\begin{equation}
+p = P(Y=i|X) = \frac{e^{\theta x_i}}{\sum_{j=1}^ne^{\theta x_j}}
+\end{equation}
+
+
+\end{frame}
+\begin{frame}
+Now:
+\begin{align*}
+    L(\theta)&= \prod_{i=1}^n\prod_{j=1}^K p^j(x_i)
+\end{align*}
+Taking log on both sides:\\
+\begin{align*}
+    \log(L(\theta)) &= \sum_{i=1}^n\sum_{j=1}^K y_i^k\log(p^k(x_i))
+\end{align*}
+If we multiply this by $-\frac{1}{n},$this is nothing but the cross entropy loss function!
+
+
+
+\end{frame}
+\begin{frame}
+    Now if we differentiate this wrt $\theta$, it is difficult to find a analytical solution with it.
+    Thus in order to solve for MLE for logistic regression, methods like Gradient Descent, Newton-Raphson, etc. are used. For example through Gradient descent, the below decision boundary i.e. $\theta$ has been calculated.
+    
+\end{frame}
+\begin{frame}{Binary V/s Multiclass Logistic Regression}
+\begin{center}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Binary Logistic Regression} & \textbf{Multiclass Logistic Regression} \\
+    \hline
+    Binary Cross Entropy Loss& Cross Entropy Loss \\
+    \pause
+    $p(x) = \sigma(x^T\theta)$ & $p(x) = s(x^T\theta)$ \\
+    \pause
+    Bernoulli Likelihood & Categorical Likelihood\\
+    \hline
+  \end{tabular}
+\end{center}    
 \end{frame}
 
     \begin{frame}{Random variable and Random sample}
