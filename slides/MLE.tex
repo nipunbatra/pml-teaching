@@ -269,6 +269,13 @@ P(D|\theta) = \mathcal{L}(\mu, \sigma^2) = \prod_{i=1}^n f(x_i|\mu, \sigma^2)
 \end{frame}
 
 
+\begin{frame}{Log-likelihood surface plot}
+    We have 50 samples from a normal distribution with $\mu=0$ and $\sigma=1$. Let us plot the log-likelihood surface for different values of $\mu$ and $\sigma$.
+    
+Notebook mle-univariate
+
+\end{frame}
+
 
 
 
@@ -294,19 +301,7 @@ P(D|\theta) = \mathcal{L}(\mu, \sigma^2) = \prod_{i=1}^n f(x_i|\mu, \sigma^2)
     
     \end{frame}
 
-\begin{frame}{MLE for $\sigma$ for normally distributed data}
-    Recall that the log-likelihood function is given by:
-    \begin{equation}
-        \log \mathcal{L}(\mu, \sigma^2) = \sum_{i=1}^n \log f(x_i|\mu, \sigma^2)
-    \end{equation}
 
-    Let us find the maximum likelihood estimate of $\sigma^2$ now. We can do this by taking the derivative of the log-likelihood function with respect to $\sigma^2$ and equating it to zero.   
-
-    \begin{equation}
-        \frac{\partial \log \mathcal{L}(\mu, \sigma^2)}{\partial \sigma^2} = \sum_{i=1}^n \frac{\partial \log f(x_i|\mu, \sigma^2)}{\partial \sigma^2} = 0
-    \end{equation}
-    
-\end{frame}
 
 \begin{frame}{MLE for $\sigma$ for normally distributed data}
     \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Univariate Normal Distribution]
@@ -425,6 +420,15 @@ Correction multiplactive factor for variance:
         \item An estimator is said to be biased if $\text{Bias}(\hat{\theta}) \neq 0$.
     \end{itemize}
     
+\end{frame}
+
+
+\begin{frame}{Bias of an Estimator: Relation to Bias-Variance Tradeoff in ML}
+    \href{https://nipunbatra.github.io/ml2023/lectures/cross-validation.pdf}{Slides from ML course}
+\end{frame}
+
+\begin{frame}{Bias of an Estimator: Relation to SGD}
+    \href{https://florian.github.io/estimators/}{Link from ML course}
 \end{frame}
 
     
