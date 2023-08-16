@@ -227,13 +227,14 @@ We want to estimate the parameter $\theta$ from the data.
     \edge{theta}{xi}
 \end{tikzpicture}
 
+
+\end{frame}
+
+\begin{frame}{Log Likelihood Function}
 Our likelihood function is given by:
 \begin{equation}
 P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
 \end{equation}
-\end{frame}
-
-\begin{frame}{Log Likelihood Function}
     Log-likelihood function:
     \begin{equation}
         \log \mathcal{L}(\theta) = \sum_{i=1}^n \log f(x_i|\theta)
@@ -242,17 +243,17 @@ P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
     Simplifying the above equation, we get:
     \begin{align*}
         \log \mathcal{L}(\theta) &= \sum_{i=1}^n \log f(x_i|\theta) \\
-        &= \sum_{i=1}^n \log \left (\theta^{x_{i}}(1-\theta)^{(1-x_{i})} \right) \\
-        &= \sum_{i=1}^n \left( \log \left( \theta^{x_{i}} \right) + \log \left( (1-\theta)^{(1-x_{i})}  \right) \right) \\
+        &= \sum_{i=1}^n \log \left (\theta^{x_{i}}(1-\theta)^{(1-x_{i})} \right)         
         \end{align*}
 \end{frame}
 \begin{frame}
    
     \begin{align*}
-        \log \mathcal{L}(\theta) &= \sum_{i=1}^n \left (x_{i}\log \left( \theta \right) + (1-x_{i})\log \left(1-\theta \right) \right)\\
+        \log \mathcal{L}(\theta) &=  \sum_{i=1}^n \left( \log \left( \theta^{x_{i}} \right) + \log \left( (1-\theta)^{(1-x_{i})}  \right) \right) \\
+        &=\sum_{i=1}^n \left (x_{i}\log \left( \theta \right) + (1-x_{i})\log \left(1-\theta \right) \right)\\
         \end{align*}
         \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Bernoulli Distribution]
-            Log-likelihood function for bernoulli distributed data is:
+            Log-likelihood function for Bernoulli distributed data is:
             \[
                 \log \mathcal{L}(\theta) = \sum_{i=1}^n  (x_{i}\log(\theta) + (1-x_{i})\log(1-\theta))
                 \]
@@ -303,11 +304,24 @@ P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
     \end{frame}
 
 \begin{frame}
-For example if we have a Bernoulli Distribution with $\theta=0.2,$ the likelihood, $P(D|\theta)$ is given below:
+The data, $D$ consists of the results of coin tosses which can be $H/T.$ Let suppose $D_1 = (T,H,T,T,T,T,H,T,T,T).$ By calculating $\theta_{MLE},$ we get its value as $0.2.$ We vary $\theta$ from $0$ to $1$ and calculate the likelihood at each value. We find that the likelihood is maximum around $\theta=0.2$ which is our MLE estimate.
 \begin{figure}
                 \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood.pdf}}
 \end{figure}
     
+\end{frame}
+\begin{frame}
+    Data, $D_2 = (H,H,H,H,H,H,T,T,T,T)$. \\True $\theta=0.6.$ \\Corresponding plot of likelihood $P(D|\theta)$ V/s $\theta$ is given below:
+    \begin{figure}
+                \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood_1.pdf}}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+    Data, $D_3 = (H,H,H,H,H,H,T,H,H,T)$. \\True $\theta=0.9.$ \\Corresponding plot of likelihood $P(D|\theta)$ V/s $\theta$ is given below:
+    \begin{figure}
+                \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood_2.pdf}}
+\end{figure}
 \end{frame}
 
 
@@ -582,16 +596,22 @@ Thus $f(\bold{x}) = x^T\theta.$\\
 \begin{tikzpicture}
                 
                 
-    \node[obs]                               (yi) {$y_i$};
+    \node[obs]                               (xit) {$x_i\theta$};
+    \node[obs, xshift = 1.5cm] (yi) {$y_i$};
     \node[const, xshift=-1cm](xi) {$\mathbf{x_i}$};
-    \node[const, above=1 of yi](theta)
+    \node[const, above=1 of xit](theta)
     {$\mathbf{\theta}$};
-    \node[const, above=0.5 of yi, xshift=1cm](sigma)
-    {$\mathbf{\sigma}$};
-    \plate{}{(yi)}{$i = 1, \cdots, N$};
-    \edge{theta}{yi}
-    \edge{sigma}{yi}
-    \edge{xi}{yi}
+    
+    \factor[above=of yi] {y-f} {left:${\mathcal{N}}$} {} {} ; %
+            \node[const, above=1 of yi, xshift=0.5cm] (sigma) {$\mathbf{\sigma}$};
+            \node[const, above=1 of yi, xshift=-0.5cm] (mu) {$0$};
+    \plate{}{(xit)(yi)}{$i = 1, \cdots, N$};
+    \edge{theta}{xit}
+    \edge{xit}{yi}
+    \edge{sigma}{y-f}
+    \edge{mu}{y-f}
+    \edge{xi}{xit}
+    \edge{y-f}{yi}
             
             
 \end{tikzpicture}
@@ -609,32 +629,40 @@ The MLE equation is given by:
 \begin{equation}
     \theta_{MLE}\in \arg_{\theta} \max p(\emph{Y}|\emph{X},\theta)
 \end{equation}
-Maximizing the likelihood $\sim$ Maximizing the log likelihood $\sim$ Minimizing the negative log likelihood.\\
+Maximizing the likelihood $\equiv$ Maximizing the log likelihood $\equiv$ Minimizing the negative log likelihood.\\
 Taking negative log, we get:
     \begin{align*}
         -\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta})&=-\log \prod_{i=1}^N p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)=-\sum_{i=1}^N \log p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)
     \end{align*}
     For a given point $(x_i, y_i),$
     \begin{align*}
-         \log p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)=-\frac{1}{2 \sigma^2}\left(y_i-\boldsymbol{x}_i^{\top} \boldsymbol{\theta}\right)^2+ const
+         -\log p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)=-\frac{1}{2 \sigma^2}\left(y_i-\boldsymbol{x}_i^{\top} \boldsymbol{\theta}\right)^2+ const
     \end{align*}
 \end{frame}
 
 \begin{frame}
-Thus the log likelihood is simplified to:
-\begin{align*} \mathcal{L}(\boldsymbol{\theta}) & :=\frac{1}{2 \sigma^2} \sum_{n=1}^N\left(y_n-\boldsymbol{x}_n^{\top} \boldsymbol{\theta}\right)^2 \\ & =\frac{1}{2 \sigma^2}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta})^{\top}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta})=\frac{1}{2 \sigma^2}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta}\|^2\end{align*}\\
-This is none other than squared error loss! To minimize this, we differentiate wrt $\theta$. In the end, we get:\\
+Thus the negative log likelihood is simplified to:
+\begin{align*} -\mathcal{L}(\boldsymbol{\theta}) & :=-\frac{1}{2 \sigma^2} \sum_{i=1}^N\left(y_i-\boldsymbol{x}_i^{\top} \boldsymbol{\theta}\right)^2 \\ & =-\frac{1}{2 \sigma^2}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta})^{\top}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta})=-\frac{1}{2 \sigma^2}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta}\|^2\end{align*}\\
+\begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=NLL Equation]     
+        NLL is equal to:
+        \begin{equation*}
+            -\frac{1}{2 \sigma^2}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta}\|^2
+        \end{equation*}
+    \end{tcolorbox}
+This is none other than squared error loss! 
+\end{frame}
+\begin{frame}
+    To minimize this, we differentiate wrt $\theta$. In the end, we get:\\
     \begin{equation}
         \theta &= (X^TX)^{-1}X^Ty
     \end{equation}
-    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $w$]
-        MLE of $\theta$, denoted as $\hat{w}_{\text{MLE}}$, is given by:
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\theta$]
+        MLE of $\theta$, denoted as $\hat{\theta}_{\text{MLE}}$, is given by:
         \begin{equation*}
             \hat{\theta}_{\text{MLE}} = (X^TX)^{-1}X^Ty
         \end{equation*}
     \end{tcolorbox}
 \end{frame}
-
 
 \section{MLE for Logistic Regression}
 
