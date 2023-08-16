@@ -583,8 +583,20 @@ P(D|\theta) = \mathcal{L}(\mu, \Sigma) = \prod_{i=1}^n f(x_i|\mu, \Sigma)
 \section{MLE for Linear Regression}
 \begin{frame}{MLE for Linear Regression}
 \begin{figure}
-                \centerline{\includegraphics[scale=0.7]{../figures/mle/normal_likelihood_lin_reg.pdf}}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/true_function_lin_reg.pdf}}
 \end{figure}
+\end{frame}
+\begin{frame}{MLE for Linear Regression}
+\begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/true_function_noise_lin_reg.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}{MLE for Linear Regression}
+\begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/true_function_noise_normal_lin_reg.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
 We consider a regression problem with the likelihood function: $p(y|x) = \mathbb{N}(y|f(x), \sigma^2)$.\\
 Let us assume we have a dataset $D = \{(x_1, y_1), (x_2,y_2), \ldots, (x_n, y_n)\}$, where $x_i\in R^d, y_i\in R$. 
 \end{frame}
@@ -663,7 +675,21 @@ This is none other than squared error loss!
         \end{equation*}
     \end{tcolorbox}
 \end{frame}
-
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_1.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_2.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_3.pdf}}
+\end{figure}
+\end{frame}
 \section{MLE for Logistic Regression}
 
 \begin{frame}{MLE for Logistic Regression}
@@ -727,8 +753,23 @@ Taking log on both sides:\\
     \log(L(\theta)) &= \sum_{i=1}^n y_i\log(p(x_i)) + (1-y_i)\log(1-p(x_i))
 \end{align*}
 If we multiply this by $-\frac{1}{n},$this is nothing but the binary cross entropy loss function!
-
 \end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/log_reg_slider_1.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/log_reg_slider_2.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/log_reg_slider_3.pdf}}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Coin toss V/s Binary Logistic Regression}
 \begin{center}
     \begin{tabular}{|c|c|}
