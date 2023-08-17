@@ -217,17 +217,24 @@ The probability mass function of a bernoulli distribution is given by:
 \begin{equation}
 f(x|\theta) = \theta^x(1-\theta)^{(1-x)}
 \end{equation}
-
 Let us assume we have a dataset $D = \{x_1, x_2, \ldots, x_n\}$, where each $x_i$ is an independent sample from the above distribution and $x_i\in\{0, 1\}$.
 We want to estimate the parameter $\theta$ from the data.
+\begin{tikzpicture}
+    \node[obs]                               (xi) {$x_i$};
+    \node[const, above=0.5 of xi](theta)
+    {$\mathbf{\theta}$};
+    \plate{}{(xi)}{$i = 1, \cdots, N$};
+    \edge{theta}{xi}
+\end{tikzpicture}
 
+
+\end{frame}
+
+\begin{frame}{Log Likelihood Function}
 Our likelihood function is given by:
 \begin{equation}
 P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
 \end{equation}
-\end{frame}
-
-\begin{frame}{Log Likelihood Function}
     Log-likelihood function:
     \begin{equation}
         \log \mathcal{L}(\theta) = \sum_{i=1}^n \log f(x_i|\theta)
@@ -236,17 +243,17 @@ P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
     Simplifying the above equation, we get:
     \begin{align*}
         \log \mathcal{L}(\theta) &= \sum_{i=1}^n \log f(x_i|\theta) \\
-        &= \sum_{i=1}^n \log \left (\theta^{x_{i}}(1-\theta)^{(1-x_{i})} \right) \\
-        &= \sum_{i=1}^n \left( \log \left( \theta^{x_{i}} \right) + \log \left( (1-\theta)^{(1-x_{i})}  \right) \right) \\
+        &= \sum_{i=1}^n \log \left (\theta^{x_{i}}(1-\theta)^{(1-x_{i})} \right)         
         \end{align*}
 \end{frame}
 \begin{frame}
    
     \begin{align*}
-        \log \mathcal{L}(\theta) &= \sum_{i=1}^n \left (x_{i}\log \left( \theta \right) + (1-x_{i})\log \left(1-\theta \right) \right)\\
+        \log \mathcal{L}(\theta) &=  \sum_{i=1}^n \left( \log \left( \theta^{x_{i}} \right) + \log \left( (1-\theta)^{(1-x_{i})}  \right) \right) \\
+        &=\sum_{i=1}^n \left (x_{i}\log \left( \theta \right) + (1-x_{i})\log \left(1-\theta \right) \right)\\
         \end{align*}
         \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Log Likelihood Function for Bernoulli Distribution]
-            Log-likelihood function for bernoulli distributed data is:
+            Log-likelihood function for Bernoulli distributed data is:
             \[
                 \log \mathcal{L}(\theta) = \sum_{i=1}^n  (x_{i}\log(\theta) + (1-x_{i})\log(1-\theta))
                 \]
@@ -297,11 +304,24 @@ P(D|\theta) = \mathcal{L}(\theta) = \prod_{i=1}^n f(x_i|\theta)
     \end{frame}
 
 \begin{frame}
-For example if we have a Bernoulli Distribution with $\theta=0.2,$ the likelihood, $P(D|\theta)$ is given below:
+The data, $D$ consists of the results of coin tosses which can be $H/T.$ Let suppose $D_1 = (T,H,T,T,T,T,H,T,T,T).$ By calculating $\theta_{MLE},$ we get its value as $0.2.$ We vary $\theta$ from $0$ to $1$ and calculate the likelihood at each value. We find that the likelihood is maximum around $\theta=0.2$ which is our MLE estimate.
 \begin{figure}
                 \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood.pdf}}
 \end{figure}
     
+\end{frame}
+\begin{frame}
+    Data, $D_2 = (H,H,H,H,H,H,T,T,T,T)$. \\True $\theta=0.6.$ \\Corresponding plot of likelihood $P(D|\theta)$ V/s $\theta$ is given below:
+    \begin{figure}
+                \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood_1.pdf}}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+    Data, $D_3 = (H,H,H,H,H,H,T,H,H,T)$. \\True $\theta=0.9.$ \\Corresponding plot of likelihood $P(D|\theta)$ V/s $\theta$ is given below:
+    \begin{figure}
+                \centerline{\includegraphics[scale = 0.75]{../figures/mle/bernoulli_likelihood_2.pdf}}
+\end{figure}
 \end{frame}
 
 
@@ -438,7 +458,24 @@ The probability density function of a multivariate normal distribution is given 
 \begin{equation}
 f(x|\mu, \Sigma) = (2\pi)^{-\frac{k}{2}}\det(\Sigma)^{-\frac{1}{2}}exp^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}
 \end{equation}
-
+\begin{tikzpicture}
+                
+                
+            \node[obs]                               (xn) {$X_i$};
+            \factor[above=of xn] {y-f} {left:${\mathcal{N}}$} {} {} ; %
+            \node[const, above=1 of xn, xshift=0.5cm] (sigma) {$\mathbf{\Sigma}$};
+            \node[const, above=1 of xn, xshift=-0.5cm] (mu) {$\mathbf{\mathbf{\mu}}$};
+            \plate{}{(xn)}{$i = 1, \cdots, N$};
+            
+            
+            
+            \edge {y-f} {xn} ; %
+            \edge {mu, sigma} {y-f} ; %
+            
+            
+        \end{tikzpicture}
+\end{frame}
+\begin{frame}
 Let us assume we have a dataset $D = \{x_1, x_2, \ldots, x_n\}$, where each $x_i$ is an independent sample from the above distribution.
 We want to estimate the parameters $\theta = {\mu, \sigma}$ from the data.
 
@@ -543,79 +580,163 @@ P(D|\theta) = \mathcal{L}(\mu, \Sigma) = \prod_{i=1}^n f(x_i|\mu, \Sigma)
     \end{tcolorbox}
 \end{frame}
 
-\section{MLE for Gaussian Linear Regression}
-\begin{frame}{MLE for Gaussian Linear Regression}
-Let us assume we have a dataset $D = \{(x_1, y_1), (x_2,y_2), \ldots, (x_n, y_n)\}$, where $x_i\in R^d, y_i\in R$. Also $Y\sim N(w^Tx, \sigma^2), Y_1, \ldots, Y_n$ are independent i.e. $Y_i\sim N(w^Tx_i, \sigma^2)$. Assume $\sigma^2$ is known.
-We want to estimate the parameters $\theta = W$ from the data.
+\section{MLE for Linear Regression}
+\begin{frame}{MLE for Linear Regression}
+\begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/true_function_lin_reg.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}{MLE for Linear Regression}
+\begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/true_function_noise_lin_reg.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}{MLE for Linear Regression}
+\begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/true_function_noise_normal_lin_reg.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+We consider a regression problem with the likelihood function: $p(y|x) = \mathbb{N}(y|f(x), \sigma^2)$.\\
+Let us assume we have a dataset $D = \{(x_1, y_1), (x_2,y_2), \ldots, (x_n, y_n)\}$, where $x_i\in R^d, y_i\in R$. 
+\end{frame}
 
+\begin{frame}
+The functional relationship between $x$ and $y$ is given as $y = f(\bold{x})+\epsilon$ where $\epsilon\sim \mathbb{N}(0, \sigma^2).$ \\ 
+Thus $f(\bold{x}) = x^T\theta.$\\ 
+\addlinespace
+\begin{tikzpicture}
+                
+                
+    \node[obs]                               (xit) {$x_i\theta$};
+    \node[obs, xshift = 1.5cm] (yi) {$y_i$};
+    \node[const, xshift=-1cm](xi) {$\mathbf{x_i}$};
+    \node[const, above=1 of xit](theta)
+    {$\mathbf{\theta}$};
+    
+    \factor[above=of yi] {y-f} {left:${\mathcal{N}}$} {} {} ; %
+            \node[const, above=1 of yi, xshift=0.5cm] (sigma) {$\mathbf{\sigma}$};
+            \node[const, above=1 of yi, xshift=-0.5cm] (mu) {$0$};
+    \plate{}{(xit)(yi)}{$i = 1, \cdots, N$};
+    \edge{theta}{xit}
+    \edge{xit}{yi}
+    \edge{sigma}{y-f}
+    \edge{mu}{y-f}
+    \edge{xi}{xit}
+    \edge{y-f}{yi}
+            
+            
+\end{tikzpicture}
+
+\end{frame}
+
+
+\begin{frame}
 Our likelihood function (Normal distribution) is given by:
 \begin{equation}
-P(D|\theta) = P(y_1,\ldots,y_n|x_1,\ldots,x_n,\theta) = \prod_{i=1}^n p(y_i|x_i, \theta) 
+P(\mathcal{Y}|\mathcal{X},\theta) = p(y_1,\ldots,y_n|x_1,\ldots,x_n,\theta) = \prod_{i=1}^n p(y_i|x_i, \theta) 
 \end{equation}
+
+The MLE equation is given by:
 \begin{equation}
-P(D|\theta) = \prod_{i=1}^n\frac{1}{\sqrt{2\pi\sigma^2}}exp^{-\frac{1}{2\sigma^2}(y_i-w^Tx_i)^2}
+    \theta_{MLE}\in \arg_{\theta} \max p(\emph{Y}|\emph{X},\theta)
 \end{equation}
-
-\end{frame}
-
-\begin{frame}
-    Continuing, we get:
+Maximizing the likelihood $\equiv$ Maximizing the log likelihood $\equiv$ Minimizing the negative log likelihood.\\
+Taking negative log, we get:
     \begin{align*}
-        P(D|\theta) &= \prod_{i=1}^n\frac{1}{\sqrt{2\pi\sigma^2}}exp^{-\frac{1}{2\sigma^2}(y_i-w^Tx_i)^2} \\
-        &= \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^{n}exp^{-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-w^Tx_i)^2} 
+        -\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta})&=-\log \prod_{i=1}^N p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)=-\sum_{i=1}^N \log p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)
     \end{align*}
-    Since $w^Tx_i$ is a scalar, $w^Tx_i = x_i^Tw$(transpose of a scalar is the scalar itself):
+    For a given point $(x_i, y_i),$
     \begin{align*}
-        \sum_{i=1}^n(y_i-w^Tx_i)^2 &= (y-Xw)^T(y-Xw) =||y-Xw||^2
-    \end{align*}
-    \begin{align*}
-         P(D|\theta) &= \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^{n}exp^{-\frac{1}{2\sigma^2}(y-Xw)^T(y-Xw)} 
+         -\log p\left(y_i \mid \boldsymbol{x}_i, \boldsymbol{\theta}\right)=-\frac{1}{2 \sigma^2}\left(y_i-\boldsymbol{x}_i^{\top} \boldsymbol{\theta}\right)^2+ const
     \end{align*}
 \end{frame}
 
 \begin{frame}
-    To maximize $P(D|\theta),$ we need to minimize $(y-Xw)^T(y-Xw).$
-    \begin{align*}
-        \mathcal{L}(w) &= (y-Xw)^T(y-Xw) \\
-        &= y^Ty - 2y^TXw + w^TX^TXw
-    \end{align*}
-    Since $w$ is a matrix, we follow these two rules:
-    \begin{equation}
-        \frac{\partial(A\theta)}{\partial\theta} = A^T 
-    \end{equation}
-    \begin{equation}
-        Z&=X^TX, \frac{\partial(\theta^TZ\theta)}{\partial\theta} = 2Z^T\theta        
-    \end{equation}
-    Differentiating with respect to $w$, we get:
-    \begin{align*}
-        -2X^Ty + 2X^TXw &= 0 \\
-    \end{align*}
-\end{frame}
-\begin{frame}
-    Thus, we get:
-    \begin{equation}
-        w &= (X^TX)^{-1}X^Ty
-    \end{equation}
-    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $w$]
-        MLE of $\w$, denoted as $\hat{w}_{\text{MLE}}$, is given by:
+Thus the negative log likelihood is simplified to:
+\begin{align*} -\mathcal{L}(\boldsymbol{\theta}) & :=-\frac{1}{2 \sigma^2} \sum_{i=1}^N\left(y_i-\boldsymbol{x}_i^{\top} \boldsymbol{\theta}\right)^2 \\ & =-\frac{1}{2 \sigma^2}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta})^{\top}(\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta})=-\frac{1}{2 \sigma^2}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta}\|^2\end{align*}\\
+\begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=NLL Equation]     
+        NLL is equal to:
         \begin{equation*}
-            \hat{w}_{\text{MLE}} = (X^TX)^{-1}X^Ty
+            -\frac{1}{2 \sigma^2}\|\boldsymbol{y}-\boldsymbol{X} \boldsymbol{\theta}\|^2
         \end{equation*}
     \end{tcolorbox}
-    
+This is none other than squared error loss! 
+\end{frame}
+\begin{frame}
+    To minimize this, we differentiate wrt $\theta$. In the end, we get:\\
+    \begin{equation}
+        \theta &= (X^TX)^{-1}X^Ty
+    \end{equation}
+    \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Maximum Likelihood Estimate for $\theta$]
+        MLE of $\theta$, denoted as $\hat{\theta}_{\text{MLE}}$, is given by:
+        \begin{equation*}
+            \hat{\theta}_{\text{MLE}} = (X^TX)^{-1}X^Ty
+        \end{equation*}
+    \end{tcolorbox}
 \end{frame}
 \begin{frame}
     \begin{figure}
-                \includegraphics[scale=0.35]{../figures/mle/linear_reg.pdf}
-    \end{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_1.pdf}}
+\end{figure}
 \end{frame}
-
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_2.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_3.pdf}}
+\end{figure}
+\end{frame}
 \section{MLE for Logistic Regression}
+
 \begin{frame}{MLE for Logistic Regression}
+% \begin{tikzpicture}
+                
+                
+%     \node[obs]                               (y_i) {$x_i\theta$};
+%     \node[const, xshift=-1cm](xi) {$\mathbf{x_i}$};
+%     \node[const, above=1 of yi](theta){$\mathbf{\theta}$};
+%     \node[const, xshift=1.5cm](pxi) {$p(x_i)$}
+%     \node[const, xshift=2.5cm](beta) {$\beta$}
+%     \plate{}{(yi)}{$i = 1, \cdots, N$};
+%     \edge{yi}{pxi}
+%     \edge{pxi}{beta}
+%     \edge{theta}{yi}
+%     \edge{xi}{yi}
+            
+            
+% \end{tikzpicture}\\
+
+\begin{tikzpicture}
+
+\node[obs] (x_i_theta) {$x_i\theta$};
+\node[const, left=of x_i_theta] (xi) {$\mathbf{x_i}$};
+\node[const, above=of x_i_theta] (theta) {$\mathbf{\theta}$};
+\node[const, right=of x_i_theta] (pxi) {$p(x_i)$};
+\node[const, right=of pxi] (beta) {$\beta$};
+\node[obs, right=of beta] (yi_out) {$y_i$};
+\plate {plate1} {(xi)(x_i_theta)(yi_out)} {$i = 1, \cdots, N$};
+
+\draw[->] (xi) -- (x_i_theta);
+\draw[->] (theta) -- (x_i_theta);
+\draw[->] (x_i_theta) -- node[above] {$\sigma$} (pxi); % Adding "sigma" text
+\draw[->] (pxi) -- (beta);
+\draw[->] (beta) -- (yi_out);
+
+\end{tikzpicture}
+
+
+
+
+
+Binary Classification:\\
 The probability distribution in case of Logistic Regression considering two classes is Bernoulli distribution but there is a slight difference. The probability is now the output of the logistic function.
-Parameters are $\theta=[\beta_0,\beta_1]$.
+Parameters are $\theta=[\theta_0,\theta_1]$.
 \begin{equation}
-p = P(Y=1|X) = \frac{1}{1+e^{-(\beta_0+\beta_1X)}}
+p = P(Y=1|X) = \frac{1}{1+e^{-(\theta_0+\theta_1X)}}
 \end{equation}
 
 
@@ -624,25 +745,114 @@ p = P(Y=1|X) = \frac{1}{1+e^{-(\beta_0+\beta_1X)}}
 \begin{frame}
 Rewriting the likelihood in this manner:
 \begin{align*}
-    \mathbb{L}(\beta)&= \prod_{y_i=1}p(x_i)\prod_{y_i=0}(1-p(x_i))\\
+    L(\theta)&= \prod_{y_i=1}p(x_i)\prod_{y_i=0}(1-p(x_i))\\
     &=\prod\left(p(x_i)^{y_i}(1-p(x_i))^{1-y_i}\right)
 \end{align*}
 Taking log on both sides:\\
 \begin{align*}
-    L(\beta) &= \sum_{i=1}^n y_i\log(p(x_i)) + (1-y_i)\log(1-p(x_i))
+    \log(L(\theta)) &= \sum_{i=1}^n y_i\log(p(x_i)) + (1-y_i)\log(1-p(x_i))
 \end{align*}
-Substituting p from above equation. 
-\begin{align}
-    L(\beta) &= \sum_{i=1}^ny_i\log\left(\frac{1}{1+e^{-\beta x_i}}\right) + (1-y_i)\log\left(\frac{e^{-\beta x_i}}{1+e^{-\beta x_i}}\right)
-\end{align}
+If we multiply this by $-\frac{1}{n},$this is nothing but the binary cross entropy loss function!
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/log_reg_slider_1.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/log_reg_slider_2.pdf}}
+\end{figure}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+                \centerline{\includegraphics[scale=0.8]{../figures/mle/log_reg_slider_3.pdf}}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Coin toss V/s Binary Logistic Regression}
+\begin{center}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Coin toss} & \textbf{Binary Logistic Regression} \\
+    \hline
+    Likelihood=$\theta^{t}(1-\theta)^{1-t}$& Likelihood=$(\sigma(x^T\theta))^t(1-\sigma(x^T\theta))^{1-t}$ \\
+    \pause
+    Outcome is Head/Tail & Outcome is out of two possible classes \\
+    \pause
+    Parameter is scalar & Parameter is vector with two values\\
+    \hline
+  \end{tabular}
+\end{center}    
 \end{frame}
 
 \begin{frame}
-    Now if we differentiate this wrt $\beta$, it is difficult to find a analytical solution with it.
-    Thus in order to solve for MLE for logistic regression, methods like Gradient Descent, Newton-Raphson, etc. are used. For example through Gradient descent, the below decision boundary i.e. $\beta$ has been calculated.
-    \begin{figure}
-                \includegraphics[scale=0.8]{../figures/mle/log_reg.pdf}
-            \end{figure}
+
+
+\begin{tikzpicture}
+
+\node[obs] (x_i_theta) {$x_i\theta$};
+\node[const, left=of x_i_theta] (xi) {$\mathbf{x_i}$};
+\node[const, above=of x_i_theta] (theta) {$\mathbf{\theta}$};
+\node[const, right=of x_i_theta] (pxi) {$p(x_i)$};
+\node[const, right=of pxi] (beta) {$\beta$};
+\node[obs, right=of beta] (yi_out) {$y_i$};
+\plate {plate1} {(xi)(x_i_theta)(yi_out)} {$i = 1, \cdots, N$};
+
+\draw[->] (xi) -- (x_i_theta);
+\draw[->] (theta) -- (x_i_theta);
+\draw[->] (x_i_theta) -- node[above] {$s$} (pxi); % Adding "sigma" text
+\draw[->] (pxi) -- (beta);
+\draw[->] (beta) -- (yi_out);
+
+\end{tikzpicture}
+
+
+
+
+
+Multi-class Classification:\\
+The probability distribution in case of Logistic Regression considering more than two classes is Categorical distribution. The probability is now the output of the softmax function.
+Parameters are $\theta=[\theta_0,\theta_1,\ldots, \theta_k]$.
+\begin{equation}
+p = P(Y=i|X) = \frac{e^{\theta x_i}}{\sum_{j=1}^ne^{\theta x_j}}
+\end{equation}
+
+
+\end{frame}
+\begin{frame}
+Now:
+\begin{align*}
+    L(\theta)&= \prod_{i=1}^n\prod_{j=1}^K p^j(x_i)
+\end{align*}
+Taking log on both sides:\\
+\begin{align*}
+    \log(L(\theta)) &= \sum_{i=1}^n\sum_{j=1}^K y_i^k\log(p^k(x_i))
+\end{align*}
+If we multiply this by $-\frac{1}{n},$this is nothing but the cross entropy loss function!
+
+
+
+\end{frame}
+\begin{frame}
+    Now if we differentiate this wrt $\theta$, it is difficult to find a analytical solution with it.
+    Thus in order to solve for MLE for logistic regression, methods like Gradient Descent, Newton-Raphson, etc. are used. For example through Gradient descent, the below decision boundary i.e. $\theta$ has been calculated.
+    
+\end{frame}
+\begin{frame}{Binary V/s Multiclass Logistic Regression}
+\begin{center}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Binary Logistic Regression} & \textbf{Multiclass Logistic Regression} \\
+    \hline
+    Binary Cross Entropy Loss& Cross Entropy Loss \\
+    \pause
+    $p(x) = \sigma(x^T\theta)$ & $p(x) = s(x^T\theta)$ \\
+    \pause
+    Bernoulli Likelihood & Categorical Likelihood\\
+    \hline
+  \end{tabular}
+\end{center}    
 \end{frame}
 
     \begin{frame}{Random variable and Random sample}
@@ -770,6 +980,28 @@ Substituting p from above equation.
             \end{figure}
             
         \end{frame}
+
+\begin{frame}{MAP Plate Notation for Beta-Bernoulli}
+    \begin{tikzpicture}
+                
+                
+                \node[obs]                               (xn) {$x_n$};
+                \node[latent, above=of xn] (mu) {$\mathbf{\mu}$};
+                \factor[above=of xn] {y-f} {left:${Ber}$} {} {} ; %
+                \node[const, above=1 of mu, xshift=0.5cm] (beta) {$\mathbf{\beta}$};
+                \node[const, above=1 of mu, xshift=-0.5cm] (alpha) {$\mathbf{\alpha}$};
+                \factor[above=of mu] {mu-f} {left:${Beta}$} {} {} ; %
+                \plate{}{(xn)}{$n = 1, \cdots, N$};
+                
+                
+                
+                \edge {mu} {xn} ; %
+                \edge {alpha,beta} {mu-f} ; %
+                \edge  {mu-f}{mu} ; %
+                
+                
+            \end{tikzpicture}
+\end{frame}
 
 
     
