@@ -149,14 +149,14 @@ Thus the negative log likelihood is simplified to:
     \end{tcolorbox}
 \end{frame}
 
-\begin{frame}{MLE for $\sigma^2$}
-    Self Study, Reference: MML book
-    $$
-\sigma_{\mathrm{ML}}^2=\frac{s}{N}=\frac{1}{N} \sum_{n=1}^N\left(y_n-\boldsymbol{\phi}^{\top}\left(\boldsymbol{x}_n\right) \boldsymbol{\theta}\right)^2
-$$
-Therefore, the maximum likelihood estimate of the noise variance is the empirical mean of the squared distances between the noise-free function values $\phi^{\top}\left(\boldsymbol{x}_n\right) \boldsymbol{\theta}$ and the corresponding noisy observations $y_n$ at input locations $\boldsymbol{x}_n$.
+% \begin{frame}{MLE for $\sigma^2$}
+%     Self Study, Reference: MML book
+%     $$
+% \sigma_{\mathrm{ML}}^2=\frac{s}{N}=\frac{1}{N} \sum_{n=1}^N\left(y_n-\boldsymbol{\phi}^{\top}\left(\boldsymbol{x}_n\right) \boldsymbol{\theta}\right)^2
+% $$
+% Therefore, the maximum likelihood estimate of the noise variance is the empirical mean of the squared distances between the noise-free function values $\phi^{\top}\left(\boldsymbol{x}_n\right) \boldsymbol{\theta}$ and the corresponding noisy observations $y_n$ at input locations $\boldsymbol{x}_n$.
     
-\end{frame}
+% \end{frame}
 
 
 \begin{frame}
@@ -210,46 +210,46 @@ Therefore, the maximum likelihood estimate of the noise variance is the empirica
     $$y \sim \text{Bernoulli}(\sigma(x^T\theta))$$
 \end{frame}\
 
-\begin{frame}{Logistic Regression and Coin Toss: Graphical model}
+% \begin{frame}{Logistic Regression and Coin Toss: Graphical model}
 
-    Coin Toss
-    \begin{tikzpicture}
+%     Coin Toss
+%     \begin{tikzpicture}
                 
                 
-        \node[obs]                               (xn) {$y_i$};
-        \factor[above=of xn] {y-f} {left:${\mathcal{B}}$} {} {} ; %
-        \node[const, above=1 of xn] (theta) {$\mathbf{\theta}$};
-        \plate{}{(xn)}{$i = 1, \cdots, N$};
+%         \node[obs]                               (xn) {$y_i$};
+%         \factor[above=of xn] {y-f} {left:${\mathcal{B}}$} {} {} ; %
+%         \node[const, above=1 of xn] (theta) {$\mathbf{\theta}$};
+%         \plate{}{(xn)}{$i = 1, \cdots, N$};
         
         
         
-        \edge {y-f} {xn} ; %
-        \edge {theta} {y-f} ; %
+%         \edge {y-f} {xn} ; %
+%         \edge {theta} {y-f} ; %
         
         
-    \end{tikzpicture}
+%     \end{tikzpicture}
     
-    \pause Logistic Regression
+%     \pause Logistic Regression
 
-    \begin{tikzpicture}
+%     \begin{tikzpicture}
 
-        \node[obs] (x_i_theta) {$x_i^T\theta$};
-        \node[const, left=of x_i_theta] (xi) {$\mathbf{x_i}$};
-        \node[const, above=of x_i_theta] (theta) {$\mathbf{\theta}$};
-        \node[const, right=of x_i_theta] (pxi) {$p(x_i)$};
-        \factor[const, right=of pxi] (beta) {$\mathcal{B}$};
-        \node[obs, right=of beta] (yi_out) {$y_i$};
-        \plate {plate1} {(xi)(x_i_theta)(yi_out)} {$i = 1, \cdots, N$};
+%         \node[obs] (x_i_theta) {$x_i^T\theta$};
+%         \node[const, left=of x_i_theta] (xi) {$\mathbf{x_i}$};
+%         \node[const, above=of x_i_theta] (theta) {$\mathbf{\theta}$};
+%         \node[const, right=of x_i_theta] (pxi) {$p(x_i)$};
+%         \factor[const, right=of pxi] (beta) {$\mathcal{B}$};
+%         \node[obs, right=of beta] (yi_out) {$y_i$};
+%         \plate {plate1} {(xi)(x_i_theta)(yi_out)} {$i = 1, \cdots, N$};
         
-        \edge {xi} {x_i_theta};
-        \draw[->] (theta) -- (x_i_theta);
-        \draw[->] (x_i_theta) -- node[above] {$\sigma$} (pxi); % Adding "sigma" text
-        \draw[->] (pxi) -- (beta);
-        \draw[->] (beta) -- (yi_out);
+%         \draw[->] (xi) -- (x_i_theta);
+%         \draw[->] (theta) -- (x_i_theta);
+%         \draw[->] (x_i_theta) -- node[above] {$\sigma$} (pxi); % Adding "sigma" text
+%         \draw[->] (pxi) -- (beta);
+%         \draw[->] (beta) -- (yi_out);
         
-        \end{tikzpicture}
+%         \end{tikzpicture}
         
-\end{frame}
+% \end{frame}
     
 
 
