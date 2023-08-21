@@ -5,6 +5,8 @@
 \usepackage{appendixnumberbeamer}
 \usepackage{booktabs}
 \usepackage{amsmath}
+\usepackage{comment}
+
 \usepackage{amssymb}
 \usepackage{tcolorbox}
 \usepackage{tikz}
@@ -228,10 +230,15 @@
     \end{frame}
 
     \begin{frame}{Deriving $\theta_{MAP}$ (Coin toss context)}
-        \begin{itemize}
+        \begin{itemize} [<+->]
             \item Total number of tosses = $N$
-            \item Number of heads = $n_H$
-            \item Number of tails = $n_T$
+            \item Number of heads ($y=1$) = $n_H$
+            \item Number of tails ($y=0$)= $n_T$
+            \item Pseudo heads  = $\alpha$
+            \item Pseudo tails = $\beta$
+            \item $\theta_{MAP} = \frac{n_H + \alpha - 1}{N + \alpha + \beta - 2}$
+            \item Prior = Beta$(\alpha, \beta)$
+            \item Posterior = Beta$(n_H + \alpha, n_T + \beta)$
         \end{itemize}
         
     \end{frame}
@@ -280,7 +287,7 @@
 %     \end{frame}
 % \end{section}
 
-\begin{section}{Univariate Normal Distribution}
+    \begin{comment}
     \begin{frame}{MAP for Normal Distribution}
         To estimate MAP for Normal Distribution, we can have the following 3 cases:
         \begin{enumerate}
@@ -289,6 +296,7 @@
             \item unknown $\mu$, unknown $\sigma^2$
         \end{enumerate}
     \end{frame}
+
 
     \begin{frame}{unknown $\mu$, known $\sigma^2$}
         \begin{itemize}
@@ -412,7 +420,7 @@
             \edge{y-f}{yi}     
         \end{tikzpicture}
     \end{frame}
-
+\end{comment}
     \begin{frame}{MLE for Linear Regression}
         \begin{itemize}
             \item Consider a dataset $D = \{ (x_1, y_1) ... (x_N, y_N) \}$ where $x_i \in \mathbb{R}^d$ and $y_i \in \mathbb{R}$.
@@ -439,12 +447,14 @@
 
     \end{frame}
 
-    \begin{frame}{Using zero-mean Gaussian prior}
-        Considering a zero-mean Gaussian prior on the weights, i.e., $P(\theta) = \mathcal{N}(\theta|\mathbf{0}, \sigma_0^2)$, we have
+  
 
-        $\textcolor{myblue}{P (\theta | D)} \propto \textcolor{mygreen}{P (D | \theta)} \textcolor{myred}{P (\theta)}$
+    \begin{frame}{MAP for Linear Regression}
+        %Considering a zero-mean Gaussian prior on the weights, i.e., $P(\theta) = \mathcal{N}(\theta|\mathbf{0}, \sigma_0^2)$, we have
 
-        $\theta_{MAP} = \arg \min \textcolor{myblue}{\log P (\theta | D)} = \arg \min \textcolor{mygreen}{\mathcal{NLL} (\theta)} + \textcolor{myred}{\log P (\theta)}$
+        %$\textcolor{myblue}{P (\theta | D)} \propto \textcolor{mygreen}{P (D | \theta)} \textcolor{myred}{P (\theta)}$
+
+        %$\theta_{MAP} = \arg \min \textcolor{myblue}{\log P (\theta | D)} = \arg \min \textcolor{mygreen}{\mathcal{NLL} (\theta)} + \textcolor{myred}{\log P (\theta)}$
 
         \begin{tikzpicture}   
             \node[obs]                               (xit) {$x_i^T\theta$};
@@ -453,14 +463,16 @@
             \node[const, above=1 of xit](theta)
             {$\mathbf{\theta}$};
             
-            \factor[right=1 of theta] {theta-f} {below:${\mathcal{N}}$} {} {} ; %
+            \factor[above=1 of theta] {theta-f} {below:${{MVN}}$} {} {} ; %
             \edge{theta-f}{theta}
-            \node[const, right=1 of theta-f](sigma) {$\mathbf{\sigma_0}$};
+            \node[const, above=1 of theta-f, xshift=1cm](sigma) {$\mathbf{\Sigma_0}$};
+            \node[const, above=1 of theta-f, xshift=-1cm](mu) {$\mathbf{\mu_0}$};
             \edge{sigma}{theta-f}
+            \edge{mu}{theta-f}
 
             \factor[above=of yi] {y-f} {left:${\mathcal{N}}$} {} {} ; %
             \node[const, above=1 of yi, xshift=1cm] (sigma) {$\mathbf{\sigma}$};
-            \plate{}{(xit)(yi)}{$i = 1, \cdots, N$};
+            \plate{}{(xi)(xit)(yi)}{$i = 1, \cdots, N$};
             \edge{theta}{xit}
             \edge{xit}{y-f}
             \edge{sigma}{y-f}
@@ -470,9 +482,38 @@
 
     \end{frame}
 
-    \begin{frame}{Using zero-mean Gaussian prior}
-        Rewrite
+    \begin{frame}{MAP for Linear Regression}
+        As per Bayes' rule,
+        $$
+        P (\theta | D) = \frac{P (D | \theta) P (\theta)}{P (D)}
+        $$
+
+        \pause
+
+        \begin{itemize}
+            \item Log-Likelihood: $\mathcal{LL} (\theta) = \log P (D | \theta) = \log \prod_{i = 1}^{N} \mathcal{N}(y_i | x_i^T \theta, \sigma^2)$
+            \item Prior: $P (\theta) = \mathcal{N}(\theta | \mu_0, \Sigma_0)$
+            \item Log-Prior: $\log P (\theta) = \log \mathcal{N}(\theta | \mu_0, \Sigma_0)$
+            \item Log-Joint: $\log P (\theta | D) = \log P (D | \theta) + \log P (\theta)$
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{MAP for Linear Regression}
+        Notebook
+    \end{frame}
+        
+    \begin{frame}{MAP for Linear Regression}
         \begin{equation*}
+            \theta_{MAP} = \arg \min \textcolor{myblue}{\log P (\theta | D)} = \arg \min \textcolor{mygreen}{\mathcal{NLL} (\theta)} + \textcolor{myred}{\log P (\theta)}
+        \end{equation*}
+    \end{frame}
+    
+
+    \begin{frame}{Using zero-mean Gaussian prior}
+        $P(\theta) = MVN(\mu_0, \Sigma_0)$
+    
+        \pause  Assume: $\mu_0 = \vec{0}$, $\Sigma_0 = \sigma_0^2 \mathbf{I}$
+        \pause \begin{equation*}
             \theta_{MAP} = \arg \min \textcolor{myblue}{\log P (\theta | D)} = \arg \min \textcolor{mygreen}{\mathcal{NLL} (\theta)} + \textcolor{myred}{\log P (\theta)}
         \end{equation*}
         \pause
@@ -488,12 +529,35 @@
         Answer: \textcolor{red}{Ridge Regression}
     \end{frame}
 
+    \begin{frame}{Using zero-mean Laplace}
+        Assume: $\mu = \vec{0}$, $\Sigma_0 = \sigma_0^2 \mathbf{I}$
+        \pause \begin{equation*}
+            \theta_{MAP} = \arg \min \textcolor{myblue}{\log P (\theta | D)} = \arg \min \textcolor{mygreen}{\mathcal{NLL} (\theta)} + \textcolor{myred}{\log P (\theta)}
+        \end{equation*}
+        \pause
+        We get
+        \begin{equation*}
+            \theta_{MAP} = \arg \min \textcolor{mygreen}{\frac{1}{2 \sigma^2} (y - X\theta)^T (y - X\theta)} + \textcolor{myred}{\frac{1}{\sigma_0^2} \theta^T \theta}
+        \end{equation*}
+        \pause    
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Question]
+            What does this expression remind you of?
+        \end{tcolorbox}
+        \pause
+        Answer: \textcolor{red}{Ridge Regression}
+    \end{frame}
+
+
+    \begin{comment}
+        
+  
     \begin{frame}{Using zero-mean Gaussian prior}
         \begin{figure}
             \centerline{\includegraphics[scale = 0.40]{../figures/map/linreg_mle_map.pdf}}
         \end{figure}
         Notebook
     \end{frame}
+\end{comment}
 
     \begin{frame}{Using Laplace prior}
         We can also use a Laplace prior on the weights, i.e., 
@@ -542,7 +606,6 @@
         \end{figure}
         Notebook
     \end{frame}
-\end{section}
 
 \begin{section}{MAP for Logistic Regression}
     \begin{frame}{MLE for Logistic Regression}
