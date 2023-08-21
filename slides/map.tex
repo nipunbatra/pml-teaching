@@ -530,21 +530,21 @@
     \end{frame}
 
     \begin{frame}{Using zero-mean Laplace}
-        Assume: $\mu = \vec{0}$, $\Sigma_0 = \sigma_0^2 \mathbf{I}$
+        Assume: each $\theta_i \sim Laplace(0, \sigma_0)$
         \pause \begin{equation*}
             \theta_{MAP} = \arg \min \textcolor{myblue}{\log P (\theta | D)} = \arg \min \textcolor{mygreen}{\mathcal{NLL} (\theta)} + \textcolor{myred}{\log P (\theta)}
         \end{equation*}
         \pause
         We get
         \begin{equation*}
-            \theta_{MAP} = \arg \min \textcolor{mygreen}{\frac{1}{2 \sigma^2} (y - X\theta)^T (y - X\theta)} + \textcolor{myred}{\frac{1}{\sigma_0^2} \theta^T \theta}
+            \theta_{MAP} = \arg \min \textcolor{mygreen}{\frac{1}{2 \sigma^2} (y - X\theta)^T (y - X\theta)} + \lambda\textcolor{myred}{|\theta|}
         \end{equation*}
         \pause    
         \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title=Question]
             What does this expression remind you of?
         \end{tcolorbox}
         \pause
-        Answer: \textcolor{red}{Ridge Regression}
+        Answer: \textcolor{red}{LASSO Regression}
     \end{frame}
 
 
