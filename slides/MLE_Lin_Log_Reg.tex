@@ -5,6 +5,7 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{comment}
 \usepackage{tcolorbox}
 \usepackage{tikz}
 \usetikzlibrary{bayesnet}
@@ -73,7 +74,7 @@ The functional relationship between $x$ and $y$ is given as $y = f(\bold{x})+\ep
     
     \factor[above=of yi] {y-f} {left:${\mathcal{N}}$} {} {} ; %
             \node[const, above=1 of yi, xshift=1cm] (sigma) {$\mathbf{\sigma}$};
-    \plate{}{(xit)(yi)}{$i = 1, \cdots, N$};
+    \plate{}{(xi)(xit)(yi)}{$i = 1, \cdots, N$};
     \edge{theta}{xit}
     \edge{xit}{y-f}
     \edge{sigma}{y-f}
@@ -160,6 +161,11 @@ Thus the negative log likelihood is simplified to:
 
 
 \begin{frame}
+    Notebook: log-likelihood-linreg.ipynb
+\end{frame}
+
+\begin{comment}
+\begin{frame}
     \begin{figure}
                 \centerline{\includegraphics[scale=0.8]{../figures/mle/lin_reg_slider_1.pdf}}
 \end{figure}
@@ -176,6 +182,7 @@ Thus the negative log likelihood is simplified to:
 \end{frame}
 \section{MLE for Logistic Regression}
 
+\end{comment}
 
 \begin{frame}{Logistic Regression and Coin Toss}
 
@@ -296,6 +303,8 @@ Thus the negative log likelihood is simplified to:
     \end{tcolorbox}
     
 \end{frame}
+
+\begin{comment}
 
 \begin{frame}{Extending binary classification to $K$-class classification}
     For binary classification, we have a sigmoid function.\\
@@ -478,5 +487,14 @@ If we multiply this by $-\frac{1}{n},$this is nothing but the cross entropy loss
 \end{frame}
 
   
+\end{comment}
+\begin{frame}
+    Notebook: log-likelihood-linreg.ipynb
+\end{frame}
 
+\begin{frame}{Multi-class classification}
+    Self Study
+    Notebook on Categorical distribution: distributions.ipynb
+    
+\end{frame}
 \end{document}
