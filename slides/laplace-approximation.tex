@@ -294,8 +294,8 @@
 \begin{frame}{Normal Prior for Coin Toss}
     Consider the following coin toss experiment scenario:
     \begin{itemize}
-        \item $\mathcal{D} = \{1, 1, 1, 1, 1, 1, 1, 0, 0\}$
-        \item $p(\theta) = \mathcal{N}(\theta|-2, 1)$
+        \item $\mathcal{D} = \{1, 1, 1, 1, 1, 1, 1, 1, 0\}$
+        \item $p(\theta) = \mathcal{N}(\theta|\mu=-2, \sigma=1)$
         \item $h = \sigma(\theta)$
         \item $p(y|\theta) = h^y(1-h)^{1-y}$
     \end{itemize}
@@ -317,6 +317,26 @@
         \includegraphics[]{../figures/laplace-approx/normal-prior-coin-toss-laplace.pdf}
     \end{figure}
     We got True (MC) Posterior by a Monte Carlo estimation of the evidence.
+\end{frame}
+
+\begin{frame}{Multi-Mode example}
+    Consider a Gaussian Mixture distribution with two modes. We assume that, it is an unnormalized density and we want to get normalized Laplace approximation of it.
+    \pause
+    \begin{equation*}
+        p(\theta) = \frac{7}{10}\mathcal{N}(\theta|-2, 1) + \frac{3}{10}\mathcal{N}(\theta|2, 1)
+    \end{equation*}
+    \pause
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/mixture-density.pdf}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}{Multi-Mode example}
+    Laplace Approximation:
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/mixture-density-laplace.pdf}
+    \end{figure}
 \end{frame}
 
 \end{document}
