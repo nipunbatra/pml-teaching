@@ -1,26 +1,30 @@
-\documentclass[handout]{beamer}
+\documentclass{beamer}
 
 \usetheme[progressbar=frametitle]{metropolis}
 \usepackage{appendixnumberbeamer}
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{tcolorbox}
 \usepackage{tikz}
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+
+\definecolor{bluekeywords}{rgb}{0,0,0.6}
+\definecolor{orangestrings}{rgb}{0.8,0.4,0}
+\definecolor{greencomments}{rgb}{0,0.5,0}
 
 \lstset{
     language=Python,
     basicstyle=\ttfamily\scriptsize,
-    keywordstyle=\color{blue},
-    stringstyle=\color{orange},
-    commentstyle=\color{green!70!black},
+    keywordstyle=\color{bluekeywords},
+    stringstyle=\color{orangestrings},
+    commentstyle=\color{greencomments},
     breaklines=true,
     showstringspaces=false,
-    tabsize=1,
+    tabsize=4,
 }
-
 
 \tcbset{
     colback=white,
@@ -49,11 +53,11 @@
 \maketitle
 
 \begin{frame}{Derivative}
-    The derivative of a function of a real variable measures the sensitivity to change of the function value (output value) with respect to a change in its argument (input value).
+    \pause The derivative of a function of a real variable measures the sensitivity to change of the function value (output value) with respect to a change in its argument (input value).
 
-    Let us consider a function $f(x) = 3x^2$. The derivative of this function is given by: $f'(x) = 6x$.
+    \pause Let us consider a function $f(x) = 3x^2$. The derivative of this function is given by: $f'(x) = 6x$.
 
-    For every unit change in $x$, the value of $f(x)$ changes by $6x$.
+    \pause For every unit change in $x$, the value of $f(x)$ changes by $6x$.
 
 \end{frame}
 
@@ -203,6 +207,32 @@
     \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Gradient}
+
+   
+        \begin{tcolorbox}
+            \textbf{Torch (alternative)}
+          
+            \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    def f2_vectorized(input):
+        x, y = input
+        return 2*x**2 + 3*y
+    
+    input = torch.tensor([2.0, 1.5], requires_grad=True)
+    
+    # Torch version 1 (using .backward)
+    z = f2_vectorized(input)
+    z.backward()
+    print("\nUsing Method 1 Torch")
+    print("Gradient: ", input.grad)
+    
+    Using Method 1 Torch
+    Gradient:  tensor([8., 3.])
+
+    \end{lstlisting}
+        \end{tcolorbox}
+\end{frame}
 
 \begin{frame}{Jacobian}
     The Jacobian is a matrix that contains the partial derivatives of a vector-valued function with respect to its input variables.
@@ -216,6 +246,35 @@
 
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Jacobian}
+
+   
+        \begin{tcolorbox}
+            \textbf{Torch}
+          
+            \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    
+    import torch.autograd.functional as F
+
+    # We take the Jacobian of the function f(x, y, z) = [x**2 + y**2, y - z]
+    # The Jacobian analytically is [[2x, 2y, 0], [0, 1, -1]]
+    def f1(x, y, z):
+            return x**2 + y**2
+    def f2(x, y, z):
+            return y - z
+    def f_vectorized(input):
+    x, y, z = input
+    return torch.stack([f1(x, y, z), f2(x, y, z)])
+    print(F.jacobian(f_vectorized, torch.tensor([2.0, 1.0, 3.0])))
+    >>>tensor([[ 4.,  2., -0.],
+    [ 0.,  1., -1.]])
+
+    \end{lstlisting}
+        \end{tcolorbox}
+\end{frame}
+
+
 \begin{frame}{Hessian}
     The Hessian matrix or Hessian is a square matrix of second-order partial derivatives of a scalar-valued function, or scalar field. It describes the local curvature of a function of many variables.
 
@@ -228,6 +287,57 @@
     \end{equation*}
 
 
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Hessian}
+
+   
+        \begin{tcolorbox}
+            \textbf{Torch}
+          
+            \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    
+    import torch.autograd.functional as F
+
+    def f(x, y, z):
+        return x**2 + y**2 + x * y * z
+
+    x = torch.tensor(2.0, requires_grad=True)
+    y = torch.tensor(1.0, requires_grad=True)
+    z = torch.tensor(3.0, requires_grad=True)
+
+    torch_v1_hessian = torch.tensor(F.hessian(f, (x, y, z)))
+    print(torch_v1_hessian)
+    >>>tensor([[2., 3., 1.],
+    [3., 2., 2.],
+    [1., 2., 0.]])
+    \end{lstlisting}
+        \end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Hessian}
+
+   
+        \begin{tcolorbox}
+            \textbf{Torch}
+          
+            \begin{lstlisting}[language=Python, linewidth=\textwidth, xleftmargin=-20pt]
+    
+    import torch.autograd.functional as F
+
+    def f_vectorized(input):
+        x, y, z = input
+        return x**2 + y**2 + x * y * z
+
+    print("Torch Functional method")
+    print(F.hessian(f_vectorized, torch.tensor([2.0, 1.0, 3.0])))
+    >>>tensor([[2., 3., 1.],
+    [3., 2., 2.],
+    [1., 2., 0.]])
+    \end{lstlisting}
+        \end{tcolorbox}
 \end{frame}
 
 \begin{frame}{Hessian}

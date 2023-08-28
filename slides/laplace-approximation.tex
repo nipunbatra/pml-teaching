@@ -65,7 +65,15 @@
     \begin{itemize}
         \item Posterior distribution $p(\boldsymbol{\theta}| \mathcal{D})$ might be intractable but we can compute the MAP estimate.
         \item We know that posterior would be in form: $p(\boldsymbol{\theta}| \mathcal{D}) = \frac{1}{Z}p(\mathcal{D}, \boldsymbol{\theta})$, where $Z$ is the normalizing constant.
-        \item We can approximate this posterior using Taylor series expansion around the MAP estimate and it turns out that, after making a few assumptions, the resulting distribution is a Gaussian: $p(\boldsymbol{\theta}| \mathcal{D}) \approx \mathcal{N}(\boldsymbol{\theta}|\boldsymbol{\theta}_{MAP}, H^{-1})$, where $H$ is the Hessian matrix of the log joint evaluated at $\boldsymbol{\theta}_{MAP}$.
+        \item We can approximate this posterior using Taylor series expansion around the MAP estimate and it turns out that, after making a few assumptions, the resulting distribution is a Gaussian: $p(\boldsymbol{\theta}| \mathcal{D}) \approx \mathcal{N}(\boldsymbol{\theta}|\boldsymbol{\theta}_{MAP}, (\nabla^2f(\theta_{MAP}))^{-1})$, where $f$ is the negative log joint evaluated at $\boldsymbol{\theta}_{MAP}$ and $\nabla^2f$ is the Hessian matrix of $f$.
+    \end{itemize}
+\end{frame}
+
+\section{History}
+\begin{frame}
+    \begin{itemize}
+        \item Wiki article on Taylor's series
+        \item Wiki article on Madhava and Madhava's series
     \end{itemize}
 \end{frame}
 
@@ -106,6 +114,8 @@
 \taylor{5}
 \taylor{12}
 
+
+\begin{comment}
 \begin{frame}{Taylor Approximation of a 1D Gaussian Function}
     Consider the standard normal distribution: $p(x) \sim \mathcal{N}(x|0, 1)$\\
     \begin{equation*}
@@ -132,6 +142,8 @@
     \end{equation*}
 
 \end{frame}
+
+\end{comment}
 
 \section{ND Taylor Series}
 
@@ -268,8 +280,8 @@
     \begin{itemize}
         \item $\mathcal{D} = \{1, 1, 1, 1, 1, 1, 1, 1, 0\}$
         \item $p(\theta) = \text{Beta}(\alpha=2, \beta=2)$
-        \item $h = \theta$
-        \item $p(y|h) = h^y(1-h)^{1-y}$
+        \item $\theta = P(H)$
+        \item $p(y|\theta) = \theta^y(1-\theta)^{1-y}$
     \end{itemize}
     \pause
     \begin{figure}
@@ -290,6 +302,8 @@
         \includegraphics[]{../figures/laplace-approx/beta-prior-coin-toss-laplace.pdf}
     \end{figure}
 \end{frame}
+
+\begin{comment}
 
 \begin{frame}{Normal Prior for Coin Toss}
     Consider the following coin toss experiment scenario:
@@ -318,6 +332,8 @@
     \end{figure}
     We got True (MC) Posterior by a Monte Carlo estimation of the evidence.
 \end{frame}
+
+\end{comment}
 
 \begin{frame}{Multi-Mode example}
     Consider a Gaussian Mixture distribution with two modes. We assume that, it is an unnormalized density and we want to get normalized Laplace approximation of it.
