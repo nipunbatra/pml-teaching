@@ -73,7 +73,7 @@
 
 \begin{frame}{1D Taylor Series}
     \begin{equation*}
-        f(x) = f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 + \frac{f'''(x_0)}{3!}(x-x_0)^3 + \dots
+        \tilde{f}(x) = f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 + \frac{f'''(x_0)}{3!}(x-x_0)^3 + \dots
     \end{equation*}
 
 \end{frame}
@@ -104,6 +104,7 @@
 \taylor{3}
 \taylor{4}
 \taylor{5}
+\taylor{12}
 
 \begin{frame}{Taylor Approximation of a 1D Gaussian Function}
     Consider the standard normal distribution: $p(x) \sim \mathcal{N}(x|0, 1)$\\
@@ -136,7 +137,7 @@
 
 \begin{frame}{ND Taylor Series}
     \begin{equation*}
-        f(\boldsymbol{x}) = f(\boldsymbol{x}_0) + \nabla f(\boldsymbol{x}_0)^T(\boldsymbol{x}-\boldsymbol{x}_0) + \frac{1}{2}(\boldsymbol{x}-\boldsymbol{x}_0)^T \nabla^2 f(\boldsymbol{x}_0)(\boldsymbol{x}-\boldsymbol{x}_0) + \dots
+        \tilde{f}(\boldsymbol{x}) = f(\boldsymbol{x}_0) + \nabla f(\boldsymbol{x}_0)^T(\boldsymbol{x}-\boldsymbol{x}_0) + \frac{1}{2}(\boldsymbol{x}-\boldsymbol{x}_0)^T \nabla^2 f(\boldsymbol{x}_0)(\boldsymbol{x}-\boldsymbol{x}_0) + \dots
     \end{equation*}
 \end{frame}
 
@@ -147,7 +148,7 @@
     \end{equation*}
 
     \begin{figure}
-        \includegraphics[width=0.8\textwidth]{../figures/laplace-approx/sin2d.pdf}
+        \includegraphics[]{../figures/laplace-approx/sin2d.pdf}
     \end{figure}
 
 \end{frame}
@@ -155,10 +156,10 @@
 \begin{frame}{Approximate a 2d function}
     Taylor approximation at $x_0 = (0, 0)$:
     \begin{figure}
-        \includegraphics[width=0.5\textwidth]{../figures/laplace-approx/sin2d-taylor-1.pdf}
+        \includegraphics[width=0.6\textwidth]{../figures/laplace-approx/sin2d-taylor-1.pdf}
     \end{figure}
     \begin{figure}
-        \includegraphics[width=0.5\textwidth]{../figures/laplace-approx/sin2d-taylor-1d-1.pdf}
+        \includegraphics[width=0.6\textwidth]{../figures/laplace-approx/sin2d-taylor-1d-1.pdf}
     \end{figure}
 
 \end{frame}
@@ -166,10 +167,10 @@
 \begin{frame}{Approximate a 2d function}
     Taylor approximation at $x_0 = (0, 0)$:
     \begin{figure}
-        \includegraphics[width=0.5\textwidth]{../figures/laplace-approx/sin2d-taylor-2.pdf}
+        \includegraphics[width=0.6\textwidth]{../figures/laplace-approx/sin2d-taylor-2.pdf}
     \end{figure}
     \begin{figure}
-        \includegraphics[width=0.5\textwidth]{../figures/laplace-approx/sin2d-taylor-1d-2.pdf}
+        \includegraphics[width=0.6\textwidth]{../figures/laplace-approx/sin2d-taylor-1d-2.pdf}
     \end{figure}
 
 \end{frame}
@@ -196,27 +197,27 @@
               \pause
         \item In other words, if our approximation is bad where we have low probability mass, it doesn't matter much.
               \pause
-        \item Thus, we expand $f(\boldsymbol{\theta})$ around $\boldsymbol{\theta}_{MAP}$ using Taylor series expansion up to second derivative:
+        \item Thus, we approximate $f(\boldsymbol{\theta})$ as $\tilde{f}(\boldsymbol{\theta})$ around $\boldsymbol{\theta}_{MAP}$ using Taylor series expansion up to second derivative:
     \end{itemize}
     \begin{align*}
-        f(\boldsymbol{\theta}) & \approx f(\boldsymbol{\theta}_{MAP}) + \nabla f(\boldsymbol{\theta}_{MAP})^T(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})                               \\
-                               & \quad + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})
+        \tilde{f}(\boldsymbol{\theta}) & = f(\boldsymbol{\theta}_{MAP}) + \nabla f(\boldsymbol{\theta}_{MAP})^T(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})                                     \\
+                                       & \quad + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})
     \end{align*}
 \end{frame}
 
 
 \begin{frame}{Laplace Approximation}
     \begin{align*}
-        \onslide<1->{f(\boldsymbol{\theta}) & \approx f(\boldsymbol{\theta}_{MAP}) + \nabla f(\boldsymbol{\theta}_{MAP})^T(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})                                \\
-                                            & \quad + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}
+        \onslide<1->{\tilde{f}(\boldsymbol{\theta}) & = f(\boldsymbol{\theta}_{MAP}) + \nabla f(\boldsymbol{\theta}_{MAP})^T(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})                                      \\
+                                                    & \quad + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}
     \end{align*}
     \onslide<2->{Since, $\boldsymbol{\theta}_{MAP}$ is minima of $f(\boldsymbol{\theta})$, $\nabla f(\boldsymbol{\theta}_{MAP}) = 0$.}
 
     \begin{align*}
-        \onslide<3->{f(\boldsymbol{\theta}) & \approx f(\boldsymbol{\theta}_{MAP}) + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})} \\
-        \onslide<4->{                       & = f(\boldsymbol{\theta}_{MAP}) + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T H(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}
+        \onslide<3->{\tilde{f}(\boldsymbol{\theta}) & = f(\boldsymbol{\theta}_{MAP}) + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})} \\
+        % \onslide<4->{                       & = f(\boldsymbol{\theta}_{MAP}) + \frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T H(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}
     \end{align*}
-    \onslide<4->{where $H$ is the Hessian matrix of $f(\boldsymbol{\theta})$ evaluated at $\boldsymbol{\theta}_{MAP}$.}
+    \onslide<4->{where $\nabla^2 f(\boldsymbol{\theta}_{MAP})$ is the Hessian matrix of $f(\boldsymbol{\theta})$ evaluated at $\boldsymbol{\theta}_{MAP}$.}
 
 \end{frame}
 
@@ -224,12 +225,21 @@
     Plugging this back to the posterior equation:
 
     \begin{align*}
-        \onslide<1->{p(\boldsymbol{\theta}| \mathcal{D}) & = \frac{1}{Z}e^{-f(\boldsymbol{\theta)}}}                                                                                                                               \\
-        \onslide<2->{                                    & \approx \frac{1}{Z}e^{-f(\boldsymbol{\theta}_{MAP})}e^{-\frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T H(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}} \\
-        \onslide<3->{                                    & \sim \mathcal{N}(\boldsymbol{\theta}|\boldsymbol{\theta}_{MAP}, H^{-1})}                                                                                                \\
-        \onslide<4->{Z                                   & = p(\mathcal{D}, \boldsymbol{\theta}_{MAP}) \cdot (2\pi)^{D/2} \cdot |H|^{-\frac{1}{2}}}
+        \onslide<1->{p(\boldsymbol{\theta}| \mathcal{D}) & = \frac{1}{Z}e^{-f(\boldsymbol{\theta)}} \;\;\;\;\; \text{where } f(\boldsymbol{\theta}) = -\log p(\mathcal{D}, \boldsymbol{\theta})
+        }                                                                                                                                                                                                                                                                \\
+        \onslide<2->{                                    & \approx \frac{1}{Z}e^{-f(\boldsymbol{\theta}_{MAP})}e^{-\frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}}   \\
+        \onslide<3->{                                    & = \frac{1}{Z}p(\mathcal{D}, \boldsymbol{\theta}_{MAP})e^{-\frac{1}{2}(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})^T \nabla^2 f(\boldsymbol{\theta}_{MAP})(\boldsymbol{\theta}-\boldsymbol{\theta}_{MAP})}}
+        % \onslide<5->{Z                                   & = p(\mathcal{D}, \boldsymbol{\theta}_{MAP}) \cdot (2\pi)^{D/2} \cdot |\nabla^2 f(\boldsymbol{\theta}_{MAP})|^{-\frac{1}{2}}}
     \end{align*}
-    \onslide<5->{Note that this result is not specific to Bayesian inference and can be used to approximate any intractable function.}
+    \onslide<4->{
+        \begin{tcolorbox}
+            \begin{align*}
+                p(\boldsymbol{\theta}| \mathcal{D}) & \approx \mathcal{N}\left(\boldsymbol{\theta}|\boldsymbol{\theta}_{MAP}, \left(\nabla^2 f(\boldsymbol{\theta}_{MAP})\right)^{-1}\right) \\
+                Z                                   & = p(\mathcal{D}, \boldsymbol{\theta}_{MAP}) \cdot (2\pi)^{D/2} \cdot |\nabla^2 f(\boldsymbol{\theta}_{MAP})|^{-\frac{1}{2}}
+            \end{align*}
+        \end{tcolorbox}
+    }
+    % \onslide<5->{Note that this result is not specific to Bayesian inference and can be used to approximate any intractable function.}
 
 \end{frame}
 
@@ -252,11 +262,40 @@
 
 \end{frame}
 
+\begin{frame}{Beta-Bernoulli Coin Toss}
+    Let's take Beta-Bernoulli Coin Toss example since we know the closed form posterior for it. Consider the following scenario:
+    \pause
+    \begin{itemize}
+        \item $\mathcal{D} = \{1, 1, 1, 1, 1, 1, 1, 1, 0\}$
+        \item $p(\theta) = \text{Beta}(\alpha=2, \beta=2)$
+        \item $h = \theta$
+        \item $p(y|h) = h^y(1-h)^{1-y}$
+    \end{itemize}
+    \pause
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/beta-prior-coin-toss.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Beta-Bernoulli Coin Toss}
+    MAP estimate:
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/beta-prior-coin-toss-map.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Beta-Bernoulli Coin Toss}
+    Laplace Approximation:
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/beta-prior-coin-toss-laplace.pdf}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Normal Prior for Coin Toss}
     Consider the following coin toss experiment scenario:
     \begin{itemize}
-        \item $\mathcal{D} = \{1, 1, 1, 1, 1, 1, 1, 0, 0\}$
-        \item $p(\theta) = \mathcal{N}(\theta|-2, 1)$
+        \item $\mathcal{D} = \{1, 1, 1, 1, 1, 1, 1, 1, 0\}$
+        \item $p(\theta) = \mathcal{N}(\theta|\mu=-2, \sigma=1)$
         \item $h = \sigma(\theta)$
         \item $p(y|\theta) = h^y(1-h)^{1-y}$
     \end{itemize}
@@ -276,6 +315,27 @@
     Now, according to the Laplace Approximation, the posterior is:
     \begin{figure}
         \includegraphics[]{../figures/laplace-approx/normal-prior-coin-toss-laplace.pdf}
+    \end{figure}
+    We got True (MC) Posterior by a Monte Carlo estimation of the evidence.
+\end{frame}
+
+\begin{frame}{Multi-Mode example}
+    Consider a Gaussian Mixture distribution with two modes. We assume that, it is an unnormalized density and we want to get normalized Laplace approximation of it.
+    \pause
+    \begin{equation*}
+        p(\theta) = \frac{7}{10}\mathcal{N}(\theta|-2, 1) + \frac{3}{10}\mathcal{N}(\theta|2, 1)
+    \end{equation*}
+    \pause
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/mixture-density.pdf}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}{Multi-Mode example}
+    Laplace Approximation:
+    \begin{figure}
+        \includegraphics[]{../figures/laplace-approx/mixture-density-laplace.pdf}
     \end{figure}
 \end{frame}
 

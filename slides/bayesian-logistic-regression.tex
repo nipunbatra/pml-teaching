@@ -72,20 +72,20 @@
 
 \begin{frame}{Likelihood}
     \begin{align*}
-        \onslide<1->{p(\data | \boldsymbol{\theta}) = p(\boldsymbol{y} | X, \boldsymbol{\theta})     & = \prod_{i=1}^N p(y_i | \boldsymbol{x}_i, \boldsymbol{\theta})}                                                                                                                                        \\
-        \onslide<2->                                                                             {   & = \prod_{i=1}^N \text{Bernoulli}\left(\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)  \;\;\;\;\left[\boldsymbol{\sigma}(x) = \frac{1}{1 + e^{-x}} \right]}               \\
-        \onslide<3->                                                                               { & = \prod_{i=1}^N \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)^{y_i} \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)^{1 - y_i}}          \\
-        \onslide<4->{\log p(\boldsymbol{y} | X, \boldsymbol{\theta})                                 & = \sum_{i=1}^N y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)}
+        \onslide<1->{p(\data | \boldsymbol{\theta}) = p(\boldsymbol{y} | X, \boldsymbol{\theta})     & = \prod_{i=1}^N p(y_i | \boldsymbol{x}_i, \boldsymbol{\theta})}                                                                                                                                                     \\
+        \onslide<2->                                                                             {   & = \prod_{i=1}^N \text{Bernoulli}\left(\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)  \;\;\;\;\left[\boldsymbol{\sigma}(x) = \frac{1}{1 + e^{-x}} \right]}                            \\
+        \onslide<3->                                                                               { & = \prod_{i=1}^N \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)^{y_i} \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)^{1 - y_i}}                       \\
+        \onslide<4->{\log p(\boldsymbol{y} | X, \boldsymbol{\theta})                                 & = \sum_{i=1}^N \left[y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)\right]}
     \end{align*}
 
 \end{frame}
 
 \begin{frame}{MLE}
     \begin{align*}
-        \onslide<1->{- \log p(\data | \boldsymbol{\theta})                                              & = - \sum_{i=1}^N y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) - (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)}                                                                          \\
-        \onslide<2->{\frac{\partial}{\partial \boldsymbol{\theta}} -\log p(\data | \boldsymbol{\theta}) & = -\sum_{i=1}^N y_i \frac{\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)}{\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)} \boldsymbol{x}_i}   \\
-        \onslide<3->{                                                                                   & \quad - (1 - y_i) \frac{\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)}{1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)} \boldsymbol{x}_i} \\
-        \onslide<4->{                                                                                   & = -\sum_{i=1}^N y_i \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \boldsymbol{x}_i - (1 - y_i) \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) \boldsymbol{x}_i}                                                   \\
+        \onslide<1->{- \log p(\data | \boldsymbol{\theta})                                              & = - \sum_{i=1}^N \Big[y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) - (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)\Big]}                                                                      \\
+        \onslide<2->{\frac{\partial}{\partial \boldsymbol{\theta}} -\log p(\data | \boldsymbol{\theta}) & = -\sum_{i=1}^N \Bigg[y_i \frac{\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)}{\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)} \boldsymbol{x}_i}   \\
+        \onslide<3->{                                                                                   & \quad - (1 - y_i) \frac{\boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)}{1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)} \boldsymbol{x}_i}\Bigg] \\
+        \onslide<4->{                                                                                   & = -\sum_{i=1}^N \Big[y_i \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \boldsymbol{x}_i - (1 - y_i) \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) \boldsymbol{x}_i}\Big]                                               \\
         \onslide<5->{                                                                                   & = -\sum_{i=1}^N \left(y_i - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \boldsymbol{x}_i}
     \end{align*}
 \end{frame}
@@ -129,11 +129,11 @@
 
 \begin{frame}{Log Joint}
     \begin{align*}
-        \log p(\boldsymbol{\theta}, \boldsymbol{y} | X) & = \log p(\boldsymbol{y} | X, \boldsymbol{\theta}) + \log p(\boldsymbol{\theta})                                                                                                                       \\
-                                                        & = \sum_{i=1}^N y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \\
-                                                        & \quad  - \frac{1}{2} \frac{\boldsymbol{\theta}^T\boldsymbol{\theta}}{\sigma^2} - \frac{1}{2}\log (2 \pi \sigma^2)                                                                                     \\
-                                                        & = \sum_{i=1}^N y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \\
-                                                        & \quad - \left(c_1 \boldsymbol{\theta}^T\boldsymbol{\theta} + c_2\right) \;\;\;\;\; [c_1 \ge 0]                                                                                                        \\
+        \log p(\boldsymbol{\theta}, \boldsymbol{y} | X) & = \log p(\boldsymbol{y} | X, \boldsymbol{\theta}) + \log p(\boldsymbol{\theta})                                                                                                                                 \\
+                                                        & = \sum_{i=1}^N \Big[y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)\Big] \\
+                                                        & \quad  - \frac{1}{2} \frac{\boldsymbol{\theta}^T\boldsymbol{\theta}}{\sigma^2} - \frac{1}{2}\log (2 \pi \sigma^2)                                                                                               \\
+                                                        & = \sum_{i=1}^N \Big[y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)\Big] \\
+                                                        & \quad - \left(c_1 \boldsymbol{\theta}^T\boldsymbol{\theta} + c_2\right) \;\;\;\;\; [c_1 \ge 0]                                                                                                                  \\
     \end{align*}
 \end{frame}
 
@@ -173,11 +173,12 @@
 
 \begin{frame}{A Quick Refresher}
     \begin{align*}
-        \text{Neg. Log Joint } f(\theta)                 & = -\log p(\data | \theta) - \log p(\theta)                                                                                                                                                             \\
-                                                         & = -\sum_{i=1}^N y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \\
-                                                         & \quad  - \left( - \frac{1}{2} \frac{\boldsymbol{\theta}^T\boldsymbol{\theta}}{\sigma^2} - \frac{1}{2}\log (2 \pi \sigma^2)\right)                                                                      \\
-        \text{Laplace Posterior } q(\boldsymbol{\theta}) & = \mathcal{N}(\theta | \theta_{\text{MAP}}, \nabla^2 f(\theta_{\text{MAP}})^{-1})                                                                                                                      \\
-                                                         & = \mathcal{N}(\theta | \theta_{\text{MAP}}, H^{-1})
+        \text{Neg. Log Joint } f(\theta)                 & = -\log p(\data | \theta) - \log p(\theta)                                                                                        \\
+                                                         & = -\sum_{i=1}^N \Big[y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)                               \\
+                                                         & \quad + (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)\Big]                \\
+                                                         & \quad  - \left( - \frac{1}{2} \frac{\boldsymbol{\theta}^T\boldsymbol{\theta}}{\sigma^2} - \frac{1}{2}\log (2 \pi \sigma^2)\right) \\
+        \text{Laplace Posterior } q(\boldsymbol{\theta}) & = \mathcal{N}(\theta | \theta_{\text{MAP}}, \nabla^2 f(\theta_{\text{MAP}})^{-1})                                                 \\
+        %  & = \mathcal{N}(\theta | \theta_{\text{MAP}}, H^{-1})
     \end{align*}
 \end{frame}
 
