@@ -80,6 +80,7 @@
 
 \end{frame}
 
+\begin{comment}
 \begin{frame}{MLE}
     \begin{align*}
         \onslide<1->{- \log p(\data | \boldsymbol{\theta})                                              & = - \sum_{i=1}^N \Big[y_i \log \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right) - (1 - y_i) \log \left(1 - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right)\Big]}                                                                      \\
@@ -89,16 +90,13 @@
         \onslide<5->{                                                                                   & = -\sum_{i=1}^N \left(y_i - \boldsymbol{\sigma}\left(\boldsymbol{\theta}^T\boldsymbol{x}_i\right)\right) \boldsymbol{x}_i}
     \end{align*}
 \end{frame}
+\end{comment}
 
 \begin{frame}{MLE}
     \begin{align*}
-        \onslide<1->{X^T (\boldsymbol{\sigma}(X \boldsymbol{\theta}) - \boldsymbol{y}) & = 0}                                                                                       \\
-        \onslide<2->{X^T \boldsymbol{\sigma}(X \boldsymbol{\theta})                    & = X^T \boldsymbol{y}}                                                                      \\
-        \onslide<3->{\frac{1}{1 + e^{-X \boldsymbol{\theta}}}                          & = \boldsymbol{y}}                                                                          \\
-        \onslide<4->{X \boldsymbol{\theta}                                             & = \log \left(\frac{\boldsymbol{y}}{1 - \boldsymbol{y}}\right)}                             \\
-        \onslide<5->{\boldsymbol{\theta}_{MLE}                                         & = \left(X^T X\right)^{-1} X^T \log \left(\frac{\boldsymbol{y}}{1 - \boldsymbol{y}}\right)}
+        \onslide<1->{\frac{\partial}{\partial \boldsymbol{\theta}} -\log p(\data | \boldsymbol{\theta}) & = X^T (\boldsymbol{\sigma}(X \boldsymbol{\theta}) - \boldsymbol{y})}\\
     \end{align*}
-    \onslide<6->{
+    \onslide<2->{
         However, $\log \left(\frac{\boldsymbol{y}}{1 - \boldsymbol{y}}\right)$ is undefined when $y_i = 0$ or $y_i = 1$, which is always the case.}
 \end{frame}
 
@@ -127,6 +125,13 @@
 
 \end{frame}
 
+\begin{frame}{Negative Log Joint}
+    \begin{align*}
+        \onslide<1->{f(\theta) = {} & -\log p(\data | \theta) - \log p(\theta)} \\
+    \end{align*}
+\end{frame}
+
+\begin{comment}
 \begin{frame}{Log Joint}
     \begin{align*}
         \log p(\boldsymbol{\theta}, \boldsymbol{y} | X) & = \log p(\boldsymbol{y} | X, \boldsymbol{\theta}) + \log p(\boldsymbol{\theta})                                                                                                                                 \\
@@ -136,6 +141,7 @@
                                                         & \quad - \left(c_1 \boldsymbol{\theta}^T\boldsymbol{\theta} + c_2\right) \;\;\;\;\; [c_1 \ge 0]                                                                                                                  \\
     \end{align*}
 \end{frame}
+\end{comment}
 
 \newcommand{\MapVsMle}[2]{
     \begin{frame}{#1}
