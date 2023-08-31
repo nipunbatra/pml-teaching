@@ -29,8 +29,15 @@
 
 \end{frame}
 
+\begin{section}{Discovery that transformed Pi}
+    \begin{frame}
+        \href{https://www.youtube.com/watch?v=gMlf1ELvRzc}{The Discovery That Transformed Pi}
+    \end{frame}
+\end{section}
+
 \begin{section}{Monte Carlo Simulation}
 
+    \begin{comment}
     \begin{frame}{The idea behind MC Simulation}
         \begin{itemize}
             \item We often want to compute expected value of some function of a random variable, which turns into the integral, 
@@ -41,18 +48,19 @@
             $$\mathbb{E} \left[ f (x) \right] \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i)$$
         \end{itemize}
     \end{frame}
+\end{comment}
 
     \begin{frame}{General Form}
 
         The general form of Monte Carlo methods is:
         The expectation of a function $f(x)$ with respect to a distribution $p(x)$ is given by:
-        \begin{equation}
+        \pause \begin{equation}
             % Expectation of f(x) with respect to p(x)
             \mathbb{E}_{x \sim p(x)}[f(x)] = \int f(x) p(x) dx
         \end{equation}
         
-        Using Monte Carlo methods, we can estimate the above expectation by sampling $x_i$ from $p(x)$ and computing the average of $f(x_i)$.
-        \begin{equation}
+        \pause Using Monte Carlo methods, we can estimate the above expectation by sampling $x_i$ from $p(x)$ and computing the average of $f(x_i)$.
+        \pause \begin{equation}
             % Monte Carlo estimate of expectation of f(x) with respect to p(x)
             \mathbb{E}_{x \sim p(x)}[f(x)] \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i)
         \end{equation}
@@ -77,29 +85,14 @@
     %     Thus we can approximate the induced distribution, $p(x)$ sampling $x_i$ from $p(x)$ and computing the average of $f(x_i)$.
     % \end{frame}
 
-    \begin{frame}{Unbiased Estimator?}
-        Is Monte Carlo Sampling a biased or unbiased estimator?
-
-        We know:
-        \begin{equation}
-            % Expectation of f(x) with respect to p(x)
-            \mathbb{E}_{x \sim p(x)}[f(x)] = \int f(x) p(x) dx = \phi
-        \end{equation}
-        Let $x_i\in 1, \ldots, N$ be i.i.d samples:
-        \begin{align*}
-            \hat{\phi} &= \frac{1}{N} \sum_{i=1}^{N} f(x_i) \\
-            \mathbb{E}(\hat{\phi}) &= \int \frac{1}{N} \sum_{i=1}^{N} f(x_i)p(x_i)dx = \frac{1}{N}\sum_{i=1}^{N} \int f(x_i)p(x_i)dx \\
-            &= \frac{1}{N}\sum_{i=1}^N\mathbb{E}(f(x_i)) = \phi
-        \end{align*}
-        Thus, it is an unbiased estimator!
-    \end{frame}
+    
 
     \begin{frame}[fragile]{Estimating Pi using Monte Carlo (Part 1)}
         We can estimate the value of pi using Monte Carlo methods by considering a unit square with a quarter circle inscribed within it.
         
         \begin{itemize}
-            \item Let $p(x)$ be defined over the unit square using the uniform distribution in two dimensions, i.e., $p(x) = U(x) = 1$ for $x \in [0, 1]^2$.
-            \item Let $f(x)$ be the indicator function defined as follows:
+           \pause \item Let $p(x)$ be defined over the unit square using the uniform distribution in two dimensions, i.e., $p(x) = U(x) = 1$ for $x \in [0, 1]^2$.
+            \pause \item Let $f(x)$ be the indicator function defined as follows:
                 \[
                 f(x) = \begin{cases}
                             \text{\textcolor{green}{Green}} (1), & \text{if } x \text{ falls inside the quarter circle}, \\
@@ -159,6 +152,23 @@
             \centering
         \includegraphics[scale=0.75]{../figures/mc_sampling_ex.pdf}
             \end{figure}    
+    \end{frame}
+
+    \begin{frame}{Unbiased Estimator?}
+        Is Monte Carlo Sampling a biased or unbiased estimator?
+
+        We know:
+        \begin{equation}
+            % Expectation of f(x) with respect to p(x)
+            \mathbb{E}_{x \sim p(x)}[f(x)] = \int f(x) p(x) dx = \phi
+        \end{equation}
+        Let $x_i\in 1, \ldots, N$ be i.i.d samples:
+        \begin{align*}
+            \hat{\phi} &= \frac{1}{N} \sum_{i=1}^{N} f(x_i) \\
+            \mathbb{E}(\hat{\phi}) &= \int \frac{1}{N} \sum_{i=1}^{N} f(x_i)p(x_i)dx = \frac{1}{N}\sum_{i=1}^{N} \int f(x_i)p(x_i)dx \\
+            &= \frac{1}{N}\sum_{i=1}^N\mathbb{E}(f(x_i)) = \phi
+        \end{align*}
+        Thus, it is an unbiased estimator!
     \end{frame}
 
     \begin{frame}{Sampling converges slowly}
