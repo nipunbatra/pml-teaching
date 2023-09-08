@@ -25,18 +25,17 @@
 \begin{frame}{Topics}
     %TOC with enumerated items
     \setbeamertemplate{section in toc}[sections numbered]
-    \tableofcontents[hideallsubsections]
+    \tableofcontents
 
 \end{frame}
 
-\begin{section}{Discovery that transformed Pi}
+
     \begin{frame}
         \href{https://www.youtube.com/watch?v=gMlf1ELvRzc}{The Discovery That Transformed Pi}
     \end{frame}
-\end{section}
 
 \begin{section}{Monte Carlo Simulation}
-
+    \subsection{General Form}
     \begin{comment}
     \begin{frame}{The idea behind MC Simulation}
         \begin{itemize}
@@ -86,7 +85,7 @@
     % \end{frame}
 
     
-
+    \subsection{Applications}
     \begin{frame}[fragile]{Estimating Pi using Monte Carlo (Part 1)}
         We can estimate the value of pi using Monte Carlo methods by considering a unit square with a quarter circle inscribed within it.
         
@@ -140,10 +139,7 @@
     \end{frame}
 
     \begin{frame}
-        \begin{figure}
-                \centering
-                \includegraphics[scale = 0.8]{../figures/prediction_var_mc_pi.pdf}
-            \end{figure}
+        Notebook: \url{mc_sampling_intro.ipynb}
     \end{frame}
 
     \begin{frame}{Estimating a function using Monte Carlo}
@@ -154,6 +150,38 @@
             \end{figure}    
     \end{frame}
 
+    \begin{frame}{Estimating prior predictive distribution}
+        \begin{itemize}
+            \item Let $p(\theta)$ be the prior distribution of parameter $\theta \in \mathbb{R}^2$. Say, for example, $p(\theta_i) = \mathcal{N}(0, 1) \forall i$.
+            \item Let $p(y |\theta, x)$ be the likelihood function. Say, for example, $p(y|\theta, x) = \mathcal{N}(\theta_0 + \theta_1 x, 1)$.
+            \item Then, the prior predictive distribution is given by:
+        \end{itemize}
+
+            \begin{equation}
+                p(y|x) = \int p(y|\theta, x) p(\theta) d\theta 
+            \end{equation}
+
+            \begin{equation}
+                p(y|x) \approx \frac{1}{N} \sum_{i=1}^{N} p(y|\theta_i, x)
+            \end{equation}
+            where $\theta_i \sim p(\theta)$.
+    \end{frame}
+
+    \begin{frame}{Estimating posterior predictive distribution}
+        Extending for posterior predictive distribution, we have:
+
+        \begin{equation}
+            p(y|x, D) = \int p(y|\theta, x) p(\theta|D) d\theta 
+        \end{equation}
+
+        \begin{equation}
+            p(y|x, D) \approx \frac{1}{N} \sum_{i=1}^{N} p(y|\theta_i, x)
+        \end{equation}
+        
+    \end{frame}
+
+
+    \subsection{Bias and Variance of Monte Carlo}
     \begin{frame}{Unbiased Estimator?}
         Is Monte Carlo Sampling a biased or unbiased estimator?
 
@@ -201,39 +229,149 @@
         \end{itemize}
     \end{frame}
 
-    \begin{frame}{Estimating prior predictive distribution}
-        \begin{itemize}
-            \item Let $p(\theta)$ be the prior distribution of parameter $\theta \in \mathbb{R}^2$. Say, for example, $p(\theta_i) = \mathcal{N}(0, 1) \forall i$.
-            \item Let $p(y |\theta, x)$ be the likelihood function. Say, for example, $p(y|\theta, x) = \mathcal{N}(\theta_0 + \theta_1 x, 1)$.
-            \item Then, the prior predictive distribution is given by:
-        \end{itemize}
-
-            \begin{equation}
-                p(y|x) = \int p(y|\theta, x) p(\theta) d\theta 
-            \end{equation}
-
-            \begin{equation}
-                p(y|x) \approx \frac{1}{N} \sum_{i=1}^{N} p(y|\theta_i, x)
-            \end{equation}
-            where $\theta_i \sim p(\theta)$.
-    \end{frame}
-
-    \begin{frame}{Estimating posterior predictive distribution}
-        Extending for posterior predictive distribution, we have:
-
-        \begin{equation}
-            p(y|x, D) = \int p(y|\theta, x) p(\theta|D) d\theta 
-        \end{equation}
-
-        \begin{equation}
-            p(y|x, D) \approx \frac{1}{N} \sum_{i=1}^{N} p(y|\theta_i, x)
-        \end{equation}
-        
-    \end{frame}
-
+    
 \end{section}
 
-\begin{section}{Rejection Sampling}
+
+\begin{section}{Sampling from common probability distributions}
+    \begin{subsection}{PRNG}
+
+    \begin{frame}{Sampling from uniform U(0, 1)}
+        
+    
+    \begin{itemize}
+        \item Question: How can you generate samples from the uniform distribution in $[0, 1]$?
+        \item \pause Hint: Linear Congruential Generator (LCG) among other PRNGs.
+        \item \pause \begin{equation}
+            x_{n+1} = (a x_n + c) \mod m
+        \end{equation}
+        \item  where, $a, c, m$ are constants and $x_0$ is the seed
+        \item $x_{n+1}$ is the next random number between 0 and $m-1$
+        \item \pause $\frac{x_{n+1}}{m}$ is the next random number between 0 and 1
+    
+
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sampling from uniform U(0, 1)}
+    From Wikipedia page on LCG
+
+    \includegraphics[width=\columnwidth]{../figures/wiki-LCG.png}
+    
+\end{frame}
+
+\begin{frame}{Sampling from uniform U(0, 1)}
+Notebook: random-uniform.ipynb
+    
+\end{frame}
+
+\begin{frame}{Sampling from uniform U(a, b)}
+    \begin{itemize}
+        \item Assume we have $X \sim U(0, 1)$
+        \item \pause Then, $Y = a + (b - a) X \sim U(a, b)$
+    \end{itemize}
+    
+\end{frame}
+
+\end{subsection}
+
+\subsection{Inverse CDF Sampling}
+\begin{frame}{Inverse CDF sampling}
+    [Inspired by content from Ben Lambert and Phillip Hennig]
+    \begin{itemize}
+        \item Let us try to generate samples from the exponential distribution. 
+        \item \pause The PDF of the exponential distribution is given by:
+        \item \pause \begin{equation}
+            p(x) = \lambda e^{-\lambda x}
+        \end{equation}
+    \end{itemize}
+
+    \begin{figure}
+\includegraphics[width=\columnwidth]{../figures/sampling/exp-cdf.pdf}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}
+    Notebook: inverse-cdf.ipynb
+\end{frame}
+
+% Loop for lambda values from 1 to 10
+\foreach \ns in {1,2,3,4,5,6,7,8,9}{
+  \begin{frame}{Inverse CDF Sampling for Number of samples = \ns}
+    \begin{itemize}
+        \item Let us consider the CDF ($F(x)$) of the exponential distribution ($\lambda=1$) and try to generate samples from it.
+        \item We generate a random number $u \sim U(0, 1)$.
+        \item We then find the value of $x$ such that $F(x) = u$.
+    \end{itemize}
+  
+    \begin{figure}
+        \includegraphics[width=0.7\textwidth]{../figures/sampling/exp-cdf-samples-\ns.pdf}
+    \end{figure}
+  \end{frame}
+}
+
+
+       
+   \begin{frame}{Inverse CDF sampling}
+
+
+        \begin{itemize}
+    
+            \item We generate a random number $u \sim U(0, 1)$.
+            \item \pause We then find the value of $x$ such that $F(x) = u$.
+    \item \pause This is equivalent to finding the inverse of the CDF, i.e., $F^{-1}(u)$.
+        \item \pause For the exponential distribution, let us try to find $F^{-1}(u)$.
+        \item \pause \begin{equation}
+            u = 1 - e^{-x}
+        \end{equation}
+        \item \pause \begin{equation}
+            x = -\log(1 - u)
+        \end{equation}
+    \end{itemize}
+        
+    
+\end{frame}
+\begin{frame}{Inverse CDF sampling}
+    [From Wikipedia page on Inverse Transform Sampling]
+    From $U \sim \operatorname{Unif}[0,1]$, we want to generate $X$ with $\operatorname{CDF} F_X(x)$. We assume $F_X(x)$ to be a continuous, strictly increasing function, which provides good intuition.
+
+We want to see if we can find some strictly monotone transformation $T:[0,1] \mapsto \mathbb{R}$, such that $T(U) \stackrel{d}{=} X$. We will have
+$$
+F_X(x)=\operatorname{Pr}(X \leq x)=\operatorname{Pr}(T(U) \leq x)=\operatorname{Pr}\left(U \leq T^{-1}(x)\right)=T^{-1}(x), \text { for } x \in \mathbb{R},
+$$
+where the last step used that $\operatorname{Pr}(U \leq y)=y$ when $U$ is uniform on $[0,1]$.
+So we got $F_X$ to be the inverse function of $T$, or, equivalently $T(u)=F_X^{-1}(u), u \in[0,1]$. Therefore, we can generate $X$ from $F_X^{-1}(U)$.
+\end{frame}
+
+\subsection{Sampling from Normal Distribution}
+\begin{frame}{Generating samples from $\mathcal{N}(0, 1)$ using Box-Muller Transform}
+    [From Wikipedia page on Box-Muller Transform]
+    \begin{itemize}
+        \item Let $U_1, U_2 \sim U(0, 1)$ be two independent random variables.
+        \item \pause Let $Z_0, Z_1 \sim \mathcal{N}(0, 1)$ be two independent random variables.
+        \item \pause Then, $R = \sqrt{-2 \log U_1}$ and $\Theta = 2 \pi U_2$ are independent random variables.
+        \item \pause Then, $Z_0 = R \cos \Theta$ and $Z_1 = R \sin \Theta$ are independent random variables.
+        \item \pause $Z_0$ and $Z_1$ are independent and identically distributed (i.i.d) $\mathcal{N}(0, 1)$ random variables.
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}
+    Notebook: sampling-normal.ipynb
+\end{frame}
+
+\begin{frame}{Generating samples from $\mathcal{N}(\mu, \sigma)$}
+    \begin{itemize}
+        \item Let $Z_0 \sim \mathcal{N}(0, 1)$ be independent random variables.
+        \item \pause Then, $X = \mu + \sigma Z_0$ is a random variable with $\mathcal{N}(\mu, \sigma)$ distribution.
+    \end{itemize}
+    
+\end{frame}
+    
+\end{section}
+
+\subsection{Rejection Sampling}
     \begin{frame}{Rejection Sampling}
         \begin{itemize}
             \item Let $p(x)$ be the target distribution from which we want to sample.
@@ -401,260 +539,7 @@
         \end{itemize}
     \end{frame}
 
-\end{section}
 
-\begin{section}{Inverse CDF}
-    \begin{frame}{General Form}
-        Inverse Cumulative Distribution Function (Inverse CDF) sampling is a technique used to generate random numbers from a given probability distribution.
 
-        Particularly useful when sampling from distributions lacking a straightforward analytical method for direct sampling. 
-    \end{frame}
-
-    \begin{frame}
-        A method of sampling from the distribution is sampling $u\in \mathcal{U}(0,1)$ and find $x = F_X^{-1}(u)$. The cumulative probability distribution (cdf) of $X$ is:
-        \begin{equation}
-            F_X(x) = \mathbb{P}(X<=x) = \int_{-\infty}^{\infty} \pi(u)I(u<=x)du = \int_{-\infty}^{\infty}\pi(u)du 
-        \end{equation}
-        Thus, Sample $u\in \mathcal{U}(0,1)$ and set $Y=F_{\pi}^{-1}(u)$. 
-    \end{frame}
-
-    \begin{frame}{Proof}
-        We need to prove that the algorithm mentioned above produces samples from $\pi$. We calculate the cdf of $X$ produced by the algorithm above. For any $y\in X$ we have:
-        \begin{align*}
-            \mathbb{P}(Y<=y) &= \mathbb{P}(Y=F_X^{-1}(u)<=y) \\
-            &= \mathbb{P}(u<=F_X(y)) \\
-            &= \int_0^1 I(u<=F_X(y)).1du = \int_0^{F_X(y)}du = F_X(y)
-        \end{align*}
-        This shows that the cdf of $Y$ produced by the algorithm is the same as cdf of $X\sim \pi$.
-    \end{frame}
-
-    \begin{frame}{Example of Normal distribution}
-        Number of samples = 25:
-        \begin{figure}
-                \centering
-                \includegraphics[scale=0.8]{../figures/inverse_cdf_normal1.pdf}
-        \end{figure}
-    \end{frame}
-    \begin{frame}
-        Number of samples = 100:
-        \begin{figure}
-                \centering
-                \includegraphics[scale=0.8]{../figures/inverse_cdf_normal2.pdf}
-        \end{figure}
-    \end{frame}
-    \begin{frame}
-        Number of samples = 1000:
-        \begin{figure}
-                \centering
-                \includegraphics[scale=0.8]{../figures/inverse_cdf_normal3.pdf}
-        \end{figure}
-        We see that as the number of samples increases, we are able to approximate the induced distribution which is the normal distribution for this example.
-    \end{frame}
-
-    \begin{frame}{Limitations:}
-        \begin{itemize}
-            \item Limited Distribution Complexity: It relies on having an analytically calculable cumulative distribution function (CDF) and an invertible CDF function. 
-            \item Numerical Inversion Challenges: When the inverse of the CDF cannot be expressed analytically, numerical methods introduce numerical errors and slow down the sampling process.
-            \item Efficiency and Multivariate Distributions: It can be resource-intensive for high-dimensional multivariate distributions. 
-        \end{itemize}
-    \end{frame}
-\end{section}
-
-\begin{section}{Importance Sampling}
-    \begin{frame}{General Form}
-        In rejection sampling, we saw that due to less acceptance probability, a lot of samples were wasted leading to more time and higher complexity to approximate a distribution.
-
-        Computing $p(x), q(x)$ thus seems wasteful. Let us rewrite the equation as:
-        \begin{align*}
-            \phi &= \int f(x)p(x)dx = \int f(x)\frac{p(x)}{q(x)}q(x)dx \\
-            &\sim \frac{1}{N} \sum_{i=1}^Nf(x_i)\frac{p(x_i)}{q(x_i)} = \frac{1}{N} \sum_{i=1}^Nf(x_i)w_i 
-        \end{align*}
-        Here, $x_i\sim q(x)$. $w_i$ is known as the importance(weight) of sample i. 
-    \end{frame}
-
-    \begin{frame}
-        However the normalization constant $Z$ is generally not known to us. Thus writing: 
-        \begin{equation}
-            p(x) = \frac{\Tilde{p}(x)}{Z}
-        \end{equation}
-        Now inserting this in earlier equations, we get:
-        \begin{align*}
-            \phi &=\frac{1}{Z} \int f(x)\Tilde{p}(x)dx = \frac{1}{Z}\int f(x)\frac{\Tilde{p}(x)}{q(x)}q(x)dx \\
-            &\sim \frac{1}{NZ} \sum_{i=1}^Nf(x_i)\frac{\Tilde{p}(x_i)}{q(x_i)} = \frac{1}{NZ} \sum_{i=1}^Nf(x_i)w_i 
-        \end{align*}
-        We know that:
-        \begin{align*}
-            Z &= \int_{\infty}^{\infty} \Tilde{p}(x)dx = \int_{\infty}^{\infty}\frac{\Tilde{p}(x)}{q(x)}q(x)dx \\
-            &= \frac{1}{N}\sum_{i=1}^N w_i
-        \end{align*}
-    \end{frame}
-
-    \begin{frame}
-        Substuting this value of $Z$ in the equation above, we get:
-        \begin{align*}
-            \phi &= \frac{1}{N}\sum_{i=1}^N f(x_i)w_i = \frac{\sum_{i=1}^N f(x_i)w_i}{\sum_{i=1}^N w_i} \\
-            &= \sum_{i=1}^N f(x_i)W_i
-        \end{align*}
-        Here $W_i = \frac{w_i}{\sum_{i=1}^N w_i}$ are the normalized weights.
-    \end{frame}
-
-    \begin{frame}{Limitations}
-        \begin{itemize}
-            \item Recall that Var $\hat{\phi} = \frac{var(f)}{N}$. Importance sampling replaces $var(f)$ with $var(f\frac{p}{q})$. At positions where $p>>>q$, the weight can tend to $\infty$!
-        \end{itemize}
-        \begin{figure}
-                \centering
-                \includegraphics[scale=0.8]{../figures/importance_sampling_weight_function.pdf}
-        \end{figure}
-    \end{frame}
-\end{section}
-
-\begin{section}{Gibbs Sampling}
-    \begin{frame}{General Form}
-        Suppose we wish to sample $\theta_1, \theta_2 \sim p(\theta_1, \theta_2)$, but cannot use:\\
-        \begin{itemize}
-            \item direct simulation
-            \item accept-reject method
-            \item Metropolis-Hasting
-        \end{itemize}
-        But we can sample using the conditionals i.e.:\\
-        \begin{itemize}
-            \item $p(\theta_1|\theta_2)$ and
-            \item $p(\theta_2|\theta_1)$,
-        \end{itemize}
-        then we can use Gibbs sampling.
-    \end{frame}
-    
-    \begin{frame}
-        Suppose $\theta_1, \theta_2 \sim p(\theta_1, \theta_2)$ and we can sample from $p(\theta_1, \theta_2)$. We begin with an initial value $(\theta_1^{0}, \theta_2^{0})$, the workflow for Gibbs algorithm is:\\
-        1. sample $\theta_1^j \sim p(\theta_1|\theta_2^{j-1})$ and then\\
-        2. sample $\theta_2^j \sim p(\theta_2|\theta_1^j)$.\\
-        One thing to note here is that the sequence in which the theta's are sampled are not independent!    
-    \end{frame}
-
-    \begin{frame}{Bivariate Normal Example}
-        Suppose \\
-        $\theta \sim N_2(0,\Sigma)$ and $\Sigma = $
-        $ \begin{matrix}
-        1 & \rho \\
-        \rho & 1  
-        \end{matrix} $
-    
-    Then, we have:\\
-    $\theta_1|\theta_2 \sim N(\rho\theta_2,[1-\rho^2])$
-
-    $\theta_2|\theta_1 \sim N(\rho\theta_1,[1-\rho^2])$
-    are the conditional distributions.
-    The Gibbs sampling proceeds as follows:\\
-    \begin{table}[]
-        \centering
-        \begin{tabular}{c c c}
-           Iteration & Sample $\theta_1$ & Sample $\theta_2$\\
-           \hline
-           1  &  $\theta_1\sim N(\rho\theta_2^0, [1-\rho^2])$ &  $\theta_2\sim N(\rho\theta_1^1, [1-\rho^2])$\\
-           & . & \\
-           & . & \\
-           $k$  &  $\theta_1\sim N(\rho\theta_2^{k-1}, [1-\rho^2])$ &  $\theta_2\sim N(\rho\theta_1^k, [1-\rho^2])$
-             
-        \end{tabular}
-    \end{table}
-    \end{frame}
-
-    \begin{frame}
-        \begin{figure}
-                \centering
-                \includegraphics[scale=0.8]{../figures/gibbs_sampling_bivariate_normal.pdf}
-            \end{figure}
-    \end{frame}
-
-    \begin{frame}{Multivariate case}
-        Suppose $\theta = (\theta_1, \theta_2, \ldots, \theta_K)$, the Gibbs workflow is as follows:\\
-        $\theta_1^j = p(\theta_1|\theta_2^{j-1}, \ldots, \theta_K^{j-1})$\\
-        $\theta_2^j = p(\theta_2|\theta_1^{j}, \theta_3^{j-1}, \ldots, \theta_K^{j-1})$\\
-        .\\
-        .\\
-        $\theta_k^j = p(\theta_k|\theta_1^{j}, \ldots, \theta_{k-1}^j, \theta_{k+1}^{j-1}, \ldots, \theta_K^{j-1})$\\
-        .\\
-        .\\
-        $\theta_K^j = p(\theta_K|\theta_1^{j}, \ldots, \theta_{K-1}^{j})$\\
-        The distributions above are call the full conditional distributions.
-    \end{frame}
-
-    \begin{frame}{Advantages}
-        Gibbs sampling can be used to draw samples from $p(\theta)$ when:\\
-        \begin{itemize}
-            \item Other methods don't work quite well in higher dimensions.
-            \item Draw samples from the full conditional distributions is easy, $p(\theta_k|\theta_{-k}).$
-        \end{itemize}
-    \end{frame}
-\end{section}
-
-\begin{section}{Markov Chain Monte Carlo}
-    \begin{frame}{Limitations of basic sampling methods}
-        \begin{itemize}
-            \item \textit{Transformation based methods}: Usually limited to drawing from standard distributions.
-            \item \textit{Rejection and Importance sampling}: Require selection of good proposal distirbutions.
-        \end{itemize}
-        In high dimensions, usually most of the density $p(x)$ is concentrated within a tiny subspace of $x$. Moreover, those subspaces are difficult to be known a priori.
-
-        A solution to these are MCMC methods.
-    \end{frame}
-
-    \begin{frame}{Markov Chain}
-        \begin{itemize}
-            \item \textbf{Markov Chain}: A joint distribution $p(X)$ over a sequence of random variables $X = \{X_1, X_2, \ldots, X_n\}$ is said to have the Markov property if 
-            $$
-            p(X_i|X_1, \ldots, X_{i-1}) = p(X_i|X_{i-1}) 
-            $$
-            The sequence is then called a Markov chain.
-            \item The idea is that the estimates contain information about the shape of the target distribution $p$.
-        \end{itemize}
-    \end{frame}
-
-    \begin{frame}{Metropolis Hastings}
-        \begin{itemize}
-            \item The basic idea is propose to move to a new state $x_{i+1}$ from the current state $x_i$ with probability $q(x_{i+1}|x_i)$, where $q$ is called the proposal distribution and our target density of interest is $p (= \frac{1}{Z} \tilde{p})$.
-            \item The new state is accepted with probability $\alpha(x_i, x_{i+1})$.
-            \begin{itemize}
-                \item If $p(x_{i+1}| x_i) = p(x_i| x_{i+1})$, then $\alpha(x_i, x_{i+1}) = \min (1, \frac{p(x_{i+1})}{p(x_i)})$.
-                \item If $p(x_{i+1}| x_i) \neq p(x_i| x_{i+1})$, then $\alpha(x_i, x_{i+1}) = \min (1, \frac{p(x_{i+1})q(x_i|x_{i+1})}{p(x_i)q(x_{i+1}|x_i)}) = \min (1, \frac{\tilde{p}(x_{i+1})q(x_i|x_{i+1})}{\tilde{p}(x_i)q(x_{i+1}|x_i)})$
-            \end{itemize}
-            \item Evaluating $\alpha$, we only need to know the target distribution up to a constant of proportionality or without normalization constant.
-        \end{itemize}
-    \end{frame}
-
-    \begin{frame}{Algorithm: Metropolis Hastings}
-        \begin{enumerate}
-            \item Initialize $x_0$.
-            \item for $i = 1, \ldots, N$ do:
-            \item \quad Sample $x^* \sim q(x^*|x_{i-1})$.
-            \item \quad Compute $\alpha = \min (1, \frac{\tilde{p}(x^*)q(x_{i-1}|x^*)}{\tilde{p}(x_{i-1})q(x^*|x_{i-1})})$
-            \item \quad Sample $u \sim \mathcal{U}(0, 1)$
-            \item \quad if $u \leq \alpha$:
-            
-            \quad \quad $x_i = x^*$
-            
-            \quad else:
-            
-            \quad \quad $x_i = x_{i-1}$
-        \end{enumerate}
-    \end{frame}
-
-    \begin{frame}{Pop Quiz}
-        How do we choose the initial state $x_0$?
-        \pause
-        \begin{enumerate}
-            \item Start the Markov Chain at an initial $x_0$.
-            \item Using the proposal $q(x|x_i)$, run the chain long enough, say $N_1$ steps.
-            \item Discard the first $N_1 - 1$ samples (called 'burn-in' samples).
-            \item Treat $x_{N_1}$ as first sample from $p(x)$.
-        \end{enumerate}
-    \end{frame}
-
-    \begin{frame}{MCMC demo}
-        
-        \url{https://chi-feng.github.io/mcmc-demo/app.html}
-    \end{frame}
-\end{section}
 
 \end{document}
