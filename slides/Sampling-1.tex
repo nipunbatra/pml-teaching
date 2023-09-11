@@ -142,6 +142,8 @@
         Notebook: \url{mc_sampling_intro.ipynb}
     \end{frame}
 
+    \begin{comment}
+
     \begin{frame}{Estimating a function using Monte Carlo}
         Let $x\in \mathcal{U}(-1,1)$ and $y = f(x) = x^2$.
         \begin{figure}
@@ -149,6 +151,8 @@
         \includegraphics[scale=0.75]{../figures/mc_sampling_ex.pdf}
             \end{figure}    
     \end{frame}
+
+\end{comment}
 
     \begin{frame}{Estimating prior predictive distribution}
         \begin{itemize}
@@ -232,6 +236,8 @@ $$
         
 
         \begin{frame}{Log-Sum-Exp Trick}
+            [Ref: \url{https://gregorygundersen.com/blog/2020/02/09/log-sum-exp/}]
+
             The log-sum-exp trick is a technique to compute $\log\left(\frac{1}{N} \sum_{i=1}^{N} e^{a_i}\right)$ more efficiently.
             
             \begin{equation}
@@ -344,6 +350,7 @@ $$
     \begin{subsection}{PRNG}
 
     \begin{frame}{Sampling from uniform U(0, 1)}
+        [Ref: \url{https://en.wikipedia.org/wiki/Linear_congruential_generator}]
         
     
     \begin{itemize}
@@ -388,9 +395,9 @@ Notebook: random-uniform.ipynb
     \begin{itemize}
         \item Let us try to generate samples from the exponential distribution. 
         \item \pause The PDF of the exponential distribution is given by:
-        \item \pause \begin{equation}
-            p(x) = \lambda e^{-\lambda x}
-        \end{equation}
+        \item \pause PDF: $p(x) = \lambda e^{-\lambda x}$
+        \item \pause CDF: $F(x) = 1 - e^{-\lambda x}$. Prove!
+        
     \end{itemize}
 
     \begin{figure}
@@ -399,9 +406,35 @@ Notebook: random-uniform.ipynb
     
 \end{frame}
 
-\begin{frame}
-    Notebook: inverse-cdf.ipynb
+\subsection{Inverse CDF Sampling}
+\begin{frame}{Inverse CDF sampling}
+    \begin{itemize}
+        \item \pause PDF: $p(x) = \lambda e^{-\lambda x}$
+        \item \pause CDF: $F(x) = 1 - e^{-\lambda x}$. Prove!
+        
+    \end{itemize}
+
+    \begin{equation}
+        F(x) = \int_{-\infty}^{x} p(x) dx
+    \end{equation}
+
+    \begin{equation}
+        F(x) = \int_{-\infty}^{x} \lambda e^{-\lambda x} dx
+    \end{equation}
+
+
+    \begin{equation}
+        F(x) = \left[ -e^{-\lambda x} \right]_{-\infty}^{x}
+    \end{equation}
+
+    \begin{equation}
+        F(x) = 1 - e^{-\lambda x}
+    \end{equation}
+
+    
 \end{frame}
+
+
 
 % Loop for lambda values from 1 to 10
 \foreach \ns in {1,2,3,4,5,6,7,8,9}{
@@ -429,26 +462,25 @@ Notebook: random-uniform.ipynb
             \item \pause We then find the value of $x$ such that $F(x) = u$.
     \item \pause This is equivalent to finding the inverse of the CDF, i.e., $F^{-1}(u)$.
         \item \pause For the exponential distribution, let us try to find $F^{-1}(u)$.
-        \item \pause \begin{equation}
-            u = 1 - e^{-x}
-        \end{equation}
-        \item \pause \begin{equation}
-            x = -\log(1 - u)
-        \end{equation}
+        \item \pause  $u = 1 - e^{-x}$
+        
+        \item \pause 
+            $x = -\log(1 - u)$
+        
     \end{itemize}
         
     
 \end{frame}
+
+\begin{frame}
+    Notebook: inverse-cdf.ipynb
+\end{frame}
+
 \begin{frame}{Inverse CDF sampling}
     [From Wikipedia page on Inverse Transform Sampling]
-    From $U \sim \operatorname{Unif}[0,1]$, we want to generate $X$ with $\operatorname{CDF} F_X(x)$. We assume $F_X(x)$ to be a continuous, strictly increasing function, which provides good intuition.
 
-We want to see if we can find some strictly monotone transformation $T:[0,1] \mapsto \mathbb{R}$, such that $T(U) \stackrel{d}{=} X$. We will have
-$$
-F_X(x)=\operatorname{Pr}(X \leq x)=\operatorname{Pr}(T(U) \leq x)=\operatorname{Pr}\left(U \leq T^{-1}(x)\right)=T^{-1}(x), \text { for } x \in \mathbb{R},
-$$
-where the last step used that $\operatorname{Pr}(U \leq y)=y$ when $U$ is uniform on $[0,1]$.
-So we got $F_X$ to be the inverse function of $T$, or, equivalently $T(u)=F_X^{-1}(u), u \in[0,1]$. Therefore, we can generate $X$ from $F_X^{-1}(U)$.
+    \url{https://en.wikipedia.org/wiki/Inverse_transform_sampling}
+
 \end{frame}
 
 \subsection{Sampling from Normal Distribution}
@@ -475,6 +507,12 @@ So we got $F_X$ to be the inverse function of $T$, or, equivalently $T(u)=F_X^{-
     \end{itemize}
     
 \end{frame}
+
+\begin{frame}{Generating samples from Multivariate $\mathcal{N}(\mu, \Sigma)$}
+    Drawing values from the distribution in \url{https://en.wikipedia.org/wiki/Multivariate_normal_distribution}
+\end{frame}
+
+
     
 \end{section}
 
@@ -482,11 +520,15 @@ So we got $F_X$ to be the inverse function of $T$, or, equivalently $T(u)=F_X^{-
     \begin{frame}{Rejection Sampling}
         \begin{itemize}
             \item Let $p(x)$ be the target distribution from which we want to sample.
-            \item Let $q(x)$ be a proposal distribution from which we can sample.
-            \item Let $M$ be a constant such that $M \geq \frac{p(x)}{q(x)} \forall x$.
-            \item Then, we can sample from $p(x)$ by sampling from $q(x)$ and accepting the sample with probability $\frac{p(x)}{M q(x)}$.
+            \pause \item Let $q(x)$ be a proposal distribution from which we can sample.
+            \pause \item Let $M$ be a constant such that $M \geq \frac{p(x)}{q(x)} \forall x$.
+            \pause \item Then, we can sample from $p(x)$ by sampling from $q(x)$ and accepting the sample with probability $\frac{p(x)}{M q(x)}$.
         \end{itemize}
         
+    \end{frame}
+
+    \begin{frame}
+        Notebook: \url{rejection-sampling.ipynb}
     \end{frame}
 
    \begin{frame}{Rejection Sampling}
@@ -546,13 +588,32 @@ So we got $F_X$ to be the inverse function of $T$, or, equivalently $T(u)=F_X^{-
         \end{figure}
     \end{frame}
 
-    \begin{frame}{Rejection Sampling}
+    \begin{frame}{Rejection Sampling (Rejected Sample)}
         \begin{figure}
             \centering
             \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-True-True-True-True-True.pdf}
         \end{figure}
     \end{frame}
 
+
+    \begin{frame}{Rejection Sampling (Accepted Sample)}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--0.2-True-True-True-True-True-True-True-True.pdf}
+        \end{figure}
+    \end{frame}
+
+    \foreach \n in {10, 1000, 10000}{
+    \begin{frame}{Rejection Sampling (\n{} samples)}
+        \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-N\n-False.pdf}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling (\n{} samples) (KDE)}
+        \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-N\n-True.pdf}
+    \end{frame}
+}
+
+   
     \begin{frame}{Proof of Rejection Sampling}
         \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Acceptance Probability $\alpha(x)$}]
             \begin{equation}
