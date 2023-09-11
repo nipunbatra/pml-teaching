@@ -152,9 +152,9 @@
 
     \begin{frame}{Estimating prior predictive distribution}
         \begin{itemize}
-            \item Let $p(\theta)$ be the prior distribution of parameter $\theta \in \mathbb{R}^2$. Say, for example, $p(\theta_i) = \mathcal{N}(0, 1) \forall i$.
-            \item Let $p(y |\theta, x)$ be the likelihood function. Say, for example, $p(y|\theta, x) = \mathcal{N}(\theta_0 + \theta_1 x, 1)$.
-            \item Then, the prior predictive distribution is given by:
+            \item Let $p(\theta)$ be the prior distribution of parameter. Say, for example, $p(\theta_i) = \mathcal{N}(0, 1) ~\forall i$ or $p(\theta) = \mathcal{N}(\mu, \Sigma)$.
+            \pause \item Let $p(y |\theta, x)$ be the likelihood function. Say, for example, $p(y|\theta, x) = \mathcal{N}(x^T\theta, 1)$.
+            \pause \item Then, the prior predictive distribution is given by:
         \end{itemize}
 
             \begin{equation}
@@ -167,18 +167,124 @@
             where $\theta_i \sim p(\theta)$.
     \end{frame}
 
+    \begin{frame}{Estimating prior predictive distribution}
+        Notebook: \url{mc-linreg-predictive.ipynb}
+    \end{frame}
+
     \begin{frame}{Estimating posterior predictive distribution}
         Extending for posterior predictive distribution, we have:
 
-        \begin{equation}
+        \pause \begin{equation}
             p(y|x, D) = \int p(y|\theta, x) p(\theta|D) d\theta 
         \end{equation}
 
-        \begin{equation}
+        \pause \begin{equation}
             p(y|x, D) \approx \frac{1}{N} \sum_{i=1}^{N} p(y|\theta_i, x)
         \end{equation}
+
+        \pause where $\theta_i \sim p(\theta|D)$.
         
     \end{frame}
+
+    \begin{frame}{Estimating marginal likelihood or evidence term for linear regression}
+        [Ref: MML book 9.3.5]
+
+        We consider the following generative process:
+$$
+\begin{aligned}
+\boldsymbol{\theta} & \sim \mathcal{N}\left(\boldsymbol{m}_0, \boldsymbol{S}_0\right) \\
+y_n \mid \boldsymbol{x}_n, \boldsymbol{\theta} & \sim \mathcal{N}\left(\boldsymbol{x}_n^{\top} \boldsymbol{\theta}, \sigma^2\right),
+\end{aligned}
+$$
+$n=1, \ldots, N$. 
+
+\pause The marginal likelihood is given by
+$$
+\begin{aligned}
+p(\mathcal{Y} \mid \mathcal{X}) & =\int p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}) p(\boldsymbol{\theta}) \mathrm{d} \boldsymbol{\theta} \\
+& =\int \mathcal{N}\left(\boldsymbol{y} \mid \boldsymbol{X} \boldsymbol{\theta}, \sigma^2 \boldsymbol{I}\right) \mathcal{N}\left(\boldsymbol{\theta} \mid \boldsymbol{m}_0, \boldsymbol{S}_0\right) \mathrm{d} \boldsymbol{\theta}
+\end{aligned}
+$$
+
+\pause \begin{equation}
+    =\mathcal{N}\left(\boldsymbol{y} \mid \boldsymbol{X} \boldsymbol{m}_0, \boldsymbol{X} \boldsymbol{S}_0 \boldsymbol{X}^{\top}+\sigma^2 \boldsymbol{I}\right)
+    \end{equation}
+        
+    \end{frame}
+
+    \begin{frame}{Estimating marginal likelihood or evidence term for linear regression}
+        Instead if we used Monte Carlo methods, we would have:
+        \pause \begin{equation}
+            I = p(\mathcal{Y} \mid \mathcal{X}) \approx \frac{1}{N} \sum_{i=1}^{N} p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i)
+        \end{equation}
+        where $\boldsymbol{\theta}_i \sim p(\boldsymbol{\theta})$.
+    \end{frame}
+        
+        \begin{frame}{Estimating Marginal Likelihood in Linear Regression}
+            Generally, we work with log probabilities instead:
+            
+            \begin{equation}
+                \log I = \log p(\mathcal{Y} \mid \mathcal{X}) \approx \log\left(\frac{1}{N} \sum_{i=1}^{N} p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i)\right)
+            \end{equation}
+            
+            The log-sum-exp trick helps us compute this efficiently.
+        \end{frame}
+        
+
+        \begin{frame}{Log-Sum-Exp Trick}
+            The log-sum-exp trick is a technique to compute $\log\left(\frac{1}{N} \sum_{i=1}^{N} e^{a_i}\right)$ more efficiently.
+            
+            \begin{equation}
+                \log\left(\frac{1}{N} \sum_{i=1}^{N} e^{a_i}\right) = \log\left(e^{\text{max}(a_i)} \frac{1}{N} \sum_{i=1}^{N} e^{a_i - \text{max}(a_i)}\right)
+            \end{equation}
+            
+            \pause
+            \begin{equation}
+                = \text{max}(a_i) + \log\left(\frac{1}{N} \sum_{i=1}^{N} e^{a_i - \text{max}(a_i)}\right)
+            \end{equation}
+        \end{frame}
+        
+        \begin{frame}{Log-Sum-Exp Trick in Linear Regression}
+            Applying the log-sum-exp trick to linear regression:
+            
+            \begin{equation}
+                \log I = \log p(\mathcal{Y} \mid \mathcal{X}) \approx \log\left(\frac{1}{N} \sum_{i=1}^{N} p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i)\right)
+            \end{equation}
+            
+            \begin{equation}
+                = \log\left(\frac{1}{N} \sum_{i=1}^{N} e^{\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i)}\right)
+            \end{equation}
+            
+            \pause
+            \begin{equation}
+                = \log\left(\frac{1}{N} \sum_{i=1}^{N} e^{\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i) - \text{max}(\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i))}\right)
+            \end{equation}
+            
+            \pause
+            \begin{equation}
+                = \text{max}(\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i)) + \log\left(\frac{1}{N} \sum_{i=1}^{N} e^{\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i) - \text{max}(\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i))}\right)
+            \end{equation}
+        \end{frame}
+        
+        \begin{frame}{Efficient Computation}
+            The log-sum-exp trick allows us to compute $\log I$ more efficiently by:
+            
+            \begin{itemize}
+                \item Subtracting the maximum value of $\log p(\mathcal{Y} \mid \mathcal{X}, \boldsymbol{\theta}_i)$ to avoid numerical issues with exponentiation.
+                \item Adding the maximum value back after the sum of exponentials.
+            \end{itemize}
+            
+            This technique helps prevent overflow and underflow issues when dealing with large or small values in the exponentials.
+        \end{frame}
+
+
+        \begin{frame}{Estimating Marginal Likelihood in Linear Regression}
+            Notebook: \url{mc-linreg-evidence.ipynb}
+            
+        \end{frame}
+        
+
+ 
 
 
     \subsection{Bias and Variance of Monte Carlo}
@@ -216,6 +322,7 @@
         Thus, the expected error drops as $\mathcal{O} (N^{-\frac{1}{2}})$.
     \end{frame}
 
+    \begin{comment}
     \begin{frame}{Pop Quiz}
         How many samples ($N$) do we need to reach single-precision (i.e., $\sim 10^{-7}$)?
     \end{frame}
@@ -228,7 +335,7 @@
             \item need to know regions of high density
         \end{itemize}
     \end{frame}
-
+\end{comment}
     
 \end{section}
 
