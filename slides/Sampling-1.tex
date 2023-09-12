@@ -414,26 +414,53 @@ Notebook: random-uniform.ipynb
         
     \end{itemize}
 
-    \begin{equation}
-        F(x) = \int_{-\infty}^{x} p(x) dx
-    \end{equation}
+    \pause We use RV $Y$ instead of $X$ to avoid confusion with the CDF limits of integration. 
 
     \begin{equation}
-        F(x) = \int_{-\infty}^{x} \lambda e^{-\lambda x} dx
+        F(x) = \int_{-\infty}^{x} p(y) dy
     \end{equation}
 
-
-    \begin{equation}
-        F(x) = \left[ -e^{-\lambda x} \right]_{-\infty}^{x}
+   \pause But, we know that $p(y) = 0$ for $y < 0$.
+    
+   \pause \begin{equation}
+        F(x) = \int_{0}^{x} p(y) dy
     \end{equation}
 
-    \begin{equation}
-        F(x) = 1 - e^{-\lambda x}
+    \pause \begin{equation}
+        F(x) = \int_{0}^{x} \lambda e^{-\lambda y} dy
     \end{equation}
+
 
     
 \end{frame}
 
+\begin{frame}
+    
+   Let $z = -\lambda y$. Thus, $dz = -\lambda dy$; and $dy = -\frac{1}{\lambda} dz$.
+
+   \pause At $y=0$, $z=0$. At $y=x$, $z=-\lambda y$.
+
+   Thus, \begin{equation}
+         F(x) = \int_{0}^{-\lambda x} \lambda e^{z} \left(-\frac{1}{\lambda}\right) dz
+    \end{equation}
+
+    \pause \begin{equation}
+         F(x) = -\int_{0}^{-\lambda x} e^{z} dz
+    \end{equation}
+
+    \pause \begin{equation}
+         F(x) = -\left[e^{z}\right]_{0}^{-\lambda x}
+    \end{equation}
+
+    \pause \begin{equation}
+         F(x) = -\left(e^{-\lambda x} - e^{0}\right)
+\end{equation}
+
+    \pause \begin{equation}
+         F(x) = 1 - e^{-\lambda x}
+    \end{equation}
+   
+\end{frame}
 
 
 % Loop for lambda values from 1 to 10
