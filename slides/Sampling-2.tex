@@ -29,6 +29,198 @@
 
 \end{frame}
 
+\subsection{Rejection Sampling}
+    \begin{frame}{Rejection Sampling}
+        \begin{itemize}
+            \item Let $p(x)$ be the target distribution from which we want to sample.
+            \pause \item Let $q(x)$ be a proposal distribution from which we can sample.
+            \pause \item Let $M$ be a constant such that $M \geq \frac{p(x)}{q(x)} \forall x$.
+            \pause \item Then, we can sample from $p(x)$ by sampling from $q(x)$ and accepting the sample with probability $\frac{p(x)}{M q(x)}$.
+        \end{itemize}
+        
+    \end{frame}
+
+    \begin{frame}
+        Notebook: \url{rejection-sampling.ipynb}
+    \end{frame}
+
+   \begin{frame}{Rejection Sampling}
+    \begin{figure}
+        \centering
+        \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-False-False-False-False-False-False-False-False.pdf}
+    \end{figure}
+    
+   \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-False-False-False-False-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-False-False-False-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-False-False-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-True-False-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-True-True-False-False-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-True-True-True-False-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-True-True-True-True-False.pdf}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling (Rejected Sample)}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--1.0-True-True-True-True-True-True-True-True.pdf}
+        \end{figure}
+    \end{frame}
+
+
+    \begin{frame}{Rejection Sampling (Accepted Sample)}
+        \begin{figure}
+            \centering
+            \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling--0.2-True-True-True-True-True-True-True-True.pdf}
+        \end{figure}
+    \end{frame}
+
+    \foreach \n in {10, 1000, 10000}{
+    \begin{frame}{Rejection Sampling (\n{} samples)}
+        \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-N\n-False.pdf}
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling (\n{} samples) (KDE)}
+        \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-N\n-True.pdf}
+    \end{frame}
+}
+
+   
+    \begin{frame}{Proof of Rejection Sampling}
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Acceptance Probability $\alpha(x)$}]
+            \begin{equation}
+              \alpha(x) = \frac{p(x)}{M q(x)}
+            \end{equation}
+        \end{tcolorbox}
+       
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Bayes Rule for Acceptance}]
+            \begin{equation}
+                P(Sample|Accept) = \frac{P(Accept|Sample) P(Sample)}{P(Accept)}
+            \end{equation}
+        \end{tcolorbox}
+
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={P(Sample)}]
+            We draw samples from $q(x)$, so $P(Sample) = q(x)$.
+        \end{tcolorbox}
+    \end{frame}
+
+    \begin{frame}{Proof of Rejection Sampling}
+
+        Further, $P(Accept|Sample) = \alpha(x) = \dfrac{p(x)}{M q(x)}$.
+
+        Finally, $P(Accept) = \int P(Accept|Sample) P(Sample) dSample = \int \alpha(x) q(x) dx = \dfrac{1}{M} \int p(x) dx = \dfrac{1}{M}$.
+        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={P(Accept)}]
+            \begin{equation}
+                P(Accept) = \frac{1}{M}
+            \end{equation}
+        \end{tcolorbox}
+        
+
+        Thus, $P(Sample|Accept) = \dfrac{p(x)}{M q(x)} \times \dfrac{q(x)}{1/M} = p(x)$.
+
+        Thus, we have shown that the samples we accept are distributed according to $p(x)$.
+        
+    \end{frame}
+
+    \begin{frame}{Rejection Sampling Completed Example}
+        Note: Figures not on github.
+    \end{frame}
+
+    % \begin{frame}{Rejection Sampling Completed Example}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10-False.pdf}
+    %     \end{figure}
+        
+    % \end{frame}
+
+    % \begin{frame}{Rejection Sampling Completed Example}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10-True.pdf}
+    %     \end{figure}
+        
+    % \end{frame}
+
+    % \begin{frame}{Rejection Sampling Completed Example}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N1000-False.pdf}
+    %     \end{figure}
+    % \end{frame}
+
+    % \begin{frame}{Rejection Sampling Completed Example}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N1000-True.pdf}
+    %     \end{figure}
+    % \end{frame}
+
+    % \begin{frame}{Rejection Sampling Completed Example}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10000-False.pdf}
+    %     \end{figure}
+    % \end{frame}
+
+    % \begin{frame}{Rejection Sampling Completed Example}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10000-True.pdf}
+    %     \end{figure}
+    % \end{frame} 
+
+    \begin{frame}{Challenges with Rejection Sampling}
+        \begin{itemize}
+            \item Rejection sampling is inefficient when the target distribution is very different from the proposal distribution.
+            \item In this case, we will reject a lot of samples.
+            \item This is a problem when sampling from high-dimensional distributions.
+            \item Acceptance probability $\alpha(x)$ is very low.
+        \end{itemize}
+    \end{frame}
+
+
 \section{Markov Chains}
 \begin{frame}
     \url{https://nipunbatra.github.io/hmm/}
