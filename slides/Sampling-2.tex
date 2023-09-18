@@ -334,6 +334,30 @@
     
 \end{frame}
 
+\begin{frame}{Importance Sampling (with unnormlized $\tilde{p}(x)$ instead of $p(x)$)}
+    \begin{equation}
+        \begin{aligned}
+        I = \int f(x) p(x) \mathrm{d} x & \approx \frac{1}{Z} \frac{1}{S} \sum_s f\left(x_S\right) \frac{\tilde{p}\left(x_S\right)}{q\left(x_S\right)} \\
+        \end{aligned}
+        \end{equation}
+
+        Now, we need to estimate $Z$.
+
+        \begin{equation}
+        \begin{aligned}
+        Z &= \int \tilde{p}(x) \mathrm{d} x &= \int \frac{\tilde{p}(x)}{q(x)} q(x) \mathrm{d} x \\
+        &= \mathbb{E}_q \left[ \frac{\tilde{p}(x)}{q(x)} \right] &= \frac{1}{S} \sum_s \frac{\tilde{p}\left(x_S\right)}{q\left(x_S\right)}
+        \end{aligned}
+        \end{equation}
+
+        Thus, we can write $I$ as:
+        \begin{equation}
+        \begin{aligned}
+            I  \approx \frac{1}{S} \sum_s f\left(x_s\right) \frac{\tilde{p}\left(x_s\right) / q\left(x_s\right)}{\frac{1}{s} \sum_t \tilde{p}\left(x_t\right) / q\left(x_t\right)}=: \sum_s f\left(x_s\right) \tilde{w}_s
+            \end{aligned}
+        \end{equation}
+\end{frame}
+
 
 \section{Markov Chains}
 \begin{frame}
