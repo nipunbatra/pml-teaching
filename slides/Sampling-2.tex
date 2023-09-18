@@ -29,12 +29,26 @@
 
 \end{frame}
 
+\begin{frame}{Main Goal}
+    \begin{itemize}
+        \item We want to compute posterior predictive distribution (or something similar)
+        \pause \item We would typically use Monte Carlo methods to do this.
+        \pause \item $I = \int f(x) p(x) dx$ where $p(x)$ is the posterior distribution.
+        \pause \item We can approximate $I$ by $\frac{1}{N} \sum_{i=1}^N f(x_i)$, where $x_i \sim p(x)$.
+        \pause \item Goal: sample from $p(x)$.
+    \end{itemize}
+\end{frame}
+
 \subsection{Rejection Sampling}
     \begin{frame}{Rejection Sampling}
         \begin{itemize}
             \item Let $p(x)$ be the target distribution from which we want to sample.
+            \pause \item Typically, $p(x)$ is the posterior distribution.
+            \pause \item But, we do not have access to $p(x)$. Rather, we have access to $\tilde{p}(x)$, which is proportional to $p(x)$.
+            \pause \item We can write $p(x) = \frac{\tilde{p}(x)}{Z}$, where $Z$ is the normalization constant.
+            \pause \item Typically, $\tilde{p}(x)$ is the joint distribution of the data and the parameters.
             \pause \item Let $q(x)$ be a proposal distribution from which we can sample.
-            \pause \item Let $M$ be a constant such that $M \geq \frac{p(x)}{q(x)} \forall x$.
+            \pause \item Let $M$ be a constant such that $M \geq \frac{\tilde{p(x)}}{q(x)}$ for all $x$.
             \pause \item Then, we can sample from $p(x)$ by sampling from $q(x)$ and accepting the sample with probability $\frac{p(x)}{M q(x)}$.
         \end{itemize}
         
@@ -126,99 +140,199 @@
     \end{frame}
 }
 
+\begin{frame}{Rejection Sampling Proof}
+    \begin{itemize}
+        \item Acknowledgement: Borrowed from ritvikmath YT channel
+        \item Aim: 
+        \begin{itemize}
+            \pause \item Show that the samples we accept are distributed according to $p(x)$. 
+            \pause \item Or, the density of an accepted sample (say $x_s$) is $p(x_s)$ (and not $\tilde{p}(x_s)$).
+        \end{itemize}
+           
+
+            \pause \item Acceptance Probability $\alpha(x)$: Probability that we accept a sample $x_s$ generated from $q(x)$.
+        \begin{equation}
+            \alpha(x_s) = \frac{\tilde{p}(x_s)}{M q(x_s)} = P(Accept|x_s)
+        \end{equation}
+
+        
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Rejection Sampling Proof}
+    
+    \begin{itemize}
+        
+        \item Bayes Rule for Acceptance:
+        \begin{equation}
+            P(x_s|Accept) = \frac{P(Accept|x_s) P(x_s)}{P(Accept)}
+        \end{equation}
+        
+        \begin{itemize}
+           
+        
+        \item where $P(x_s|Accept)$ is the density of accepted sample $x_s$. We want to evaluate this and show this is $p(x_s)$.
+        
+        \pause
+        
+        \item $P(Accept|x_s)$ is $\alpha(x_s)$
+        
+        \pause
+        \item $P(x_s) = q(x)$ is the density of samples we draw from $q(x)$.
+        
+        \pause 
+        \item $P(Accept)$ is the unconditional probability that we accept a sample generated from $q(x)$.
+    \end{itemize}
+
+    \end{itemize}
+    
+    
+\end{frame}
+
+
+\begin{frame}{Proof of Rejection Sampling}
+
+\begin{itemize}
+    \item  P(Accept) is the unconditional probability that we accept a sample generated from $q(x)$.
+    \pause \begin{equation}
+        P(Accept) = \int P(Accept|x_s) P(x_s) dx_s
+    \end{equation}
+
+    \pause \begin{equation}
+        P(Accept) = \int \alpha(x_s) q(x_s) dx_s
+    \end{equation}
+    
+    \pause \begin{equation}
+        P(Accept) = \int \frac{\tilde{p}(x_s)}{M q(x_s)} q(x_s) dx_s
+    \end{equation}
+
+    \pause \begin{equation}
+        P(Accept) = \frac{1}{M} \int \tilde{p}(x_s) dx_s
+    \end{equation}
+
+    \pause \begin{equation}
+        P(Accept) = \frac{Z}{M}
+    \end{equation}
+
+    where $Z$ is the normalization constant of $\tilde{p}(x)$.
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Proof of Rejection Sampling}
+    Plugging in the values
+
+    \begin{equation}
+        P(x_s|Accept) = \frac{P(Accept|x_s) P(x_s)}{P(Accept)}
+    \end{equation}
+
+    \pause \begin{equation}
+        P(x_s|Accept) = \frac{\alpha(x_s) q(x_s)}{P(Accept)}
+    \end{equation}
+
+    \pause \begin{equation}
+        P(x_s|Accept) = \frac{\frac{\tilde{p}(x_s)}{M q(x_s)} q(x_s)}{\frac{Z}{M}}
+    \end{equation}
+
+    \pause \begin{equation}
+        P(x_s|Accept) = \frac{\tilde{p}(x_s)}{Z}
+    \end{equation}
+
+    \pause \begin{equation}
+        P(x_s|Accept) = p(x_s)
+    \end{equation}
+
+    
+\end{frame}
+
+\begin{frame}{Thought Experiment}
+    \begin{itemize}
+        \item Let us assume $\tilde{p}(x)$ is $D$ dimensional Gaussian $\mathcal{N}_D(0, \sigma_p^2 I)$
+        \pause \item Let us assume our proposal distribution $q(x)$ is $\mathcal{N}_D(0, \sigma_q^2 I)$
+        \pause \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-gaussian-p-q.pdf}
+        \item How to choose multiplier $M$?
+        \item Match the densities at the peak of $\tilde{p}(x)$ and $q(x)$, i.e. at $x = \vec{0}$.
+    \end{itemize}
+
+    
+\end{frame}
+
+\begin{frame}{Thought Experiment}
+    \begin{itemize}
+        \item Match the densities at the peak of $\tilde{p}(x)$ and $q(x)$, i.e. at $x = \vec{0}$.
+        \pause \item $\tilde{p}(x) = \frac{1}{(2\pi)^{D/2} \sigma_p^D} \exp(-\frac{1}{2\sigma_p^2} x^T x)$
+        \pause \item $q(x) = \frac{1}{(2\pi)^{D/2} \sigma_q^D} \exp(-\frac{1}{2\sigma_q^2} x^T x)$
+        \pause \item At $x = \vec{0}$, $\tilde{p}(x) = \frac{1}{(2\pi)^{D/2} \sigma_p^D}$ and $q(x) = \frac{1}{(2\pi)^{D/2} \sigma_q^D}$
+        \pause \item $M = \frac{\tilde{p}(x)}{q(x)} = \frac{\sigma_q^D}{\sigma_p^D} = (\frac{\sigma_q}{\sigma_p})^D$
+    \end{itemize}
+
+    
+\end{frame}
+
+\begin{frame}{Thought Experiment}
+    \begin{itemize}
+        \item $M = \frac{\tilde{p}(x)}{q(x)} = \frac{\sigma_q^D}{\sigma_p^D} = (\frac{\sigma_q}{\sigma_p})^D$
+        \item Let us assume $\sigma_p = 1$ and $\sigma_q = 1.1$
+    \end{itemize}
+    \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-gaussian-p-q-M.pdf}
+
+    
+\end{frame}
    
-    \begin{frame}{Proof of Rejection Sampling}
-        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Acceptance Probability $\alpha(x)$}]
-            \begin{equation}
-              \alpha(x) = \frac{p(x)}{M q(x)}
-            \end{equation}
-        \end{tcolorbox}
-       
-        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={Bayes Rule for Acceptance}]
-            \begin{equation}
-                P(Sample|Accept) = \frac{P(Accept|Sample) P(Sample)}{P(Accept)}
-            \end{equation}
-        \end{tcolorbox}
+\begin{frame}{Thought Experiment}
+    \begin{itemize}
+        \item $M = \frac{\tilde{p}(x)}{q(x)} = \frac{\sigma_q^D}{\sigma_p^D} = (\frac{\sigma_q}{\sigma_p})^D$
+        \item Let us assume $\sigma_p = 1$ and $\sigma_q = 1.1$
+       \includegraphics[width=\textwidth]{../figures/sampling/rejection-sampling-gaussian-p-q-acceptance.pdf}
+        \item Acceptance probability is very low as $D$ increases.
+    \end{itemize}
 
-        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={P(Sample)}]
-            We draw samples from $q(x)$, so $P(Sample) = q(x)$.
-        \end{tcolorbox}
-    \end{frame}
-
-    \begin{frame}{Proof of Rejection Sampling}
-
-        Further, $P(Accept|Sample) = \alpha(x) = \dfrac{p(x)}{M q(x)}$.
-
-        Finally, $P(Accept) = \int P(Accept|Sample) P(Sample) dSample = \int \alpha(x) q(x) dx = \dfrac{1}{M} \int p(x) dx = \dfrac{1}{M}$.
-        \begin{tcolorbox}[colback=metropolisblue!5,colframe=metropolisblue,title={P(Accept)}]
-            \begin{equation}
-                P(Accept) = \frac{1}{M}
-            \end{equation}
-        \end{tcolorbox}
-        
-
-        Thus, $P(Sample|Accept) = \dfrac{p(x)}{M q(x)} \times \dfrac{q(x)}{1/M} = p(x)$.
-
-        Thus, we have shown that the samples we accept are distributed according to $p(x)$.
-        
-    \end{frame}
-
-    \begin{frame}{Rejection Sampling Completed Example}
-        Note: Figures not on github.
-    \end{frame}
-
-    % \begin{frame}{Rejection Sampling Completed Example}
-    %     \begin{figure}
-    %         \centering
-    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10-False.pdf}
-    %     \end{figure}
-        
-    % \end{frame}
-
-    % \begin{frame}{Rejection Sampling Completed Example}
-    %     \begin{figure}
-    %         \centering
-    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10-True.pdf}
-    %     \end{figure}
-        
-    % \end{frame}
-
-    % \begin{frame}{Rejection Sampling Completed Example}
-    %     \begin{figure}
-    %         \centering
-    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N1000-False.pdf}
-    %     \end{figure}
-    % \end{frame}
-
-    % \begin{frame}{Rejection Sampling Completed Example}
-    %     \begin{figure}
-    %         \centering
-    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N1000-True.pdf}
-    %     \end{figure}
-    % \end{frame}
-
-    % \begin{frame}{Rejection Sampling Completed Example}
-    %     \begin{figure}
-    %         \centering
-    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10000-False.pdf}
-    %     \end{figure}
-    % \end{frame}
-
-    % \begin{frame}{Rejection Sampling Completed Example}
-    %     \begin{figure}
-    %         \centering
-    %         \includegraphics[scale = 0.75]{../figures/sampling/rejection-sampling-N10000-True.pdf}
-    %     \end{figure}
-    % \end{frame} 
+    
+\end{frame}
+    
 
     \begin{frame}{Challenges with Rejection Sampling}
         \begin{itemize}
-            \item Rejection sampling is inefficient when the target distribution is very different from the proposal distribution.
-            \item In this case, we will reject a lot of samples.
-            \item This is a problem when sampling from high-dimensional distributions.
-            \item Acceptance probability $\alpha(x)$ is very low.
+            \item Rejection sampling is inefficient when the target distribution is very different from the proposal distribution. In this case, we will reject a lot of samples.
+            \item This is a problem when sampling from high-dimensional distributions. Acceptance probability $\alpha(x)$ is very low.
         \end{itemize}
     \end{frame}
+
+\subsection{Importance Sampling}
+
+\begin{frame}{Back to the main problem at hand}
+    \begin{itemize}
+        \item We want to compute posterior predictive distribution (or something similar)
+        \item We would typically use Monte Carlo methods to do this.
+        \item $I = \int f(x) p(x) dx$ where $p(x)$ is the posterior distribution.
+        \item We can approximate $I$ by $\frac{1}{N} \sum_{i=1}^N f(x_i)$, where $x_i \sim p(x)$.
+        \item But, we do not have access to $p(x)$. Rather, we have access to $\tilde{p}(x)$, which is proportional to $p(x)$.
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Back to the main problem at hand}
+    \begin{itemize}
+        \item We can approximate $I$ by $\frac{1}{N} \sum_{i=1}^N f(x_i)$, where $x_i \sim p(x)$.
+        \item But, we do not have access to $p(x)$. Rather, we have access to $\tilde{p}(x)$, which is proportional to $p(x)$.
+        \item In rejection sampling, we took a sample $x_i$ from $q(x)$ and accepted it with probability $\frac{\tilde{p}(x_i)}{M q(x_i)}$.
+        \item Can we use all samples $x_i$ from $q(x)$ without rejection?
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Importance Sampling}
+    \begin{itemize}
+        \item In rejection sampling, we took a sample $x_i$ from $q(x)$ and accepted it with probability $\frac{\tilde{p}(x_i)}{M q(x_i)}$.
+        \item Can we use all samples $x_i$ from $q(x)$ without rejection?
+        \item $I = \int f(x) p(x) dx \approx \frac{1}{N} \sum_{i=1}^N f(x_i)$, where $x_i \sim p(x)$.
+        \item Let us choose a proposal distribution $q(x)$ which has support over the entire domain of $p(x)$.
+        \item $I = \int f(x) p(x) dx = \int f(x) \frac{p(x)}{q(x)} q(x) dx$
+        \item $I = \int f(x) w(x) q(x) dx$, where $w(x) = \frac{p(x)}{q(x)}$. $w(x)$ is called the importance weight.
+        \item $I = \mathbb{E}_q[f(x) w(x)] = \sum_{i=1}^N f(x_i) w(x_i)$, where $x_i \sim q(x)$.
+    \end{itemize}
+    
+\end{frame}
 
 
 \section{Markov Chains}
