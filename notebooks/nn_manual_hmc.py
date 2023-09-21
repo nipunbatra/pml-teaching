@@ -30,22 +30,13 @@ def log_prior(theta):
 
 
 def log_likelihood(theta):
-    #theta = theta.flip(0)
     params_list = hamiltorch.util.unflatten(net, theta)
-
-    ### Inplace call
-    # hamiltorch.util.update_model_params_in_place(net, params_list)
-    # y_pred = net(x_lin.unsqueeze(1)).squeeze()
-    # print(y_pred[0:4], "first")
 
     ## Functional call
     params = net.state_dict()
     for i, (name, _) in enumerate(params.items()):
         params[name] = params_list[i]
     y_pred = torch.func.functional_call(net, params, x_lin.unsqueeze(1)).squeeze()
-    # print(y_pred[0:4], "second")
-
-    # print(y_pred.shape, y_lin.shape, y_pred)
     return dist.Normal(y_pred, 1).log_prob(y_lin).sum()
 
 
