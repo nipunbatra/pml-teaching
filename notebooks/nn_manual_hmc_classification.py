@@ -11,9 +11,9 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 class Net_Classification(torch.nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = torch.nn.Linear(2, 2)
-        self.fc2 = torch.nn.Linear(2, 2)
-        self.fc3 = torch.nn.Linear(2, 1)
+        self.fc1 = torch.nn.Linear(2, 5)
+        self.fc2 = torch.nn.Linear(5, 5)
+        self.fc3 = torch.nn.Linear(5, 1)
         
 
 
