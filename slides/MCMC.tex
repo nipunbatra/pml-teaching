@@ -401,10 +401,113 @@
 \begin{frame}{Properties of Markov Chain: Irreducibility}
     \begin{itemize}
         \item A Markov chain is said to be \textbf{irreducible} if every state is accessible from every other state.
-        \item In other words, there is a non-zero probability of reaching any state from any other state.
+        \pause \item In other words, there is a non-zero probability of reaching any state from any other state.
     \end{itemize}
 
     
+\end{frame}
+\begin{frame}{Properties of Markov Chain: Aperiodicity}
+    \begin{itemize}
+        \item A Markov chain is said to be \textbf{aperiodic} if the greatest common divisor of the set of all possible times between return to a state is 1.
+        \pause \item In other words, the chain does not return to a state in a periodic fashion.
+        \pause \item A simple check: can every state be reached in two consecutive timestamps?
+        
+    \end{itemize}
+
+    \pause Example 1
+
+    \begin{table}[h]
+      \centering
+      \caption{Transition Matrix (A)}
+      \begin{tabular}{cccc}
+        \toprule
+        & & \multicolumn{2}{c}{\(X_{t+1}\)} \\
+        \cmidrule{3-4}
+        & & Sunny & Rainy \\
+        \midrule
+        \multirow{2}{*}{\(X_t\)} & Sunny & 0.9 & 0.1 \\
+        & Rainy & 0.2 & 0.8 \\
+        \bottomrule
+      \end{tabular}
+    \end{table}
+
+    \pause Can we be in Rainy or Sunny state at $t=0$ and $t=1$. 
+
+    \pause Yes -> Aperiodic
+
+  \end{frame}
+
+  \begin{frame}{Properties of Markov Chain: Aperiodicity}
+    \begin{itemize}
+        \item A Markov chain is said to be \textbf{aperiodic} if the greatest common divisor of the set of all possible times between return to a state is 1.
+        \pause \item The chain does not return to a state in a periodic fashion.
+        \pause \item A simple check: can every state be reached in two consecutive timestamps?
+        
+    \end{itemize}
+  
+    \pause Example 1
+  
+    
+      \begin{tabular}{cccc}
+        \small
+        \toprule
+        & & \multicolumn{2}{c}{\(X_{t+1}\)} \\
+        \cmidrule{3-4}
+        & & Sunny & Rainy \\
+        \midrule
+        \multirow{2}{*}{\(X_t\)} & Sunny & 0.9 & 0.1 \\
+        & Rainy & 0.2 & 0.8 \\
+        \bottomrule
+      \end{tabular}
+  
+  
+    \pause Can we be in Rainy or Sunny state at $t=0$ and $t=1$. 
+  
+    \pause Yes -> Aperiodic
+  
+  
+  
+  
+  
+  
+  \end{frame}
+
+  \begin{frame}{Properties of Markov Chain: Aperiodicity}
+    \begin{itemize}
+        \item A Markov chain is said to be \textbf{aperiodic} if the greatest common divisor of the set of all possible times between return to a state is 1.
+        \pause \item In other words, the chain does not return to a state in a periodic fashion.
+        \pause \item A simple check: can every state be reached in two consecutive timestamps?
+        
+    \end{itemize}
+
+    \pause Example 2
+
+    \begin{table}[h]
+      \centering
+      \caption{Transition Matrix (A) for Four States}
+      \small % Add \small to make the font size smaller
+      \begin{tabular}{cccccc}
+        \toprule
+        & & \multicolumn{4}{c}{\(X_{t+1}\)} \\
+        \cmidrule{3-6}
+        & & State 1 & State 2 & State 3 & State 4 \\
+        \midrule
+        \multirow{4}{*}{\(X_t\)} & State 1 & 0 & 1 & 0 & 0 \\
+        & State 2 & 0.5 & 0 & 0.5 & 0 \\
+        & State 3 & 0 & 0.5 & 0 & 0.5 \\
+        & State 4 & 0 & 0 & 1 & 0 \\
+        \bottomrule
+      \end{tabular}
+    \end{table}
+
+  
+\end{frame}
+
+
+
+
+\begin{frame}
+
 \end{frame}
 
 \begin{frame}{Irreducible Markov Chain (2 States)}
@@ -477,11 +580,12 @@
 
     \begin{frame}{MCMC main idea}
         \begin{itemize}
-            \item We then identify a way to construct a `nice' Markov chain such that its stationary probability distribution is our target distribution $p(x)$.
+            \item We identify a way to construct a `nice' Markov chain such that its stationary probability distribution $\pi(x)$ is our target distribution $p(x)$.
             \item We then run the Markov chain for a long time and use the samples to estimate $I$.
             \item But, we thus far said: $x_i \sim p(x)$ are drawn \textbf{IID}. 
             \item But, if we use a Markov chain to generate samples, then the samples are not i.i.d.
             \item But, we can still use the samples to estimate $I$ using the \textbf{ergodic theorem}.
+            \item An irreducible, aperiodic, and stationary Markov chain has a unique stationary distribution $\pi$ and we can generate samples from $\pi$ and compute $I$.
         \end{itemize}
     \end{frame}
     
@@ -497,37 +601,7 @@
             \item But, we can still use the samples to estimate $I$ using the \textbf{ergodic theorem}.
         \end{itemize}
     \end{frame}
-        
-    \begin{frame}{Ergodic Theorem for Markov Chains}
-        \begin{itemize}
-            \item Let $X_1, X_2, \ldots$ be a Markov chain with stationary distribution $p(x)$.
-            \item Let $f$ be a function such that $\mathbb{E}[|f(X)|] < \infty$.
-            \item Then, $\frac{1}{N} \sum_{i=1}^N f(X_i) \rightarrow \mathbb{E}[f(X)]$ as $N \rightarrow \infty$.
-            \item The proof is similar to the proof of the law of large numbers.
-            \item The idea is that the estimates contain information about the shape of the target distribution $p$.
-        \end{itemize}
-    \end{frame}
 
-    \begin{frame}{Markov Chain Properties: Stationarity}
-        \begin{itemize}
-            \item A Markov chain is a sequence of random variables $X_1, X_2, \ldots$ with the property that the distribution of $X_{n+1}$ given $X_1, \ldots, X_n$ depends only on $X_n$.
-            \item A Markov chain is said to be \textbf{stationary} if the distribution of $X_{n+1}$ given $X_1, \ldots, X_n$ is the same as the distribution of $X_{n+1}$ given $X_n$.
-            \item A Markov chain is said to be \textbf{homogeneous} if the transition probabilities are independent of $n$.
-        \end{itemize}
-
-        
-    \end{frame}
-
-    \begin{frame}{Markov Chain}
-        \begin{itemize}
-            \item \textbf{Markov Chain}: A joint distribution $p(X)$ over a sequence of random variables $X = \{X_1, X_2, \ldots, X_n\}$ is said to have the Markov property if 
-            $$
-            p(X_i|X_1, \ldots, X_{i-1}) = p(X_i|X_{i-1}) 
-            $$
-            The sequence is then called a Markov chain.
-            \item The idea is that the estimates contain information about the shape of the target distribution $p$.
-        \end{itemize}
-    \end{frame}
 
     \begin{frame}{Metropolis Hastings}
         \begin{itemize}
