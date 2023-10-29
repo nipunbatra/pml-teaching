@@ -12,6 +12,11 @@
 *.cb2
 .*.lb
 
+# data folder from Pytorch
+data/
+./data/
+notebooks/.data/
+
 ## Intermediate documents:
 *.dvi
 *.xdv
