@@ -23,11 +23,63 @@
 % Section 1
 \section{Introduction}
 
-\begin{frame}{Main Idea}
+\begin{frame}{Bayesian ML: Recap}
     \begin{itemize}
-        \item Main problem in Bayesian ML is to find the posterior distribution of the parameters given the data
-        \item In Variational Inference, we approximate the posterior distribution with a tractable distribution (usually Gaussian)
-        \item We minimize the KL divergence between the true posterior and the approximate posterior
+        \item We assume a prior distribution over the parameters of the model given as $P(\theta)$
+        \item We assume a likelihood function $P(D|\theta)$
+        \item We use Bayes' rule to find the posterior distribution of the parameters given the data: $P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$
+        \item Typically, we can not compute the posterior distribution analytically as the denominator is intractable
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Bayesian ML: Methods}
+    \begin{columns}[T]
+        \begin{column}{.33\textwidth}
+            \textbf{Laplace Approximation}
+            
+            \vspace{0.2cm}
+            Approximates the posterior with a Gaussian distribution parameterized by $\Psi = (\mu, \Sigma)$.
+            {\tiny
+            \[
+                q_{\Psi}(\theta) = \mathcal{N}(\mu, \Sigma)
+            \]}
+            
+            \vspace{0.2cm}
+            where $\mu$ is the mode of the posterior and $\Sigma$ is the negative inverse Hessian of the log joint distribution evaluated at $\theta_{\text{MAP}}$.
+        \end{column}
+        
+        \begin{column}{.33\textwidth}
+            \textbf{MCMC (Markov Chain Monte Carlo)}
+            
+            \vspace{0.2cm}
+            Generates samples from the posterior distribution by constructing a Markov chain.
+            {\tiny
+            \[
+                P(\theta|D) \propto P(D|\theta)P(\theta)
+            \]}
+        \end{column}
+        
+        \begin{column}{.33\textwidth}
+            \textbf{Variational Inference}
+            
+            \vspace{0.5cm}
+            Poses posterior inference as an optimization problem. The approximating distribution is parameterized by $\Psi$.
+            {\tiny
+            \[
+                \Psi^* = \arg\min_{\Psi} \text{KL}(q_{\Psi}(\theta)||P(\theta|D))
+            \]}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+
+
+\begin{frame}{KL Divergence}
+    \begin{itemize}
+        \item KL divergence is a measure of dissimilarity between two distributions.
+        \item It is defined as: $\text{KL}(q||p) = \int q(\theta) \log \frac{q(\theta)}{p(\theta)} d\theta$
     \end{itemize}
     
 \end{frame}
