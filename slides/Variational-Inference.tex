@@ -1,4 +1,4 @@
-\documentclass[handout]{beamer}
+\documentclass{beamer}
 
 \usetheme[progressbar=frametitle]{metropolis}
 \usepackage{appendixnumberbeamer}
@@ -80,16 +80,94 @@
     \begin{itemize}
         \item KL divergence is a measure of dissimilarity between two distributions.
         \item It is defined as: $\text{KL}(q||p) = \int q(\theta) \log \frac{q(\theta)}{p(\theta)} d\theta$
+        \item Or, can be written in terms of expectations as: $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{q(\theta)}{p(\theta)} \right]$
     \end{itemize}
     
 \end{frame}
 
 \begin{frame}{Exercise}
-    Compute the KL divergence between two Gaussian distributions $q(\theta) = \mathcal{N}(\mu_1, \sigma_1^2)$ and $p(\theta) = \mathcal{N}(\mu_2, \sigma_2^2)$.
+    Compute the KL divergence between two Gaussian distributions $q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2)$ and $p(\theta) = \mathcal{N}(\mu_p, \sigma_p^2)$.
+
+    \begin{itemize}
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{q(\theta)}{p(\theta)} \right]$
+        \item \pause Expanding $q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2) = \frac{1}{\sqrt{2\pi\sigma_q^2}} \exp \left( -\frac{(\theta - \mu_q)^2}{2\sigma_q^2} \right)$
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{q(\theta)}{p(\theta)} \right] = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}} \exp \left( -\frac{(\theta - \mu_q)^2}{2\sigma_q^2} \right)}{\frac{1}{\sqrt{2\pi\sigma_p^2}} \exp \left( -\frac{(\theta - \mu_p)^2}{2\sigma_p^2} \right)} \right]$
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \log \frac{\exp \left( -\frac{(\theta - \mu_q)^2}{2\sigma_q^2} \right)}{\exp \left( -\frac{(\theta - \mu_p)^2}{2\sigma_p^2} \right)} \right]$
+    \end{itemize}
 
     \pause The answer is: $\frac{1}{2} \left( \log \frac{\sigma_2^2}{\sigma_1^2} + \frac{\sigma_1^2 + (\mu_1 - \mu_2)^2}{\sigma_2^2} - 1 \right)$
     
 \end{frame}
+
+\begin{frame}{Exercise}
+    Compute the KL divergence between two Gaussian distributions $q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2)$ and $p(\theta) = \mathcal{N}(\mu_p, \sigma_p^2)$.
+
+    \begin{itemize}
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \log \frac{\exp \left( -\frac{(\theta - \mu_q)^2}{2\sigma_q^2} \right)}{\exp \left( -\frac{(\theta - \mu_p)^2}{2\sigma_p^2} \right)} \right]$
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \log \exp \left( -\frac{(\theta - \mu_q)^2}{2\sigma_q^2} + \frac{(\theta - \mu_p)^2}{2\sigma_p^2} \right) \right]$
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \left( -\frac{(\theta - \mu_q)^2}{2\sigma_q^2} + \frac{(\theta - \mu_p)^2}{2\sigma_p^2} \right) \right]$
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \left( -\frac{(\theta^2 - 2\theta\mu_q + \mu_q^2)}{2\sigma_q^2} + \frac{(\theta^2 - 2\theta\mu_p + \mu_p^2)}{2\sigma_p^2} \right) \right]$
+    \end{itemize}
+
+    
+\end{frame}
+
+\begin{frame}{Exercise}
+    Compute the KL divergence between two Gaussian distributions $q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2)$ and $p(\theta) = \mathcal{N}(\mu_p, \sigma_p^2)$.
+
+    \begin{itemize}
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \left( -\frac{(\theta^2 - 2\theta\mu_q + \mu_q^2)}{2\sigma_q^2} + \frac{(\theta^2 - 2\theta\mu_p + \mu_p^2)}{2\sigma_p^2} \right) \right]$
+        \item \pause $\text{KL}(q||p) = \mathbb{E}_{q(\theta)} \left[ \log \frac{\frac{1}{\sqrt{2\pi\sigma_q^2}}}{\frac{1}{\sqrt{2\pi\sigma_p^2}}} + \left( -\frac{\theta^2}{2\sigma_q^2} + \frac{2\theta\mu_q}{2\sigma_q^2} - \frac{\mu_q^2}{2\sigma_q^2} + \frac{\theta^2}{2\sigma_p^2} - \frac{2\theta\mu_p}{2\sigma_p^2} + \frac{\mu_p^2}{2\sigma_p^2} \right) \right]$
+        \item \pause Now using linearity of expectation, we get:
+        \item \pause $\text{KL}(q||p) = \log \frac{\sigma_p}{\sigma_q} + \mathbb{E}_{q(\theta)} (-\frac{\theta^2}{2\sigma_q^2} + \frac{2\theta\mu_q}{2\sigma_q^2} - \frac{\mu_q^2}{2\sigma_q^2} + \frac{\theta^2}{2\sigma_p^2} - \frac{2\theta\mu_p}{2\sigma_p^2} + \frac{\mu_p^2}{2\sigma_p^2})$
+    \end{itemize}
+    
+    
+\end{frame}
+
+\begin{frame}{Exercise}
+Aside:
+
+$\theta \sim q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2)$
+
+$\mathbb{E}_{q(\theta)} \left[ \theta \right] = \mu_q$
+
+$\mathbb{E}_{q(\theta)} \left[ \theta^2 \right] = \sigma_q^2 + \mu_q^2$
+
+\end{frame}
+
+\begin{frame}{Exercise}
+    Compute the KL divergence between two Gaussian distributions $q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2)$ and $p(\theta) = \mathcal{N}(\mu_p, \sigma_p^2)$.
+    \begin{itemize}
+        \item \pause $\text{KL}(q||p) = \log \frac{\sigma_p}{\sigma_q} + \mathbb{E}_{q(\theta)} (-\frac{\theta^2}{2\sigma_q^2} + \frac{2\theta\mu_q}{2\sigma_q^2} - \frac{\mu_q^2}{2\sigma_q^2} + \frac{\theta^2}{2\sigma_p^2} - \frac{2\theta\mu_p}{2\sigma_p^2} + \frac{\mu_p^2}{2\sigma_p^2})$
+        \item \pause Using the aside, we expand the expectation:
+        \item \pause $\text{KL}(q||p)$ = Term 1 + Term 2 + Term 3 + Term 4 + Term 5 + Term 6 + Term 7
+        \item \pause Term 1 = $\log \frac{\sigma_p}{\sigma_q}$
+        \item \pause Term 2: $\mathbb{E}_{q(\theta)} \left(-\frac{\theta^2}{2\sigma_q^2}\right) = -\frac{1}{2}\mathbb{E}_{q(\theta)} \left(\frac{\theta^2}{\sigma_q^2}\right) = -\frac{1}{2}\left(\frac{\sigma_q^2 + \mu_q^2}{\sigma_q^2}\right)$
+        \item \pause Term 3: $\mathbb{E}_{q(\theta)} \left(\frac{2\theta\mu_q}{2\sigma_q^2}\right) = \frac{2\mu_q}{2\sigma_q^2}\mathbb{E}_{q(\theta)} \left(\theta\right) = \frac{2\mu_q^2}{2\sigma_q^2}$
+    \end{itemize}
+    
+    
+\end{frame}
+
+\begin{frame}{Exercise}
+    Compute the KL divergence between two Gaussian distributions $q(\theta) = \mathcal{N}(\mu_q, \sigma_q^2)$ and $p(\theta) = \mathcal{N}(\mu_p, \sigma_p^2)$.
+    \begin{itemize}
+        \item Term 4: $\mathbb{E}_{q(\theta)} \left(-\frac{\mu_q^2}{2\sigma_q^2}\right) = -\frac{\mu_q^2}{2\sigma_q^2}$
+       \item \pause Term 5: $\mathbb{E}_{q(\theta)} \left(\frac{\theta^2}{2\sigma_p^2}\right) = \frac{\sigma_q^2 + \mu_q^2}{2\sigma_p^2}$
+    \item \pause Term 6: $\mathbb{E}_{q(\theta)} \left(-\frac{2\theta\mu_p}{2\sigma_p^2}\right) = -\frac{2\mu_q\mu_p}{2\sigma_p^2}$
+\item \pause Term 7: $\mathbb{E}_{q(\theta)} \left(\frac{\mu_p^2}{2\sigma_p^2}\right) = \frac{\mu_p^2}{2\sigma_p^2}$    
+\item \pause Overall after simplification, we get:
+$\text{KL}(q||p) = \frac{1}{2}[ \log \frac{\sigma_p^2}{\sigma_q^2} -1 + \frac{(\mu_p - \mu_q)^2}{\sigma_p^2} + \frac{\sigma_q^2}{\sigma_p^2}]$   
+
+\end{itemize}
+    
+
+  
+    
+\end{frame}
+
+
 
 \begin{frame}
     Notebook demo
