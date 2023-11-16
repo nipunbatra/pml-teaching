@@ -190,6 +190,14 @@ $\text{KL}(q||p) = \frac{1}{2}[ \log \frac{\sigma_p^2}{\sigma_q^2} -1 + \frac{(\
 \end{frame}
 
 \begin{frame}{Repameterization Trick}
+    Original formulation
+    \includegraphics[width=\textwidth]{../diagrams/reparam.001.png}
+    
+\end{frame}
+
+\begin{frame}{Repameterization Trick}
+    New formulation (reparameterization trick)
+    \includegraphics[width=\textwidth]{../diagrams/reparam.002.png}
     
 \end{frame}
 
@@ -197,7 +205,41 @@ $\text{KL}(q||p) = \frac{1}{2}[ \log \frac{\sigma_p^2}{\sigma_q^2} -1 + \frac{(\
     Notebook demo
 \end{frame}
 
+\begin{frame}{Evidence Lower Bound (ELBO)}
+    \begin{itemize}
+        \item Our goal was to find the parameters $\psi$ of the approximating distribution $q_{\Psi}(\theta)$ such that it is as close as possible to the true posterior distribution $P(\theta|D)$.
+        \item \pause $\Psi^* = \arg\min_{\Psi} \text{KL}(q_{\Psi}(\theta)||P(\theta|D))$
+        \item \pause But, we do not know the true posterior distribution $P(\theta|D)$. 
+        \item \pause Let us focus on the KL divergence term:
+        \item \pause $\text{KL}(q_{\Psi}(\theta)||P(\theta|D)) =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta|D)} \right]$
+        \item \pause Using Bayes rule, we write: $P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$
+    \end{itemize}
+    
+    
+\end{frame}
+
 \begin{frame}{ELBO}
+    \begin{itemize}
+        \item $\text{KL}(q_{\Psi}(\theta)||P(\theta|D)) =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta|D)} \right]$
+        \item Using Bayes rule, we write: $P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}$
+        \item \pause Substituting, we get: $\text{KL}(q_{\Psi}(\theta)||P(\theta|D)) =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)P(D)}{P(D|\theta)P(\theta)} \right]$
+        \item \pause Expanding, we get: $\text{KL}(q_{\Psi}(\theta)||P(\theta|D)) =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta)P(D|\theta)} + \log P(D) \right]$
+        \item \pause As log-evidence, $\log P(D)$ is independent of $\Psi$, we get: $\text{KL}(q_{\Psi}(\theta)||P(\theta|D)) =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta)P(D|\theta)} \right] + \log P(D)$
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{ELBO}
+    \begin{itemize}
+        \item $\text{KL}(q_{\Psi}(\theta)||P(\theta|D)) =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta)P(D|\theta)} \right] + \log P(D)$
+        \item \pause $\underbrace{\text{KL}(q_{\Psi}(\theta)||P(\theta|D))}_{\geq 0} =  \mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta)P(D|\theta)} \right] + \log P(D)$
+        \item \pause Let us call the term $\mathbb{E}_{q_{\Psi}(\theta)} \left[ \log \frac{q_{\Psi}(\theta)}{P(\theta)P(D|\theta)} \right]$ as $\textbf{-ELBO(q)}$
+        \item \pause We can see that log-evidence or $\log P(D) \geq \text{ELBO(q)}$
+        \item \pause Or, we can see that the \textbf{evidence} term is lower bounded by the \textbf{ELBO} term
+    \end{itemize}
+
+    \pause \includegraphics[width=0.9\textwidth]{../diagrams/kl-elbo.png}
+
 \end{frame}
     
 \begin{frame}{Worked out example: Coin Toss}
