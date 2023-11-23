@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning – mcmc-hamiltorch_zeel</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html" rel="" target="">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"CUDA_VISIBLE_DEVICES"</span>] <span class="op">=</span> <span class="st">"3"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.autograd.functional <span class="im">as</span> F</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.distributions <span class="im">as</span> dist</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.animation <span class="im">import</span> FuncAnimation</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Retina display</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'retina'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tueplots <span class="im">import</span> bundles</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update(bundles.beamer_moml())</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.rcParams.update(bundles.icml2022())</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Also add despine to the bundle using rcParams</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.spines.right"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.spines.top"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Increase font size to match Beamer template</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.size"</span>] <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make background transparent</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.facecolor"</span>] <span class="op">=</span> <span class="st">"none"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hamiltorch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>hamiltorch.set_random_seed(<span class="dv">123</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>device</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>device(type='cuda')</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gt_distribution <span class="op">=</span> torch.distributions.Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Samples from the ground truth distribution</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_gt(n):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gt_distribution.sample((n,))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> sample_gt(<span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x_lin <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1000</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y_lin <span class="op">=</span> torch.exp(gt_distribution.log_prob(x_lin))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_lin, label<span class="op">=</span><span class="st">"Ground truth"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fb356939c40&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Logprob function to be passed to Hamiltorch sampler</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logprob(x):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gt_distribution.log_prob(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>logprob(torch.tensor([<span class="fl">0.0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>tensor([-0.9189])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial state</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> torch.tensor([<span class="fl">0.0</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>num_samples <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>step_size <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>num_steps_per_sample <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>hamiltorch.set_random_seed(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> hamiltorch.sample(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    log_prob_func<span class="op">=</span>logprob,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    params_init<span class="op">=</span>x0,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    num_samples<span class="op">=</span>num_samples,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    step_size<span class="op">=</span>step_size,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    num_steps_per_sample<span class="op">=</span>num_steps_per_sample,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+0d:00:00:07 | 0d:00:00:00 | #################### | 5000/5000 | 698.22       
+Acceptance Rate 0.99</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> torch.tensor(params_hmc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trace plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.plot(params_hmc, label<span class="op">=</span><span class="st">"Trace"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Parameter value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>Text(0, 0.5, 'Parameter value')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view first 500 samples</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plt.plot(params_hmc[:<span class="dv">500</span>], label<span class="op">=</span><span class="st">"Trace"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Parameter value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>Text(0, 0.5, 'Parameter value')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-15-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># KDE plot</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(params_hmc.detach().numpy(), label<span class="op">=</span><span class="st">"Samples"</span>, shade<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">"C1"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_lin, label<span class="op">=</span><span class="st">"Ground truth"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Parameter value"</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Density"</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fb353810dc0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_samples_gif(x_lin, y_lin, params_hmc, filename, frames<span class="op">=</span><span class="dv">50</span>):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    plt.plot(x_lin, y_lin, label<span class="op">=</span><span class="st">"Ground truth"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    scatter <span class="op">=</span> ax.scatter([], [], color<span class="op">=</span><span class="st">"C1"</span>, marker<span class="op">=</span><span class="st">"x"</span>, s<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Function to update the animation</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update(frame):</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        scatter.set_offsets(np.array([[params_hmc[frame], <span class="dv">0</span>]]))</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (scatter,)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the animation</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    anim <span class="op">=</span> FuncAnimation(fig, update, frames<span class="op">=</span>frames, blit<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save the animation as a GIF or video file (you can change the filename and format)</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    anim.save(filename, dpi<span class="op">=</span><span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>plot_samples_gif(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    x_lin, y_lin, params_hmc, <span class="st">"../figures/sampling/mcmc/hamiltorch-samples-normal.gif"</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p><img src="../figures/sampling/mcmc/hamiltorch-samples-normal.gif" class="img-fluid"></p>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample from Mixture of Gaussians</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>mog <span class="op">=</span> dist.MixtureSameFamily(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    mixture_distribution<span class="op">=</span>dist.Categorical(torch.tensor([<span class="fl">0.3</span>, <span class="fl">0.7</span>])),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    component_distribution<span class="op">=</span>dist.Normal(</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        torch.tensor([<span class="op">-</span><span class="fl">2.0</span>, <span class="fl">2.0</span>]), torch.tensor([<span class="fl">1.0</span>, <span class="fl">0.5</span>])</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> mog.sample((<span class="dv">1000</span>,))</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(samples.numpy(), label<span class="op">=</span><span class="st">"Samples"</span>, shade<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">"C1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>&lt;AxesSubplot:ylabel='Density'&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-19-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Logprob function to be passed to Hamiltorch sampler</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logprob(x):</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mog.log_prob(x)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>logprob(torch.tensor([<span class="fl">0.0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>tensor([-4.1114])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial state</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> torch.tensor([<span class="fl">0.0</span>])</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>num_samples <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>step_size <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>num_steps_per_sample <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>hamiltorch.set_random_seed(<span class="dv">123</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> hamiltorch.sample(</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    log_prob_func<span class="op">=</span>logprob,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    params_init<span class="op">=</span>x0,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    num_samples<span class="op">=</span>num_samples,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    step_size<span class="op">=</span>step_size,</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    num_steps_per_sample<span class="op">=</span>num_steps_per_sample,</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+0d:00:00:10 | 0d:00:00:00 | #################### | 5000/5000 | 462.18       
+Acceptance Rate 0.99</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> torch.tensor(params_hmc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trace plot</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>plt.plot(params_hmc[:<span class="dv">500</span>], label<span class="op">=</span><span class="st">"Trace"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>y_lin <span class="op">=</span> torch.exp(mog.log_prob(x_lin))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plot_samples_gif(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    x_lin,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    y_lin,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    params_hmc,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"../figures/sampling/mcmc/hamiltorch-samples-mog.gif"</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    frames<span class="op">=</span><span class="dv">300</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> p_tilde(x):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># normalising constant for standard normal distribution</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> torch.sqrt(torch.tensor(<span class="dv">2</span> <span class="op">*</span> np.pi))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Normal(<span class="dv">0</span>, <span class="dv">1</span>).log_prob(x).exp() <span class="op">*</span> Z</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> p_tilde_log_prob(x):</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># normalising constant for standard normal distribution</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> torch.sqrt(torch.tensor(<span class="dv">2</span> <span class="op">*</span> np.pi))</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Normal(<span class="dv">0</span>, <span class="dv">1</span>).log_prob(x) <span class="op">+</span> torch.log(Z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot unnormalized distribution</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>x_lin <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1000</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>y_lin <span class="op">=</span> p_tilde(x_lin)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_lin, label<span class="op">=</span><span class="st">"Unnormalized distribution"</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot normalized distribution</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    x_lin, dist.Normal(<span class="dv">0</span>, <span class="dv">1</span>).log_prob(x_lin).exp(), label<span class="op">=</span><span class="st">"Normalized distribution"</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fb3378375e0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># HMC over unnormalized distribution</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Logprob function to be passed to Hamiltorch sampler</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logprob(x):</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> p_tilde_log_prob(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># HMC</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> torch.tensor([<span class="fl">0.0</span>])</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>num_samples <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>step_size <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>num_steps_per_sample <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>hamiltorch.set_random_seed(<span class="dv">123</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> hamiltorch.sample(</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    log_prob_func<span class="op">=</span>logprob,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    params_init<span class="op">=</span>x0,</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    num_samples<span class="op">=</span>num_samples,</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    step_size<span class="op">=</span>step_size,</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    num_steps_per_sample<span class="op">=</span>num_steps_per_sample,</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> torch.tensor(params_hmc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+0d:00:00:10 | 0d:00:00:00 | #################### | 5000/5000 | 488.07       
+Acceptance Rate 0.99</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trace plot</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>plt.plot(params_hmc[:<span class="dv">500</span>], label<span class="op">=</span><span class="st">"Trace"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># KDE plot</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(params_hmc.detach().numpy(), label<span class="op">=</span><span class="st">"Samples"</span>, shade<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">"C1"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_lin, label<span class="op">=</span><span class="st">"Unnormalized distribution"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    x_lin, dist.Normal(<span class="dv">0</span>, <span class="dv">1</span>).log_prob(x_lin).exp(), label<span class="op">=</span><span class="st">"Normalized distribution"</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fb3377450d0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-30-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coin toss</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> dist.Beta(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> torch.tensor([<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span>])</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(data)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_prior(theta):</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> prior.log_prob(theta)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_likelihood(theta):</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Bernoulli(theta).log_prob(data).<span class="bu">sum</span>()</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> negative_log_joint(theta):</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> log_prior(theta) <span class="op">+</span> log_likelihood(theta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="70">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_hmc(logprob, x0, num_samples, step_size, num_steps_per_sample):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">12</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    params_hmc <span class="op">=</span> hamiltorch.sample(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        log_prob_func<span class="op">=</span>logprob,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>        params_init<span class="op">=</span>x0,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>        num_samples<span class="op">=</span>num_samples,</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>        step_size<span class="op">=</span>step_size,</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>        num_steps_per_sample<span class="op">=</span>num_steps_per_sample,</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.stack(params_hmc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    params_hmc_theta <span class="op">=</span> run_hmc(negative_log_joint, torch.tensor([<span class="fl">0.5</span>]), <span class="dv">5000</span>, <span class="fl">0.3</span>, <span class="dv">5</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+Expected value argument (Tensor of shape (1,)) to be within the support (Interval(lower_bound=0.0, upper_bound=1.0)) of the distribution Beta(), but found invalid values:
+tensor([-0.1017], requires_grad=True)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let us work instead with logits</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_prior(logits):</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> prior.log_prob(torch.sigmoid(logits)).<span class="bu">sum</span>()</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_likelihood(logits):</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Bernoulli(logits<span class="op">=</span>logits).log_prob(data).<span class="bu">sum</span>()</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_joint(logits):</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> log_prior(logits) <span class="op">+</span> log_likelihood(logits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>params_hmc_logits <span class="op">=</span> run_hmc(log_joint, torch.tensor([<span class="fl">0.0</span>]), <span class="dv">1000</span>, <span class="fl">0.3</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+0d:00:00:03 | 0d:00:00:00 | #################### | 1000/1000 | 278.54       
+Acceptance Rate 0.99</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">2</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].plot(params_hmc_logits[:<span class="dv">500</span>], label<span class="op">=</span><span class="st">"Trace"</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].plot(torch.sigmoid(params_hmc_logits[:<span class="dv">500</span>]), label<span class="op">=</span><span class="st">"Trace"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-36-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>params_hmc_logits[:, <span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+<pre><code>tensor([ 0.0000e+00,  5.2157e-01,  1.3223e+00,  1.0867e+00, -5.2568e-01,
+        -2.0241e-01,  2.1629e+00,  1.4570e+00,  6.9446e-01,  1.0426e+00,
+        -9.3411e-01,  1.3008e+00, -4.8513e-02,  6.5970e-02, -4.6523e-01,
+        -5.8596e-01, -4.0162e-01,  1.1607e-01, -6.7595e-01,  6.2900e-01,
+        -5.1382e-02, -1.5011e-02,  8.3155e-01,  5.7020e-01,  1.1027e+00,
+         1.7802e+00,  6.8140e-01, -1.4304e+00,  8.8081e-01, -7.4787e-01,
+         1.1560e+00,  9.3348e-02,  9.5877e-01,  2.4764e-02,  2.5223e-01,
+         7.0275e-01,  2.4133e+00,  5.0036e-01, -3.1154e-01,  2.6437e+00,
+         1.0347e+00, -3.0697e+00, -9.9357e-02,  7.0691e-03,  6.6288e-01,
+         4.2240e-01,  2.6325e-01,  5.3176e-01, -5.1853e-01, -2.3356e-01,
+        -1.3524e-01,  9.2447e-01, -6.1977e-01,  5.7892e-01,  9.1914e-01,
+         1.2103e+00, -3.4587e-01, -8.8387e-01,  4.2828e-01,  9.6681e-01,
+         4.3113e-01, -6.5857e-01, -5.3167e-02, -1.2148e+00, -1.8391e+00,
+         2.7865e-01, -1.1244e+00,  1.6879e+00,  8.4666e-01,  1.7127e-01,
+         1.4485e+00, -5.0676e-01,  9.4826e-01,  1.2424e-01, -4.2752e-01,
+         3.0383e-01, -1.5217e-01,  6.3599e-02,  1.3415e+00,  1.1742e+00,
+         8.9259e-01,  9.5579e-01,  8.8160e-01,  3.3091e-01, -1.1668e+00,
+         1.0816e+00,  5.1343e-02, -1.4267e-01,  5.5287e-01,  1.1972e+00,
+        -3.1179e-01,  3.0234e-01,  1.9230e+00, -5.4003e-01,  1.9161e+00,
+         2.5963e-01,  5.3916e-01, -2.3909e-01, -4.7502e-01,  5.5535e-01,
+         9.9362e-01, -5.1886e-01, -1.0049e-01, -3.5520e-01,  4.1397e-02,
+        -2.3988e-01,  7.3340e-01, -6.0357e-01, -1.3952e+00,  1.2863e+00,
+         6.9414e-01, -3.6833e-01, -9.2557e-01,  7.9619e-01,  5.7926e-01,
+         5.2438e-01, -4.5046e-01,  9.7921e-01, -1.7372e+00,  7.9464e-01,
+        -3.8177e-01,  8.8204e-01,  4.0353e-01,  1.4525e+00,  8.4391e-01,
+         1.8884e+00,  4.2759e-01,  7.8184e-01,  1.4167e+00,  2.3686e+00,
+        -4.3994e-01,  2.5539e+00, -2.1615e-01,  3.3379e-01,  4.2178e-01,
+         5.1721e-03,  3.8601e-01,  1.7428e-02,  4.2170e-01,  7.6588e-01,
+        -1.8764e-01, -1.2382e-01,  9.7327e-01,  2.6694e+00,  1.3677e+00,
+         3.7424e-01,  6.3888e-01, -8.4959e-01, -8.8009e-01,  2.3543e-02,
+         1.6492e+00,  2.7357e-01, -1.3845e+00,  1.9475e+00, -9.1431e-01,
+        -1.3962e+00,  1.4945e+00, -1.6934e-01,  6.8331e-01,  2.7269e+00,
+         6.1146e-01,  7.2529e-01, -7.0244e-01,  1.5423e+00,  5.0477e-01,
+         7.5417e-01,  1.5440e+00,  7.5432e-01, -1.0567e+00,  6.8278e-03,
+        -9.1455e-01,  1.1774e+00, -4.7259e-02, -7.6331e-01,  1.5087e+00,
+         1.8454e+00, -2.9682e-01,  2.4198e-01,  1.4402e+00,  1.5362e+00,
+         3.3266e+00,  7.4973e-01,  1.4066e+00,  3.8852e-01, -4.4323e-01,
+         2.5634e-01, -5.2011e-01, -8.8203e-01,  1.8299e+00,  6.3801e-01,
+         1.4932e+00,  1.7013e+00,  2.8509e-01,  5.3203e-01,  3.7003e-01,
+         3.6926e-01,  2.1920e-01, -1.1465e-01,  1.6096e-01,  1.6096e-01,
+         1.6096e-01,  1.6096e-01,  7.3189e-02, -1.2568e+00, -1.0996e+00,
+        -6.6443e-01,  4.9931e-01, -1.1474e+00,  8.1839e-01, -4.1737e-01,
+        -7.6412e-02,  6.2048e-01,  4.2288e-01, -1.1374e-01,  1.0812e+00,
+        -3.7642e-01,  3.3120e-01,  6.6237e-02, -5.7989e-01,  8.3937e-01,
+        -1.4361e+00,  6.1602e-01,  8.5366e-01, -3.5081e-02, -1.2576e+00,
+         9.2308e-01,  1.2499e+00,  7.9868e-01, -4.0161e-01,  1.8000e+00,
+         2.1205e+00,  2.2769e+00,  1.1112e+00,  1.6897e-01,  3.6750e-01,
+        -4.5992e-01, -6.0003e-01,  9.8896e-01,  9.2506e-01, -1.2205e+00,
+         6.2656e-01,  2.4740e+00,  9.4190e-02,  1.1711e+00, -4.7227e-01,
+         1.7815e+00,  4.5940e-01,  6.8583e-01, -2.6535e-01,  3.0298e-01,
+        -5.7829e-01,  1.0377e+00,  1.3456e+00,  2.0190e-01,  7.1908e-01,
+         9.7466e-01,  6.5028e-01, -5.2753e-01,  5.5185e-01, -6.3477e-01,
+         1.1783e+00,  4.5608e-01,  1.2227e+00,  1.8145e-01, -6.6724e-01,
+         1.1463e+00,  1.3225e+00,  1.1086e+00, -1.1422e+00, -1.5377e-01,
+         9.5494e-01,  1.0698e-01,  5.1788e-01, -5.0524e-01, -9.8988e-01,
+         7.0583e-01, -4.0222e-01,  7.1202e-01,  4.4194e-01,  4.2165e-01,
+         3.9502e-01,  7.1842e-01,  1.2794e+00,  1.0915e+00,  2.5821e+00,
+         2.6053e+00,  9.5238e-01,  9.0762e-02,  2.6056e+00, -1.5100e+00,
+        -1.8069e-01, -2.9206e-01, -6.4654e-01,  1.0541e+00,  8.5845e-01,
+        -2.9253e-01,  9.3141e-01,  9.9560e-01,  7.7755e-01,  6.4045e-01,
+         1.3102e-01,  8.4557e-01,  8.8637e-01,  1.8827e+00,  1.8122e+00,
+         1.7478e-01,  3.1308e-02,  4.8694e-01,  4.5788e-01,  7.9718e-02,
+         9.6236e-01,  1.1176e+00,  2.1386e+00,  1.5038e+00, -9.0693e-01,
+         1.6350e+00,  6.3332e-01, -1.7795e-01,  3.8162e-01,  2.7007e+00,
+         1.2218e+00,  3.7495e-01,  3.5609e-01, -3.4414e-01,  1.8059e+00,
+        -2.0574e+00, -1.6110e+00,  2.0561e-01, -2.0184e+00,  1.4640e+00,
+         2.9137e-01,  2.2045e+00,  4.0625e+00,  8.4217e-01, -1.9306e+00,
+         1.3940e+00, -8.0387e-01, -9.4434e-01,  1.9487e+00,  1.9015e-01,
+        -1.9470e-01, -3.5154e-01, -4.7942e-01,  2.4984e+00,  1.5140e+00,
+        -5.1064e-01, -3.2031e+00,  4.6453e-02, -3.7326e-01, -7.8675e-02,
+         7.8834e-01, -7.0566e-01,  2.0437e+00, -7.3646e-01, -5.6822e-01,
+         1.1436e+00,  2.5813e+00,  2.1137e+00,  3.4318e-01,  6.2561e-01,
+         2.4020e+00, -6.3089e-01,  6.2534e-01,  4.0191e-01,  1.5595e+00,
+         3.4065e-01,  7.1987e-01,  1.3318e+00,  4.2015e-01,  1.0865e+00,
+         3.3707e-01,  4.4238e-01,  1.0057e+00,  4.0243e-01, -6.3879e-01,
+        -7.3347e-02, -3.9503e-01,  2.3499e-02,  1.2202e+00,  1.0019e+00,
+         9.6899e-01,  2.8081e-01,  1.4312e+00,  1.7951e+00,  1.7800e-01,
+         5.4844e-01, -4.9231e-01,  3.4481e-01, -6.0484e-01,  8.6655e-01,
+         1.5038e+00, -8.8249e-01, -2.3613e-01,  1.4711e+00,  1.9242e+00,
+        -1.2292e+00, -7.6492e-01, -1.3766e+00,  8.1369e-01,  1.3737e+00,
+         3.7870e-02,  7.5596e-01, -8.3360e-01,  5.8478e-01, -4.8147e-02,
+         1.6379e+00,  4.9499e-01,  1.1217e-01,  4.7315e-01, -3.8294e-01,
+         4.4057e-01, -6.5282e-01, -6.9137e-02,  2.0160e+00, -1.4416e+00,
+         8.7326e-02, -5.0134e-01,  5.9610e-01,  1.1678e+00, -7.0852e-01,
+         1.1161e+00,  5.1063e-01,  1.2536e+00,  9.7398e-01, -5.3866e-01,
+        -1.5744e-01,  1.3044e-01,  5.9685e-01,  1.3283e+00, -2.1259e-01,
+         5.9374e-01,  2.9467e-01,  5.7726e-01, -8.1029e-01,  2.4936e-01,
+         3.2499e-01,  1.4028e+00,  9.2111e-01,  1.6626e-01,  3.2936e-01,
+        -6.4536e-01,  4.0314e-01,  1.1408e+00,  1.1855e+00,  2.3198e+00,
+        -5.8188e-01,  1.1133e+00,  4.7731e-01,  1.7239e-01, -2.2253e-01,
+         5.7479e-01, -3.2582e-01,  3.6510e-01,  7.3250e-01,  1.2381e+00,
+         7.9945e-01, -2.4175e-01,  1.4102e+00, -2.3131e+00,  5.3915e-01,
+         1.9302e+00,  7.3718e-01, -1.4272e+00,  1.3649e+00, -3.0076e-02,
+         9.5023e-01, -3.3479e-01, -1.2208e+00,  2.0888e+00,  4.3582e-01,
+         3.7189e+00,  2.6196e-01, -9.2166e-01,  1.0887e+00,  3.5772e-01,
+         1.0647e+00, -1.1317e+00, -1.6681e-01, -1.6681e-01, -1.3717e-01,
+        -3.4850e-01,  1.5862e+00,  3.1538e+00,  1.4352e+00,  9.1958e-01,
+         1.2272e+00, -9.4940e-02,  1.4208e+00,  1.4999e+00,  8.8756e-01,
+         1.4787e+00, -1.6487e-01, -8.3603e-01, -1.1821e+00,  7.5473e-01,
+         2.0233e+00, -1.4535e+00,  1.6937e+00, -7.1143e-01, -2.5059e-01,
+         2.3465e-01,  4.7424e-01,  4.7742e-01,  3.3519e-01,  3.3519e-01,
+         8.8493e-01,  1.1561e+00, -3.1853e-01, -3.9363e-02,  6.7079e-01,
+         5.6049e-01, -5.4034e-01, -2.2138e-01,  2.1434e-01,  1.5668e+00,
+        -5.0666e-01,  1.2336e+00,  6.0810e-01,  1.0208e+00, -1.0918e-01,
+         6.1068e-01,  3.4561e-01,  3.1687e-01,  1.9952e-01, -4.2316e-01,
+        -6.8547e-01,  1.2960e+00,  4.3325e-01, -7.4669e-01,  3.4048e-01,
+         5.0448e-01,  1.9143e+00,  3.3597e+00,  7.2327e-01,  7.2327e-01,
+         1.9814e+00,  1.7529e+00,  1.2328e+00,  2.3874e+00,  8.9311e-01,
+         1.5371e+00,  6.3213e-01, -5.3584e-01,  1.6869e-01,  7.2835e-01,
+         5.0431e-01,  1.2030e+00,  1.8420e+00,  3.5781e+00,  2.5207e+00,
+         9.1733e-01,  1.2418e+00,  1.0947e+00, -3.2848e-01,  1.4335e+00,
+         1.5814e+00,  1.5399e+00,  1.1806e+00,  2.0780e+00,  2.3361e+00,
+         7.9356e-02,  1.9177e+00, -2.2122e-01,  2.0555e+00,  1.2023e+00,
+         5.6297e-01,  1.7306e+00, -4.2852e-01,  9.2878e-01, -5.6072e-01,
+         6.1711e-01,  1.4516e+00,  9.8128e-01,  1.4595e+00,  6.1320e-01,
+        -1.5955e+00,  5.4722e-01,  1.9468e+00,  4.5901e-02,  8.8389e-01,
+        -3.5987e-01,  1.2097e+00,  6.5788e-01, -6.0313e-01, -3.5547e-01,
+         7.2529e-01, -6.0797e-03,  1.8000e+00,  6.2690e-01,  8.4397e-01,
+        -5.3849e-01,  1.6233e+00,  1.9809e+00, -3.7226e-01,  1.0213e-01,
+         3.9237e-01,  5.6708e-02,  5.8428e-01,  9.4924e-01,  2.1116e+00,
+         1.3148e+00, -1.0424e-01, -2.1544e-02,  1.3272e+00,  3.0616e+00,
+         9.9475e-01, -1.5997e-01, -5.3483e-01, -5.4581e-01,  1.4050e+00,
+         1.8539e+00,  1.6646e+00, -3.4664e-01,  2.1784e-01, -7.7635e-01,
+         2.7252e+00, -6.2144e-01, -8.7422e-01,  4.6023e-01, -6.9424e-01,
+        -9.1952e-01, -3.1647e-02,  4.7649e-01,  1.8191e+00, -3.3237e-01,
+         1.6256e+00,  3.2647e-01,  1.3099e+00,  3.6260e-01,  1.0741e+00,
+        -1.5744e-01, -2.6766e-01,  8.3143e-01,  8.5419e-01,  1.2322e+00,
+        -1.1485e+00,  3.7815e-01, -2.8660e-01,  1.5768e+00, -3.4889e-01,
+         9.6623e-01,  7.0870e-01,  5.1634e-01,  1.2491e+00,  8.7313e-01,
+        -4.7971e-01,  3.6604e-01, -4.4042e-01,  6.1318e-02, -1.5561e-01,
+        -1.3538e-01, -2.0977e+00, -1.6288e+00,  5.0716e-01, -5.4127e-01,
+        -5.1384e-01,  1.0936e+00,  1.3244e+00,  3.1679e-01,  1.6746e+00,
+         1.9762e+00,  1.9939e-01,  1.5693e+00,  1.2094e+00,  3.3478e+00,
+         1.2666e+00,  2.0992e+00,  2.8287e-02, -4.1169e-01, -6.8056e-01,
+         1.0113e+00, -6.9923e-01,  1.6349e+00, -7.5508e-01,  1.5240e+00,
+        -4.1570e-01, -4.9153e-02,  3.1265e-01,  2.4256e+00,  9.4421e-01,
+         1.2525e-01,  2.6237e-01, -1.7258e-01,  4.4751e-01, -4.6017e-01,
+         1.7248e-02,  1.3471e+00, -9.5393e-01,  3.8606e-02,  6.6836e-01,
+         7.4823e-01,  7.3605e-01,  2.7526e-02,  1.6556e+00,  1.6328e+00,
+         1.8542e+00,  2.4735e+00,  1.0023e+00, -4.9651e-01, -9.9532e-01,
+         2.1426e-03, -3.1631e-02, -1.9769e+00, -1.2023e+00,  3.9273e-01,
+         3.5130e-01,  1.9974e-02,  1.8765e+00, -1.3989e+00,  1.0675e+00,
+         2.0070e-01,  7.1379e-01, -6.7666e-01,  8.5469e-01,  1.8344e-01,
+        -3.2166e-01, -3.2166e-01,  1.3211e+00,  4.1828e-01,  1.0699e+00,
+         1.5376e+00, -1.7779e-01,  2.8796e-01,  8.1860e-01,  5.8796e-01,
+         1.3816e+00,  1.3530e+00,  2.3099e-01,  2.4880e-01,  5.6564e-01,
+         1.2632e+00, -1.5422e+00, -1.2768e+00, -5.1313e-01,  7.9212e-01,
+         8.6664e-01,  1.8058e-01,  2.4497e-01,  3.2818e-01,  3.7874e-01,
+         5.5695e-01, -9.5376e-01,  5.0202e-01, -6.2435e-01,  1.0083e+00,
+         2.4775e-01,  1.9974e-01,  1.0435e+00,  1.8181e+00,  1.8181e+00,
+         1.5419e+00, -6.8479e-01,  1.0234e+00,  3.4072e-01, -6.8201e-01,
+        -6.0094e-03,  5.4767e-01,  1.2085e+00,  1.1278e+00, -2.5554e-01,
+        -9.6161e-01, -3.8192e-01,  2.3630e-02,  1.0346e+00, -1.9409e-01,
+        -1.7149e-01,  1.2116e+00,  1.0531e+00,  1.7023e-01, -4.3127e-01,
+         6.6011e-01,  7.7393e-01, -3.0603e-01,  1.0112e+00,  2.9591e-01,
+         1.2036e-01, -4.1267e-01, -4.4962e-01,  7.4402e-01, -6.3659e-01,
+         4.6125e-01, -1.3424e+00,  2.4050e-01, -2.0018e-01,  6.3407e-01,
+        -2.5910e-01,  9.2403e-02, -3.3480e-01, -3.3480e-01, -6.5366e-01,
+         2.5464e-01,  1.3055e+00, -1.5981e+00,  7.8798e-01, -4.1375e-01,
+         7.5003e-01,  6.3855e-02, -3.7143e-01,  1.5067e+00,  1.6203e+00,
+         5.0651e-01,  1.1662e+00,  6.5912e-01,  6.5912e-01,  9.6239e-01,
+        -2.9655e-02, -1.8119e+00,  1.4097e+00,  7.1906e-01,  6.5160e-01,
+         6.4548e-01,  8.0345e-01,  1.8066e+00, -1.8827e+00, -1.9057e+00,
+         1.7102e-01, -5.2693e-01,  1.8661e-01,  2.8774e-01,  9.7600e-01,
+         1.5767e+00,  1.0017e+00,  1.4579e+00, -3.2165e-03,  1.1204e+00,
+         1.5134e+00,  2.0321e+00,  1.6208e-01, -7.9307e-01,  1.5747e+00,
+         7.5000e-01, -3.5063e-03,  2.1710e+00,  9.3272e-01, -3.8879e-04,
+         1.1818e+00, -1.7795e-02, -2.4369e-01, -1.9889e+00, -5.1913e-01,
+        -7.0746e-01,  1.6388e+00,  1.4992e+00,  1.7651e+00,  3.5630e+00,
+         4.6029e-02, -1.4069e+00,  5.9076e-02,  2.2806e+00, -8.9770e-01,
+        -6.2536e-01,  1.6230e+00,  1.5135e+00,  7.6925e-01, -3.8131e-01,
+         1.7301e+00,  1.3660e+00,  6.2360e-01,  5.6905e-01, -3.4309e-01,
+        -1.1920e+00,  1.8200e+00, -5.0699e-01,  4.0612e-02,  1.2228e+00,
+         9.6594e-01, -7.0298e-01, -6.2520e-01,  1.6632e+00,  8.8678e-01,
+         5.2583e-01,  9.1454e-01,  1.4418e+00,  1.4364e+00,  5.6974e-01,
+        -1.1927e+00,  4.6645e-01,  5.5446e-01,  7.2413e-01,  1.9243e+00,
+         7.7880e-01, -7.4584e-01,  1.2390e+00, -1.1413e-01,  1.2299e+00,
+         1.0727e+00, -2.9502e-01,  3.1766e-01,  3.7765e-01,  9.4944e-01,
+        -2.1452e-01, -4.7935e-01,  1.0967e+00, -2.7905e-01, -8.6457e-01,
+         1.1860e+00, -1.1904e+00,  5.9031e-01,  6.6663e-01,  1.2639e+00,
+         6.7896e-02, -1.0120e+00,  2.5375e+00,  1.8990e+00, -1.0375e+00,
+         4.4640e-01,  1.4028e+00,  1.1473e+00,  6.1459e-01,  3.9804e-01,
+         7.8219e-01,  1.6068e+00,  5.6333e-01,  1.6903e-01, -8.0579e-01,
+        -7.3818e-01,  1.0135e+00,  1.1724e+00, -3.5863e-01, -3.4891e-01,
+        -2.9014e-01,  1.9020e+00,  1.0430e+00,  2.6433e+00,  3.1035e+00,
+         2.0789e+00, -4.8755e-01, -1.5892e+00, -1.9662e+00,  1.1934e+00,
+         1.1145e+00, -7.9593e-02,  1.2906e+00,  3.1053e-01, -5.8267e-01,
+         1.4457e+00,  7.9235e-01,  9.0271e-01,  4.6118e-01,  1.0147e+00,
+         2.2204e+00,  1.0090e+00,  2.4175e-01, -6.5125e-01,  5.9952e-01,
+         2.0044e+00,  8.9869e-01, -2.2489e-01, -1.0497e+00,  2.0135e+00,
+        -4.7356e-01,  4.7832e-01, -1.2162e-01,  1.1530e+00, -1.1612e-02,
+         1.4690e+00,  1.0307e+00,  2.2840e+00,  3.3513e+00,  8.8326e-01,
+         1.2590e+00,  1.7236e+00,  4.5989e-01,  6.4716e-01,  3.0418e-01,
+         3.9410e-01,  3.4654e-01,  1.4171e+00,  6.6960e-01,  6.7712e-01,
+        -2.0732e-01, -1.0382e-01,  9.9374e-01,  1.6327e+00,  3.1100e-01,
+         4.4393e-01, -2.9965e-01,  1.9955e-01, -9.0940e-03,  6.6451e-02,
+         1.8670e+00,  1.3433e+00, -1.4861e+00, -1.5094e+00,  1.1104e+00,
+        -4.7540e-02,  8.7289e-01, -8.7741e-01,  1.6113e+00, -2.0599e-01,
+         2.9714e-01,  2.4836e+00,  8.8014e-01,  2.2057e+00,  1.5712e+00,
+         6.9619e-02,  2.8588e-02, -3.6439e-01,  7.4889e-01,  9.1645e-01])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot posterior KDE using seaborn but clip to [0, 1]</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    torch.sigmoid(params_hmc_logits[:, <span class="dv">0</span>]).detach().numpy(),</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Samples"</span>,</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    shade<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"C1"</span>,</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    clip<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co"># True posterior</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>x_lin <span class="op">=</span> torch.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1000</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>y_lin <span class="op">=</span> dist.Beta(<span class="dv">1</span> <span class="op">+</span> <span class="dv">3</span>, <span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span>).log_prob(x_lin).exp()</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_lin, label<span class="op">=</span><span class="st">"True posterior"</span>)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="52">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fb3376f4ac0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-38-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear regression for 1 dimensional input using HMC</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">123</span>)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>x_lin <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">90</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>theta_0_true <span class="op">=</span> torch.tensor([<span class="fl">2.0</span>])</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>theta_1_true <span class="op">=</span> torch.tensor([<span class="fl">3.0</span>])</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="kw">lambda</span> x: theta_0_true <span class="op">+</span> theta_1_true <span class="op">*</span> x</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> torch.randn_like(x_lin) <span class="op">*</span> <span class="fl">1.0</span></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>y_lin <span class="op">=</span> f(x_lin) <span class="op">+</span> eps</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_lin, y_lin, label<span class="op">=</span><span class="st">"Data"</span>, color<span class="op">=</span><span class="st">"C0"</span>)</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, f(x_lin), label<span class="op">=</span><span class="st">"Ground truth"</span>)</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="53">
+<pre><code>Text(0, 0.5, 'y')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-39-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Esimate theta_0, theta_1 using HMC assuming noise variance is known to be 1</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logprob(theta):</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> theta[<span class="dv">0</span>] <span class="op">+</span> x_lin <span class="op">*</span> theta[<span class="dv">1</span>]</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred.shape, y_lin.shape)</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred.shape, y_lin.shape, y_pred)</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Normal(y_pred, <span class="dv">1</span>).log_prob(y_lin).<span class="bu">sum</span>()</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_prior(theta):</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Normal(<span class="dv">0</span>, <span class="dv">1</span>).log_prob(theta).<span class="bu">sum</span>()</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_posterior(theta):</span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>    log_prior_val <span class="op">=</span> log_prior(theta)</span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>    log_likelihood <span class="op">=</span> logprob(theta)</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>    log_joint <span class="op">=</span> log_prior_val <span class="op">+</span> log_likelihood</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(log_joint, log_prior_val, log_likelihood)</span></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> log_joint</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> torch.tensor([<span class="fl">0.1</span>, <span class="fl">0.2</span>])</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(params.dtype)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>params_hmc_lin_reg <span class="op">=</span> run_hmc(log_posterior, params, <span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.float32
+Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+0d:00:00:03 | 0d:00:00:00 | #################### | 1000/1000 | 265.17       
+Acceptance Rate 0.83</code></pre>
+</div>
+</div>
+<p>Sampling (Sampler.HMC; Integrator.IMPLICIT) Time spent | Time remain.| Progress | Samples | Samples/sec tensor(-1433.3967, grad_fn=<addbackward0>) tensor(-1.8629, grad_fn=<sumbackward0>) tensor(-1431.5338, grad_fn=<sumbackward0>) tensor(-1433.3967, grad_fn=<addbackward0>) tensor(-1.8629, grad_fn=<sumbackward0>) tensor(-1431.5338, grad_fn=<sumbackward0>) tensor(-355.0762, grad_fn=<addbackward0>) tensor(-10.8475, grad_fn=<sumbackward0>) tensor(-344.2287, grad_fn=<sumbackward0>) tensor(-729.5259, grad_fn=<addbackward0>) tensor(-18.6343, grad_fn=<sumbackward0>) tensor(-710.8916, grad_fn=<sumbackward0>) tensor(-1269.0886, grad_fn=<addbackward0>) tensor(-9.7863, grad_fn=<sumbackward0>) tensor(-1259.3024, grad_fn=<sumbackward0>) tensor(-218.4335, grad_fn=<addbackward0>) tensor(-12.0944, grad_fn=<sumbackward0>) tensor(-206.3391, grad_fn=<sumbackward0>) tensor(-1101.4713, grad_fn=<addbackward0>) tensor(-19.0104, grad_fn=<sumbackward0>) tensor(-1082.4608, grad_fn=<sumbackward0>) tensor(-1101.4713, grad_fn=<addbackward0>) tensor(-19.0104, grad_fn=<sumbackward0>) tensor(-1082.4608, grad_fn=<sumbackward0>) 0d:00:00:00 | 0d:00:00:00 | #################### | 1/1 | 140.03<br>
+Acceptance Rate 1.00</sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></p>
+<div class="cell" data-execution_count="56">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>params_hmc_lin_reg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="56">
+<pre><code>tensor([[0.1000, 0.2000],
+        [1.7248, 0.6831],
+        [2.1176, 5.2166],
+        ...,
+        [1.9162, 3.1325],
+        [2.1559, 2.9292],
+        [1.8733, 3.0645]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the traces corresponding to the two parameters</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, param_vals <span class="kw">in</span> <span class="bu">enumerate</span>(params_hmc_lin_reg.T):</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>    axes[i].plot(param_vals, label<span class="op">=</span><span class="st">"Trace"</span>)</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>    axes[i].set_xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>    axes[i].set_ylabel(<span class="vs">rf"$\theta_</span><span class="sc">{</span>i<span class="sc">}</span><span class="vs">$"</span>)</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the true values as well</span></span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, param_vals <span class="kw">in</span> <span class="bu">enumerate</span>([theta_0_true, theta_1_true]):</span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>    axes[i].axhline(param_vals.numpy(), color<span class="op">=</span><span class="st">"C1"</span>, label<span class="op">=</span><span class="st">"Ground truth"</span>)</span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>    axes[i].legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>findfont: Font family ['cursive'] not found. Falling back to DejaVu Sans.
+findfont: Generic family 'cursive' not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-43-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="58">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot KDE of the samples for the two parameters</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, param_vals <span class="kw">in</span> <span class="bu">enumerate</span>(params_hmc_lin_reg.T):</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    sns.kdeplot(</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>        param_vals.detach().numpy(), label<span class="op">=</span><span class="st">"Samples"</span>, shade<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">"C1"</span>, ax<span class="op">=</span>axes[i]</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>    axes[i].set_ylabel(<span class="vs">rf"$\theta_</span><span class="sc">{</span>i<span class="sc">}</span><span class="vs">$"</span>)</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the true values as well</span></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, param_vals <span class="kw">in</span> <span class="bu">enumerate</span>([theta_0_true, theta_1_true]):</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>    axes[i].axvline(param_vals.numpy(), color<span class="op">=</span><span class="st">"C0"</span>, label<span class="op">=</span><span class="st">"Ground truth"</span>)</span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>    axes[i].legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-44-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the posterior predictive distribution</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_lin, y_lin, label<span class="op">=</span><span class="st">"Data"</span>, color<span class="op">=</span><span class="st">"C0"</span>)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, f(x_lin), label<span class="op">=</span><span class="st">"Ground truth"</span>, color<span class="op">=</span><span class="st">"C1"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Get posterior samples. Thin first 100 samples to remove burn-in</span></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>posterior_samples <span class="op">=</span> params_hmc_lin_reg[<span class="dv">100</span>:].detach()</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>y_hat <span class="op">=</span> posterior_samples[:, <span class="dv">0</span>].unsqueeze(<span class="dv">1</span>) <span class="op">+</span> x_lin <span class="op">*</span> posterior_samples[</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>    :, <span class="dv">1</span></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>].unsqueeze(<span class="dv">1</span>)</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot mean and 95% confidence interval</span></span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_hat.mean(axis<span class="op">=</span><span class="dv">0</span>), label<span class="op">=</span><span class="st">"Mean"</span>, color<span class="op">=</span><span class="st">"C2"</span>)</span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>plt.fill_between(</span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>    x_lin,</span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a>    y_hat.mean(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> y_hat.std(axis<span class="op">=</span><span class="dv">0</span>),</span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>    y_hat.mean(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> y_hat.std(axis<span class="op">=</span><span class="dv">0</span>),</span>
+<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"95% CI"</span>,</span>
+<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"C2"</span>,</span>
+<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb65-25"><a href="#cb65-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fb336ba0d30&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-45-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="71">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using a neural network with HMC</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc1 <span class="op">=</span> torch.nn.Linear(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.fc1(x)</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="72">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Net()</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="72">
+<pre><code>Net(
+  (fc1): Linear(in_features=1, out_features=1, bias=True)
+)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="73">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>hamiltorch.util.flatten(net).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="73">
+<pre><code>torch.Size([2])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="74">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>theta_params <span class="op">=</span> hamiltorch.util.flatten(net)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>theta_params.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="74">
+<pre><code>torch.Size([2])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>params_list <span class="op">=</span> hamiltorch.util.unflatten(net, theta_params)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>params_list[<span class="dv">0</span>].shape, params_list[<span class="dv">1</span>].shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="75">
+<pre><code>(torch.Size([1, 1]), torch.Size([1]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>params_init <span class="op">=</span> theta_params.clone().detach()</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>params_init.dtype</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="76">
+<pre><code>torch.float32</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="77">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> torch.tensor([<span class="fl">0.1</span>, <span class="fl">0.2</span>])</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reverse t</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>t.flip(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="77">
+<pre><code>tensor([0.2000, 0.1000])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hamiltorch.util.update_model_params_in_place??</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> torch.tensor([<span class="fl">0.1</span>, <span class="fl">0.2</span>])</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(theta.shape)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>params_list <span class="op">=</span> hamiltorch.util.unflatten(net, theta)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(params_list, params_list[<span class="dv">0</span>].shape, params_list[<span class="dv">1</span>].shape)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>hamiltorch.util.update_model_params_in_place(net, params_list)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>net.state_dict()</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>net(torch.tensor([[<span class="fl">1.0</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([2])
+[tensor([[0.1000]]), tensor([0.2000])] torch.Size([1, 1]) torch.Size([1])</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="79">
+<pre><code>tensor([[0.3000]], grad_fn=&lt;AddmmBackward0&gt;)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_prior(theta):</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Normal(<span class="dv">0</span>, <span class="dv">1</span>).log_prob(theta).<span class="bu">sum</span>()</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_likelihood(theta):</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> theta.flip(<span class="dv">0</span>)</span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>    params_list <span class="op">=</span> hamiltorch.util.unflatten(net, theta)</span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Inplace call</span></span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># hamiltorch.util.update_model_params_in_place(net, params_list)</span></span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># y_pred = net(x_lin.unsqueeze(1)).squeeze()</span></span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred[0:4], "first")</span></span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Functional call</span></span>
+<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> net.state_dict()</span>
+<span id="cb84-16"><a href="#cb84-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (name, _) <span class="kw">in</span> <span class="bu">enumerate</span>(params.items()):</span>
+<span id="cb84-17"><a href="#cb84-17" aria-hidden="true" tabindex="-1"></a>        params[name] <span class="op">=</span> params_list[i]</span>
+<span id="cb84-18"><a href="#cb84-18" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> torch.func.functional_call(net, params, x_lin.unsqueeze(<span class="dv">1</span>)).squeeze()</span>
+<span id="cb84-19"><a href="#cb84-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred[0:4], "second")</span></span>
+<span id="cb84-20"><a href="#cb84-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-21"><a href="#cb84-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred.shape, y_lin.shape, y_pred)</span></span>
+<span id="cb84-22"><a href="#cb84-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dist.Normal(y_pred, <span class="dv">1</span>).log_prob(y_lin).<span class="bu">sum</span>()</span>
+<span id="cb84-23"><a href="#cb84-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-24"><a href="#cb84-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-25"><a href="#cb84-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_joint(theta):</span>
+<span id="cb84-26"><a href="#cb84-26" aria-hidden="true" tabindex="-1"></a>    log_prior_val <span class="op">=</span> log_prior(theta)</span>
+<span id="cb84-27"><a href="#cb84-27" aria-hidden="true" tabindex="-1"></a>    log_likelihood_val <span class="op">=</span> log_likelihood(theta)</span>
+<span id="cb84-28"><a href="#cb84-28" aria-hidden="true" tabindex="-1"></a>    log_joint <span class="op">=</span> log_prior_val <span class="op">+</span> log_likelihood_val</span>
+<span id="cb84-29"><a href="#cb84-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(log_joint, log_prior_val, log_likelihood_val)</span></span>
+<span id="cb84-30"><a href="#cb84-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> log_joint</span>
+<span id="cb84-31"><a href="#cb84-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-32"><a href="#cb84-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-33"><a href="#cb84-33" aria-hidden="true" tabindex="-1"></a>params_hmc <span class="op">=</span> run_hmc(log_joint, torch.tensor([<span class="fl">0.1</span>, <span class="fl">0.2</span>]), <span class="dv">1000</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)</span>
+<span id="cb84-34"><a href="#cb84-34" aria-hidden="true" tabindex="-1"></a>params_hmc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling (Sampler.HMC; Integrator.IMPLICIT)
+Time spent  | Time remain.| Progress             | Samples   | Samples/sec
+0d:00:00:04 | 0d:00:00:00 | #################### | 1000/1000 | 201.06       
+Acceptance Rate 0.81</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="80">
+<pre><code>tensor([[0.1000, 0.2000],
+        [1.6531, 0.5802],
+        [2.0851, 5.3383],
+        ...,
+        [1.9668, 3.0019],
+        [2.0264, 3.0395],
+        [2.0264, 3.0395]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the traces corresponding to the two parameters</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, param_vals <span class="kw">in</span> <span class="bu">enumerate</span>(params_hmc.T):</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>    axes[i].plot(param_vals, label<span class="op">=</span><span class="st">"Trace"</span>)</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>    axes[i].set_xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>    axes[i].set_ylabel(<span class="vs">rf"$\theta_</span><span class="sc">{</span>i<span class="sc">}</span><span class="vs">$"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-56-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot KDE of the samples for the two parameters</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, param_vals <span class="kw">in</span> <span class="bu">enumerate</span>(params_hmc.T):</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>    sns.kdeplot(</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>        param_vals.detach().numpy(), label<span class="op">=</span><span class="st">"Samples"</span>, shade<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">"C1"</span>, ax<span class="op">=</span>axes[i]</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>    axes[i].set_ylabel(<span class="vs">rf"$\theta_</span><span class="sc">{</span>i<span class="sc">}</span><span class="vs">$"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'sns' is not defined</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-57-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot predictions</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_lin, y_lin, label<span class="op">=</span><span class="st">"Data"</span>, color<span class="op">=</span><span class="st">"C0"</span>)</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, f(x_lin), label<span class="op">=</span><span class="st">"Ground truth"</span>, color<span class="op">=</span><span class="st">"C1"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Get posterior samples. Thin first 100 samples to remove burn-in</span></span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>posterior_samples <span class="op">=</span> params_hmc[<span class="dv">100</span>:].detach()</span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>    y_hat <span class="op">=</span> net(x_lin.unsqueeze(<span class="dv">1</span>))</span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot mean and 95% confidence interval</span></span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>plt.plot(x_lin, y_hat.ravel(), label<span class="op">=</span><span class="st">"Mean"</span>, color<span class="op">=</span><span class="st">"C2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-58-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>y_hat.ravel()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+<pre><code>tensor([-1.4220, -1.3707, -1.3194, -1.2681, -1.2168, -1.1656, -1.1143, -1.0630,
+        -1.0117, -0.9604, -0.9091, -0.8579, -0.8066, -0.7553, -0.7040, -0.6527,
+        -0.6014, -0.5501, -0.4989, -0.4476, -0.3963, -0.3450, -0.2937, -0.2424,
+        -0.1912, -0.1399, -0.0886, -0.0373,  0.0140,  0.0653,  0.1165,  0.1678,
+         0.2191,  0.2704,  0.3217,  0.3730,  0.4242,  0.4755,  0.5268,  0.5781,
+         0.6294,  0.6807,  0.7320,  0.7832,  0.8345,  0.8858,  0.9371,  0.9884,
+         1.0397,  1.0909,  1.1422,  1.1935,  1.2448,  1.2961,  1.3474,  1.3986,
+         1.4499,  1.5012,  1.5525,  1.6038,  1.6551,  1.7064,  1.7576,  1.8089,
+         1.8602,  1.9115,  1.9628,  2.0141,  2.0653,  2.1166,  2.1679,  2.2192,
+         2.2705,  2.3218,  2.3730,  2.4243,  2.4756,  2.5269,  2.5782,  2.6295,
+         2.6808,  2.7320,  2.7833,  2.8346,  2.8859,  2.9372,  2.9885,  3.0397,
+         3.0910,  3.1423])</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now, solve the above using Hamiltorch's MCMC sample_model function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Bayesian Logistic Regression</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">1000</span>, noise<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[:, <span class="dv">0</span>], x[:, <span class="dv">1</span>], c<span class="op">=</span>y)</span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(x).<span class="bu">float</span>()</span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(y).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="mcmc-hamiltorch_zeel_files/figure-html/cell-61-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

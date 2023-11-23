@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning – normal_likelihood_lin_reg</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html" rel="" target="">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Retina display</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'retina'</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.animation <span class="im">import</span> FuncAnimation</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tueplots <span class="im">import</span> bundles</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update(bundles.beamer_moml())</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Also add despine to the bundle using rcParams</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Increase font size to match Beamer template</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Make background transparent</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.facecolor'</span>] <span class="op">=</span> <span class="st">'none'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">42</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> true_function(x):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">+</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x_values <span class="op">=</span> torch.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> torch.randn(<span class="dv">100</span>) <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y_values <span class="op">=</span> true_function(x_values) <span class="op">+</span> noise</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x_values <span class="op">=</span> x_values.view(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>y_values <span class="op">=</span> y_values.view(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>stddev <span class="op">=</span> <span class="fl">0.7</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">6</span>, <span class="dv">100</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>pdf_values <span class="op">=</span> (<span class="fl">1.0</span> <span class="op">/</span> (stddev <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.pi))) <span class="op">*</span> <span class="op">\</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    np.exp(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> ((x <span class="op">-</span> mean) <span class="op">/</span> stddev)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_values, y_values, label<span class="op">=</span><span class="st">'Data with Noise'</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.plot(x_values, true_function(x_values),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">'True Function'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.plot(pdf_values<span class="op">+</span><span class="dv">3</span>, x<span class="op">+</span><span class="fl">6.1</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.plot(pdf_values<span class="op">+</span><span class="dv">6</span>, x<span class="op">+</span><span class="fl">12.1</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.plot(pdf_values<span class="op">+</span><span class="dv">5</span>, x<span class="op">+</span><span class="fl">10.2</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="dv">3</span>, <span class="dv">9</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="dv">6</span>, <span class="dv">15</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="dv">5</span>, <span class="dv">13</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Linear Regression'</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'figures/mle/true_function_noise_normal_lin_reg.pdf'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>FileNotFoundError: [Errno 2] No such file or directory: 'figures/mle/true_function_noise_normal_lin_reg.pdf'</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="normal_likelihood_lin_reg_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> animate(frame):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    plt.clf()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> frame <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        plt.plot(x_values, true_function(x_values),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="st">'True Function'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> frame <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        plt.plot(x_values, true_function(x_values),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="st">'True Function'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        plt.scatter(x_values, y_values, label<span class="op">=</span><span class="st">'Data with Noise'</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> frame <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        plt.plot(x_values, true_function(x_values),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                 label<span class="op">=</span><span class="st">'True Function'</span>, color<span class="op">=</span><span class="st">'tab:blue'</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        plt.scatter(x_values, y_values, label<span class="op">=</span><span class="st">'Data with Noise'</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        plt.plot(pdf_values<span class="op">+</span><span class="dv">3</span>, x<span class="op">+</span><span class="fl">6.1</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        plt.plot(pdf_values<span class="op">+</span><span class="dv">6</span>, x<span class="op">+</span><span class="fl">12.1</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        plt.plot(pdf_values<span class="op">+</span><span class="dv">5</span>, x<span class="op">+</span><span class="fl">10.2</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        plt.scatter(<span class="dv">3</span>, <span class="dv">9</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        plt.scatter(<span class="dv">6</span>, <span class="dv">15</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        plt.scatter(<span class="dv">5</span>, <span class="dv">13</span>, color<span class="op">=</span><span class="st">'tab:orange'</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'y'</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Linear Regression'</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig.set_facecolor(<span class="st">'white'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>anim <span class="op">=</span> FuncAnimation(fig, animate, frames<span class="op">=</span><span class="dv">3</span>, interval<span class="op">=</span><span class="dv">2000</span>, repeat<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>HTML(anim.to_jshtml())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed
+findfont: Generic family 'sans-serif' not found because none of the following families were found: Roboto Condensed</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<script language="javascript">
+  function isInternetExplorer() {
+    ua = navigator.userAgent;
+    /* MSIE used to detect old browsers and Trident used to newer ones*/
+    return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+  }
+
+  /* Define the Animation class */
+  function Animation(frames, img_id, slider_id, interval, loop_select_id){
+    this.img_id = img_id;
+    this.slider_id = slider_id;
+    this.loop_select_id = loop_select_id;
+    this.interval = interval;
+    this.current_frame = 0;
+    this.direction = 0;
+    this.timer = null;
+    this.frames = new Array(frames.length);
+
+    for (var i=0; i<frames.length; i++)
+    {
+     this.frames[i] = new Image();
+     this.frames[i].src = frames[i];
+    }
+    var slider = document.getElementById(this.slider_id);
+    slider.max = this.frames.length - 1;
+    if (isInternetExplorer()) {
+        // switch from oninput to onchange because IE <= 11 does not conform
+        // with W3C specification. It ignores oninput and onchange behaves
+        // like oninput. In contrast, Microsoft Edge behaves correctly.
+        slider.setAttribute('onchange', slider.getAttribute('oninput'));
+        slider.setAttribute('oninput', null);
+    }
+    this.set_frame(this.current_frame);
+  }
+
+  Animation.prototype.get_loop_state = function(){
+    var button_group = document[this.loop_select_id].state;
+    for (var i = 0; i < button_group.length; i++) {
+        var button = button_group[i];
+        if (button.checked) {
+            return button.value;
+        }
+    }
+    return undefined;
+  }
+
+  Animation.prototype.set_frame = function(frame){
+    this.current_frame = frame;
+    document.getElementById(this.img_id).src =
+            this.frames[this.current_frame].src;
+    document.getElementById(this.slider_id).value = this.current_frame;
+  }
+
+  Animation.prototype.next_frame = function()
+  {
+    this.set_frame(Math.min(this.frames.length - 1, this.current_frame + 1));
+  }
+
+  Animation.prototype.previous_frame = function()
+  {
+    this.set_frame(Math.max(0, this.current_frame - 1));
+  }
+
+  Animation.prototype.first_frame = function()
+  {
+    this.set_frame(0);
+  }
+
+  Animation.prototype.last_frame = function()
+  {
+    this.set_frame(this.frames.length - 1);
+  }
+
+  Animation.prototype.slower = function()
+  {
+    this.interval /= 0.7;
+    if(this.direction > 0){this.play_animation();}
+    else if(this.direction < 0){this.reverse_animation();}
+  }
+
+  Animation.prototype.faster = function()
+  {
+    this.interval *= 0.7;
+    if(this.direction > 0){this.play_animation();}
+    else if(this.direction < 0){this.reverse_animation();}
+  }
+
+  Animation.prototype.anim_step_forward = function()
+  {
+    this.current_frame += 1;
+    if(this.current_frame < this.frames.length){
+      this.set_frame(this.current_frame);
+    }else{
+      var loop_state = this.get_loop_state();
+      if(loop_state == "loop"){
+        this.first_frame();
+      }else if(loop_state == "reflect"){
+        this.last_frame();
+        this.reverse_animation();
+      }else{
+        this.pause_animation();
+        this.last_frame();
+      }
+    }
+  }
+
+  Animation.prototype.anim_step_reverse = function()
+  {
+    this.current_frame -= 1;
+    if(this.current_frame >= 0){
+      this.set_frame(this.current_frame);
+    }else{
+      var loop_state = this.get_loop_state();
+      if(loop_state == "loop"){
+        this.last_frame();
+      }else if(loop_state == "reflect"){
+        this.first_frame();
+        this.play_animation();
+      }else{
+        this.pause_animation();
+        this.first_frame();
+      }
+    }
+  }
+
+  Animation.prototype.pause_animation = function()
+  {
+    this.direction = 0;
+    if (this.timer){
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
+  Animation.prototype.play_animation = function()
+  {
+    this.pause_animation();
+    this.direction = 1;
+    var t = this;
+    if (!this.timer) this.timer = setInterval(function() {
+        t.anim_step_forward();
+    }, this.interval);
+  }
+
+  Animation.prototype.reverse_animation = function()
+  {
+    this.pause_animation();
+    this.direction = -1;
+    var t = this;
+    if (!this.timer) this.timer = setInterval(function() {
+        t.anim_step_reverse();
+    }, this.interval);
+  }
+</script>
+
+<style>
+.animation {
+    display: inline-block;
+    text-align: center;
+}
+input[type=range].anim-slider {
+    width: 374px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.anim-buttons {
+    margin: 8px 0px;
+}
+.anim-buttons button {
+    padding: 0;
+    width: 36px;
+}
+.anim-state label {
+    margin-right: 8px;
+}
+.anim-state input {
+    margin: 0;
+    vertical-align: middle;
+}
+</style>
+
+<div class="animation">
+  <img id="_anim_imge4abc970e5b942fb9b3fabc23b44a5ce">
+  <div class="anim-controls">
+    <input id="_anim_slidere4abc970e5b942fb9b3fabc23b44a5ce" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="anime4abc970e5b942fb9b3fabc23b44a5ce.set_frame(parseInt(this.value));">
+    <div class="anim-buttons">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.slower()">
+          <i class="fa fa-minus"></i></button>
+      <button title="First frame" aria-label="First frame" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.first_frame()">
+        <i class="fa fa-fast-backward"></i></button>
+      <button title="Previous frame" aria-label="Previous frame" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.previous_frame()">
+          <i class="fa fa-step-backward"></i></button>
+      <button title="Play backwards" aria-label="Play backwards" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.reverse_animation()">
+          <i class="fa fa-play fa-flip-horizontal"></i></button>
+      <button title="Pause" aria-label="Pause" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.pause_animation()">
+          <i class="fa fa-pause"></i></button>
+      <button title="Play" aria-label="Play" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.play_animation()">
+          <i class="fa fa-play"></i></button>
+      <button title="Next frame" aria-label="Next frame" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.next_frame()">
+          <i class="fa fa-step-forward"></i></button>
+      <button title="Last frame" aria-label="Last frame" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.last_frame()">
+          <i class="fa fa-fast-forward"></i></button>
+      <button title="Increase speed" aria-label="Increase speed" onclick="anime4abc970e5b942fb9b3fabc23b44a5ce.faster()">
+          <i class="fa fa-plus"></i></button>
+    </div>
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selecte4abc970e5b942fb9b3fabc23b44a5ce" class="anim-state">
+      <input type="radio" name="state" value="once" id="_anim_radio1_e4abc970e5b942fb9b3fabc23b44a5ce">
+      <label for="_anim_radio1_e4abc970e5b942fb9b3fabc23b44a5ce">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_e4abc970e5b942fb9b3fabc23b44a5ce" checked="">
+      <label for="_anim_radio2_e4abc970e5b942fb9b3fabc23b44a5ce">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_e4abc970e5b942fb9b3fabc23b44a5ce">
+      <label for="_anim_radio3_e4abc970e5b942fb9b3fabc23b44a5ce">Reflect</label>
+    </form>
+  </div>
+</div>
+
+
+<script language="javascript">
+  /* Instantiate the Animation class. */
+  /* The IDs given should match those used in the template above. */
+  (function() {
+    var img_id = "_anim_imge4abc970e5b942fb9b3fabc23b44a5ce";
+    var slider_id = "_anim_slidere4abc970e5b942fb9b3fabc23b44a5ce";
+    var loop_select_id = "_anim_loop_selecte4abc970e5b942fb9b3fabc23b44a5ce";
+    var frames = new Array(3);
+    
+  frames[0] = "data:image/png;base64,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\
+"
+  frames[1] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAiYAAAD4CAYAAADYZS0wAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
+bGliIHZlcnNpb24zLjYuMiwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8o6BhiAAAACXBIWXMAAA9h\
+AAAPYQGoP6dpAABJVklEQVR4nO3dd3hUZdrH8e+U9DKpQ++QhCIgRURqEkVQrFhgLStgAXXBgovK\
+WlDsiqgoNkTX9urq6tpAlARFRQEVECGhKwHSYdIz7bx/hIwJmZpMS3J/rmuvaxNmznlmRji/eZ77\
+uY9KURQFIYQQQoggoA70AIQQQggh6kkwEUIIIUTQkGAihBBCiKAhwUSINmrGzLl8t3FToIfRpmzd\
+voPzLrs60MMQok1TSfGrEK3X3FvvZMKY05l+yYWBHopLc2+9kx07d6HVaAkJ0dKnV0/mzb2W/qn9\
+Aj00IUQQkRkTIYRXmS0WHH3fuem6mWR/8SGff/AWA/qncud9D/lkDIqiYLFYfHJsIYRvaQM9ACGE\
+b1w4Yya33nQ9E8aO5rM1X/Heh/8jffwY/vPRp6BS8fcZlzaaafkq6xtef+d9CgqK6Na1M7fedD2D\
+Bw0AYPVXWbz57gfkFxQSExPNOZMyuX7mlahUKgBOzziX2/8xh48+Xc2hw4dZ89G7REVGOhxbSEgI\
+507K5O33PuTYcQPxcToUReH9jz7lv//7nJLSY/Tr25t/3nIjvXp0B6CwqJgHH3+a33fl0q1LZ9LH\
+j+Hjz9bw8burbK/3ovOm8O33P7J33wFWvvA0CfFxLHvhFX7+dRsqlYrMCeO46fqZhIaGYCgr5+En\
+nuGXbdtRFOjSuSOPLv4XnTrqWfN1Nq++8Q6lpceIiozkovOnMOuqGfy8dTsL71nC15++D0BlVRXP\
+rnjVtmQ2fszpzJtzLRER4RzJL+Div83ivjtvZ+W/3+G4oYzxY0/n7tvnodXKP71COCJ/O4RoJ/Yf\
+/JPJZ2Xw6fv/ZtuOncy741+MHT2Krl068cOPm3n2xZU8seReUvr25pvvNrLgXw/wnzdeRqeLRRcb\
+y6OLF9Gta2f27NvP/IX30qN7VyafmW47/tp163nm8QfRxcai1WqcjqWmtpZPVq8lThdLTEw0AB9+\
+8jmffrGWJx66l86dOvLh/z7njkUP8O6qFYSEhHDvksfp1q0LTyy5l8LCYm69894mx/18zdc8seRe\
+unbphMViZe6tCxk8aAAfvvUqtbVG7lr8MKve+j9umHUV77z/X8wWC5++/29CQkLYd+AgkZERVFfX\
+8OBjT7P8yYc5dcggyisqOJR3xO7reHr5yxzNL+CdlS+goHDX/Y+w7IWXuev2ebbHbNy0hTdefpaq\
+qmpm33Qba77OZurks5rzEQrRLshSjhDtRJwulisuuxitVsvwoYPp1LEDu/ftB+CD/33GlZdPIy2l\
+L2q1mvTxY+jRrSs//LQFgDNGjaB7ty6oVCpS+vZhUvoEftn6W6PjXzn9EpKTEgkNDUGttv9Py4pX\
+3+DM8y4j/ZxprF23nkcXL0KrqQsxH378OdfPvILuXbug1Wi4/OLzqa018vuuXAoKi9j62+/cdN01\
+hIeF0b1bFy4675wmx7/4/HPo0b0rGo2GvfsPcOjwEf5xwyzCw8PR6WL5+98uZ+269QBotRrKyso4\
+dPgIGo2GlL590MXGnPgzLQf/PERlZRUx0dEMSEtpci6r1cqX67KZe93f0eliidPpmDv7alavzcJq\
+tdoeN+vqGURFRpKclMjpI4eTs3uvh5+cEO2LzJgI0U4kxMc1+jkiPIyqqioAjuYXsmLlG7zy+tu2\
+PzdbzBQVFwPw4+afWfnGO/yZdwSzxYzJaGL0aSMaHa+DPtnlGOZe+3emX3IhhUXF3PGvB9i7/yBD\
+Bw+qG0NBAfc//FSjUGMymyksKkYboiUsNJQ4ne6v83Voer6GYziaX0BFRSWTLphu+52CgtVSFxqu\
+uHwatUYjixY/SkVlJWemj+fG664hIiKcJx+6l3fe/4jlL79Gn149uWHmlQw/dUijcx07bsBkMtOp\
+Qwfb77p07ojRZOK4ocz2u8SEeNv/jwgPp7yywuX7JER7JsFECEEHfRKXXnQeF5/fdBbCZDJx530P\
+ccf8GzkrfQKhoSF1SxgFBY0ep1ar3D6fPjmJu26fx9xbFjJh7GiSkxLpkJzMLTdd1yTwABQUFlFr\
+NHLcYLCFk4KCoiaPaxhqOuiTiY/T8fkHb9kdQ2REBDdfP4ubr5/FkaP5LFj0AB/+73OuuOxiRg4b\
+yshhQzGbzXz4v8/5571L+Op/7zV6fnycjpAQLUcLCmzh42h+IaEhIcTpYskvbDo+IYRrspQjRCtn\
+sVioNRpt/zMaTR4fY9oFU3n7vQ/J2b0HRVGoqalh08+/UlhUjNFkwmg0oYuNJTQ0hB27clibtb7F\
+405L6cuwoafwxtvvnxjDubyy6m3++DMPgMrKKr79fiOVVVV00CczeNAAVrz6BjW1tfyZd5iPP1/j\
+9Pj9U/vRITmZF1f+m8qqKhRF4Wh+oW156ruNm/jz0GGsVitRkZFotRq0Gg0lpcdYv+EHKquq0Gg0\
+REVGotE0rZlRq9VMypjIiyv/jaGsHIOhjBWvvsHkszIcLmUJIVyTGRMhWrnnXnqN5156zfZzxw56\
+204Vd407YxRGo5GHn3yOI0fzCQkNYUBqCnfMn0tUZCQL5s3l0aXPUVVdzbAhp5A5cRyFRcUtHvs1\
+V1zOTbfdxVUzLuHSi85DrVFz530PUVBURFREJINPGWBbQnlg0R0seWIZ50y7gm5dOjP5zHRbvYg9\
+Go2GJx++j+dfXsX0a+ZQWVVFR72eC6dOBiDv8BGWLn+R0mPHiYiIIH3cGVx8/jkYysp577+fsOTx\
+ZVgVK927duGR++6yGzZuu/kGlq14hRkz59jex3lzr23x+yJEeyYN1oQQrdIb77zPll+38dwTvumF\
+IoQIDJlvFEK0Cjm793Lwz0MoikLO7j3856NPyZwwNtDDEkJ4mSzlCCFaheMGA4/d/zylx44TH6fj\
+gnPP5rwpkwI9LCGEl8lSjhBCCCGChizlCCGEECJoSDARQgghRNCQYCKEEEKIoCHBRAghhBBBw6e7\
+cgoKi7j/kac4dvw4Go2GWVdOJ3PiOB54bClbt++w3Rb9kfsX0bVLJ18ORQghhBCtgE+DiUaj4dab\
+riOlbx9KSku55oZbOGPUSABuu3kOY0ef5vExH3v6eRbeepO3hyqEEEKIIODTYJKUmEBSYgIAiQkJ\
+6HSxlJWXt+iY9Xc7FUIIIUTb47cak5zde7Barbbbkj/34kquvPZmXnjldSwWi7+GIYQQQogg5pfO\
+r4aychY/spS7bv8HADdeew2JCfEYTSYeeHQpH326mksunGr3uWvXrWdt1je2n4uKS/wxZCGEECJo\
+KYqCSqUK9DB8wufBxGg0sfCeB7l6xqUMHjQAwLa8ExYayjmTMlj3zXcOnz8pcyKTMifafl6waHGT\
+x5hMJt5670MMhjJoox9Um6Uo6HSxXHn5NEJCQgI9GiGECFq1tbVkZWWRm5uL1WpFrVaTmppKRkYG\
+YWFhPj23P4OQT4OJoig8+NhShp86hCmTMmy/Ly4pJSkxAavVyoYffqJ3jx4tOs9b733IiFOHcMrA\
+/i0dsgiA337fxVvvfcjMK6cHeihCCBGUamtrWblyJUVFRY1+v3nzZg4cOMDs2bO9Hk4CFYR8Gky2\
+7djJ1+s30Ld3T779fiMA9921gKeXv8TxsjIUq8LAAalcdvH5LTqPwVAmoaQVO2Vgf9at3xDoYQgh\
+RNDKyspqEkqgbgKguLiYrKwspkyZ4rXzBSII1fNpMBl6ykA2rvusye+fX/qId08kyzetn3yGQgjh\
+UG5ursM/UxSF3bt3ezWY+DsINeSX4te2zGQyMevGWwEoKT2GRqMhThdLeFgYryx/qsXHP5JfwIyZ\
+c+netTMAMTHRvLD00RYft/7YO3N2c+bEcQB8+/2PHD5ylBmXXuSV4wshhGg5RVGwWq1OH2OxWLxW\
+B6Ioit+DUEMSTFooJCSEN19ZDsArr79NnC6WSy86z/bnFosFjUbTonP06tGN1198pkXHsOdofgHr\
+1m+wBZPxY073+jmEEEK0jEqlQq123t1DrVa3KJQ0rCexWCxUVlY6fbw3g9DJJJj4wAOPLSUsNIzc\
+3XsZN2YUhw4fIWP8WMaOPo2q6mr+NutGPn53FRaLheUvr2Lr9h2YTGaunD6NyWemuzz+kfwC7r7/\
+YVtYeXbFq/Tu1YOpk8/iwhkzOffsM/n2+41otVqeWHIvSYkJlJSW8shTz5FfUIRarWLJvXfy4sp/\
+c+Dgn1x13c1ccuF5aDRq9h/4g3lzr+XwkaMseeIZysrL6dRBzz0Lb0MXG8PcW+9kYP8UtvyyDaPR\
+xJJ7FtK7V8uKl4UQQjiXmprK5s2bURSlyZ+pVCpSU1ObfWxH9STOtDQIOT22T44qKCsrY+ULS53u\
+NPl09VqSEuJZtWIZrz7/FG/934ktzyc58MchrrruZq667mZeXvWmy3Prk5N485XljD5tOJ988SUA\
+S597ibGjR/HWq8t5dflSkhMTmTP7akYOH8qbryzngnPPbnSMpctfYtoF5/L2q88zeNAAXn3jbduf\
+aTVaXn/xGWZceiHvfvCRu2+JEEKIZsrIyCApKalJGFCpVCQlJZGRkeHgma45qidxpKVByJU2N2NS\
+bbSwr6jCq8fskxxNRKhnyzHpE8a6TJM/bfmV/Qf+YM3X2QBUVFZy+Gg+Ol1so8edvJRzJL/A6XEn\
+jh0NQFpKXzb88BMAW3/7nQfvWQhAaGgI4LxnyM7cPTz50H0ATDkrg9vvvv+v44/76/hffr3e6XGE\
+EEK0XFhYGLNnzyYrK4vdu3fbygRSUlJavH3XWT3JybwRhFxpc8FkX1EFU59z3LCtOT77x1gGddF5\
+9JzwBv+RaDQaW+GSyWiy/d5qtbLwtpsZNuQUj46t1WiwWv+azjOaTI3+PCS0LnSo1RosLgqmHHEW\
+qeoboanV6mYfXwghhGfCwsKYMmUKU6ZM8Wqhq6vCWpVKRXR0tNeCkCttLpj0SY7ms3+M9foxW6JT\
+Bz179u1n/JjTyd7wg+33o0YM48P/fc6QQQPQaDTsO3CQnt27uSyWjY/TUVxSQmVVFSqVis0/byUt\
+pa/T5ww9ZSCffLGWC6dOxmQyYTZbiIqMoKqq2u7j+6f2I/vb78mYMJYvv17P0MGDPH/hQgghfKKl\
+oaRhsWtFhfNVhtjYWObPn982Or8GQkSoxuPZDV87/5yz+ee/HmT9hh8YO3qU7fcXnHs2R/LzufqG\
+eShWhcTEeJ5+9AGXxwsJCeHK6Zfw9+vn0UGfTB83ik9vvfkGHn7yGf7z8adoNRoevGchfXv3wmw2\
+Nyp+rXfbzTew5PFlrHzzXTrq9dx7523Ne/FCCNEGteZ71XhS7FpfT2JVQOOnl6tS7JX4BrEFixbb\
+ah/qLXvhFW658boAjUh4g3yGQohgF8h71XjT6tWr2bRpk9PHKAqUEklpWGfKY7rTNT6K568Y5pfx\
+tbkZEyGEEMLbAtmi3dscFbuaFDVHrLHkWXQcVuKptGqJUjSM7xbJ2YM6+m18EkyEEEIIF7zVor25\
+S0C+KnYts4ZxyKojz6Ij3xqDFTVxmlqmn9GPzDQ9I3omEKr1b2cRCSZCCCGECy1p0d7cJSBPn+dO\
+eDFZFA6bosgx1YURgxKBGisd1eWMCMmjm9pAt/hwbpl6sdPj+JIEEyGEEMKJltyrprlLQO4+z53w\
+UlRey/rcQrJzC9mwu5jy2q5EqIx0UxsYrjlMZ3UZIaq611dX7DrE4/fImySYCCGEEE605F417iwB\
+TZ48uclz3XleRkaG3fCyadNmNuYeRtd/DN/sKWF7ngGVCoZ0jeO68b0Z2zuOjV/8h5KS4kYt7v3R\
+PM0dEkyEEEIIF5p7rxpXS0CbN29m165dTWY63Fk6AmyhpL5w9ZClbommujqU0Pw9dA+rZJKuiswB\
+nbhw8gjbLMrAa33TRdYbJJh4wZgzz6NP754YTSbCQkO56LxzuHDqZKfP+XnrdsLDwhjY33v3G/jv\
+J18QExPNWenj+WzNV5wxaiQJ8XEAXDhjJu+89gKREREOn//Zmq94+Mln+b9VL9K9WxcAzr5wBl9+\
+/K7D5+zK3cPX2d/yjzmzvfY6hBAi2KSnp3PgwAGKi92fZXBnCUhRFMrLy4G/lmlmzZrl1tLRT7/v\
+Z6dZT54ljnxrNFbU6FTV9NGW0lVtoIO6ArVKASPkbjvMysMHbUtAvugi6y3tOph468OIjo7m3y8/\
+B0B+QSH/vGcJoHDhVMcV2r9s/Y04XaxXg8nF559j+/+ff7mO/qn9bMHEXUmJCbz5f/9h0R23uPX4\
+/qn96J/az6NzCCFEMKu/Npxcv6FSqdDr9dTU1GC1Wl3OMrizBHTyeYuLi8nOzrb7PIuiosAaXbed\
+tySB45ZQ1FjppC5nZEgeXdUGYtW1To9tb/dQMIUSaIfBxNcNcjp20DN/7myWvfAKF06dwo6dOSx7\
+4RWMRhNRkRHce+ftqNUqPvr0CzQaDZ988SX3LLyVo/mFvPH2+5gtZpISE1i86A5iohu3wp8xcy6r\
+VjwNQOZ5l/H8Uw8zdPAgrpkzn2cee5D3P/qUOF0syUmJ5OTu4e77HyEiItx2A8C33/sv336/Ea1W\
+yxNL7iUpMaHJ+NPHjeGHTZspLCpGn5zU6M/+/e5/WPNVNioVXDXjUiafmc7PW7fzwcef8cj9d/Pz\
+r9tYuvwlVCo1Wq2G1198BovFwvKXV7F1+w5MJjNXTp/G5DPTW/w+CyGEN9kLIUajkZqamkaPKy8v\
+JykpiVmzZhEeHu7yuM6WgOypX6apf16lVUOeRUeeJY4j1lhMaIhUGRnWMZT46iPoavJthavuHtud\
+bc2B1K6Cib8a5KT268ufhw4D0KtHd1565nE0Gg3ffv8jq976P+5eMI+LzjuHOF0sl150HlAXaMaP\
+OR2VSsV7//2EDz7+jJlXTm903IH9U/l9Vy6KAn1792Tbjp3069sbk8nU6I7EE8edwXv//YQF8+bQ\
+p1dP2+/1yUm8+cpyXl71Jp988SWzrprRZOwajZrLL76At9/7L7fefL3t9ztzdrNu/QZWvbiMmppa\
+Zs29heFDBzd67jv/+Zh5c69j1IhTqaioBODT1WtJSohn1Ypl1NTWcu1NtzN65PAmd1AWQohA8aRF\
+e8NZDXcu8BkZGXaXgBwfH47UaDGpevCFuZp8YxigkKyu5BRtPt20BlKSo7j2RI3I5s1H8aR/u6Pd\
+Q8GkXQUTbzXIcUXhr/9KysoruP+RJzl8JB+rYm0yC1KvoLCIuxc/wrFjx6mtNTLAzhLPkFMGsG3H\
+ThRF4crpl7Dmq2zS+vVlYP80t8Y1cexoANJS+rLhh58cPu68cyYxY+YcZl51ue1323fsJH38GMJC\
+QwkLDWXEsCHsyt1NVFTUX+Mb1J8XXlnFwT8PkTlhLNHRUfy05Vf2H/iDNV9nA1BRWcnho/kSTITw\
+smC/2AQzR9cGRzyZeQgLC2P27MaFphUVFY1CitHWcTWurnC1JoSYHw8xLqU7enMhYaX7CcN0Yulo\
+kG2G39PQA453DwWTdhVMWtIgxxO79+6nR/euALzy+luMOX0kF06dwr4DB3nwsaftPmfpcy9xzRWX\
+M2rkML7buInPv/y6yWOGDBrI0uUvolKpmT7tQv77v8/Z+tvvDB7U361xhYSGAKBWa7A4KawKCw3l\
+wnMn896Hn7h13HpX/+0yRo8awXcbN3HtTbfx8nNPYrVaWXjbzQwbcopHxxJCuNZW7t0SaM6uDY54\
+MvNwcqHpmjVr+Pqn7Ryy6Dhk0VFwonA1TlVNH20JPUMr6BWjMCAxlYyMTMLCzrF7Lnuhp7a2FqPR\
+aHccznYPBZN2E0xa0iDHEwWFRTz34kouuXAqAJWVVSQnJQLw+Zq/wkZkZARV1dW2nyur6h6nKAqr\
+166ze+zu3bqQdySfpIR4oqIi6dmjO59/+TXPL32kyWMjIyKoqqq2cxT3TLtgKldedzMmkwmAIacM\
+5LGnl/O3Sy+mpraGn3/dznXXXMkfh/Jsz8k7fJR+fXrTr09vtu3YyZH8AkaNGMaH//ucIYMGoNFo\
+2HfgID27d0Oj0TR7bEKItnXvlkBy59pgj6czD0azlU0HSsnKKWTdrjD+qBmE5kTH1ZEhh+imNhCj\
+PhEoFKgoc++zPDn0GI1GVq5c6XD3UHp68Nf4tZtg0pIGOa5UVFRw1XU3YzKbCQsN5eLzz+X8c84G\
+4Mrp03jgsaW89NpbjD5tuO0540aP4q7FD/N19rfcs/BWZl/9Nxb8azGxMTGcOuQU8gsK7Z6rT68e\
+tqLVoYMHsv67H+jWpXOTx507+UwefOxpIiMjbMWvnoiKimRS5gTeePt9oG73TcaEsVwzZz4qFVx7\
+zRUkJSY0Cib/98HH/Lx1O2qNmgGp/ThlQBqnDEjjSH4+V98wD8WqkJgYz9OPPuDxeIQQjflrabqt\
+83TnTP1z3Jl5KCyrITu3kKycQr7bU0yl0ULH2HDS0/Tc2Tee2j+388e+IiorK21fAhvy9LNUqVR2\
+Z1HUajXh4eHU1NTwwgsvBP3Mmkpxd2EqSCxYtJgnH7qv0e+WvfAKt9x4ncvnrl692mmDnJEjR8pf\
+5ABx9zMUQtRZtmwZBoPB4Z/HxcUxf/58P46o9XJ2bThZ/cyDvVkMq1Vh+2EDWTmFZOUUsONwGSoV\
+nNotjsz+HUhP1dO/U0yTL8C+/Cxramp47bXXmoRYZ68j0NrNjAk4ro4Olja8QgjhDn8tTbcXzopI\
+w8PDCQsLc9i3pKzGxIbdxWTlFPLN7kKKK4zEhmuZkKpn9theTEjRkxAV6vDcvv4ss7OzW93Mms+D\
+SUFhEfc/8hTHjh9Ho9Ew68rpZE4cR97ho/zrwUepqKhk5PCh/POWm3z+F8jeFFcwteEVQgh3+HJp\
+2p62HnDcuTbUvweKorC/uJLsnMOs21XI5oOlmK0KqR1iuGR4NzLS9AzrHodW497ykK8/S39t+vAm\
+nwcTjUbDrTddR0rfPpSUlnLNDbdwxqiRPP/KKq79+xWMHX0ad93/MN//uJmxo0/z9XCCug2vEEK4\
+q7n3bnFXe9vx4+zaUGu28NP+usLV7NxC/iipIkyr5ow+idx33gDS0/R0jY9s9jXFV59la51Z83kw\
+SUpMsBVrJiYkoNPFUlZezm+/7+Lh++4CYPKZ6Xy38afmB5NmlskE0wfR7rWuUichAs6XS9P+3PET\
+bBdFqHsPC8pqyM45Ubi6t5gqo4XOurrC1Xun6jmjTxIRoRpbgPugBQHOV5+lv2fWvMWvNSY5u/dg\
+tVoJCwslNuavAqDkpESKikuafVydLpbfft/FKQPd6+chgstvv++ShmtCeMiXS9O+3vETjLMxVqvC\
+trzjdWEkt5Adh8tQq2BY93huSu9LZn89qR0aF666CnDutq335Wfp65k1X/BbMDGUlbP4kaXcdfs/\
+PHre2nXrWZv1je1newHmysun8dZ7H7Ju/QYIsuQnXFAUdLpYrrx8WqBHIkSr46ulaV/WJfhyNsbT\
+98BQbWLDnqK6wtXcIkoqjegiQpiQksx143ozvl8y8U4KV50FuKKiIpYuXUpkZKRboctXn2Vr3PTh\
+l2BiNJpYeM+DXD3jUgYPGoCiKJSVl9ve/KLiErs3lAOYlDmRSZkTbT8vWLS4yWNCQkKa3FdGCCGC\
+jS+XLbxZ6OrLugRvz8Z4MvuiKAr7iipObOctZMvBY5itCmkdY7hsZF3h6qnd3C9cddUx1mQyYTAY\
+PA5d3vxvpDVu+vB5MFEUhQcfW8rwU4cwZVJdMlOpVAzsn2oreP3y62ymTMr09VCEEMLvgnHZwhlf\
+1iUoiuLV2Rh3Zl8UtZafDpSStauArNxCDpVWE6ZVM6ZvEvedP5D01GS6xkc267W42zE20FtzW9um\
+D58Hk207dvL1+g307d2Tb7/fCMB9dy3gputncs+Dj/H08pcYMWwIY04f6euhCCGEX3lr2cLfF5Pm\
+1CU4GmPDYGaxWKisrHR6bk9mYxzNvlRYteTmw5pnv2ZPmYZqk4UucRGkpyWTkaZndO+6wtWW8LRj\
+bLBszQ32UAJ+CCZDTxnIxnWf2f2zN1561tenF0KIgGnJskUgZ1rcrUtwNUZHwcwZT2Zj6mdfrAoU\
+W6M4ZNWRZ4mjVIlEhUKnsmrmZZ5KRpqelA7Rdo/bktDnLMDZE4xbc4NRu+r8KoQQ/tScZYuGN2IL\
+1A363KlLcGc2yFEwc8STXSKGKiM5VVHsMSaQZ4mllhDCMNNFY+AUdT5dNAbC1VZqt+axvzqVng0C\
+nbdCn7OOsfYE49bcYCTBRAghfMCTIlKj0djoQuno1vX+rFVwVZfgzmyQq+LQhlztElEUhb2FdYWr\
+63IK+fmPY1isnYlXVZGqLaar2kCyugK1quFzaFJ8Cngt9J0c4BzdjK/+9QXj1txgJMFECCF8wN0i\
+UkezI44EolbB3rd8V7NB9SHL1XGjo6Md7hKpMVnYuL/E1ugs71g14SFqxvRJYvH5A1Ed/Z19v+1y\
+OVvRMCwBXt0V1DDA1d8wrzVtzQ1GEkyEEMJH3Cki9XS5AwJfq+DObFD9EokzsbGxzJ8/v9HrOHK8\
+uq71e04h3+8rpsZkpWt8BBlpetLT9IzunUh4SF3ham1tR1YePejWUkp9oHP2uJaGvvDw8Fa3NTcY\
+STARQggfcaeIdMWKFR4fV6VSBbRWwZ3ZoIqKCrRax5eY+mBmVWDrn6Ws21U3K5KTX45GrWJ4j3hu\
+OTOFzDQ9ffX2C1cbLqXk5uZSVlbmNHiYzWaX71tLQ19r25objCSYCCGEj7gqIg0NDXW7F0ZD1dXV\
+LFu2LKD9UFztSFEUxWG9hREthogufHFMz91LvuJYlYn4yBAmpuq5Mb0vE/olo4sMcWscDYPAsmXL\
+MBgMDh+r0bjeIuzNAlUJJc0jwUQIIXzI1TdoT3ph1HO3o6gvv7F7siNFUeC4Es4REjisxHPEGIFS\
+DQNCq7hiVA/S0/QM7RaHRt2ysbrbf6W13TumvZFgIoQQfmIvJLiaeQgNDXU4+2CvYNPZVtjQ0FCv\
+BRV7s0EVFRW212FWVBy1xpJn0ZFn1VGhhKFVWZmY1omb0vSkpyXTSRfR7PPbC13u9l9pbfeOaW9U\
+irudYYLEgkWLefKh+wI9DCGE8Ir6fiCOLpSzZ89mxYoVTpco4uLimD9/vtOGZmq1msjISDQajU+W\
+gKxWKw8+tZycMi2HLDqOWmOwoCFaVUs39XG6aQz01cEdt93iMhy500XWUf+R+sc4Kz515zEicGTG\
+RAghAsgbdSj1BZvOdvhYrVYqKioA793J12JV+PXQcdsumpySPqhQ6KCu4FTtEbppDOhUNbabvodq\
+dA5DSXO7yJ78WtwpPpUC1eAmwUQIIQKspXUo9QWb7jY0a8mdfD/9ch1f/36U/TWR/GGMolbREB8Z\
+QnqanrHxFVQf3Eoo5ibPdVa/0ZIuss5eizuBQ0JJ8PG86koIIYTPOKpDcXQBrb/ge3K3W/irZ4c7\
+j8vJL+PZr3LIePgz7vjByhpDR4qNGtI0BUwNy2F24l4euaA/d0zPpEtyfJOxuqrfaGkXWXdfS/1j\
+RXCTGRMhhAhy7hR1enq3W3Dcs6PaaOGHfcW2JZojhhrC1NCBakaH5NNVYyBK9VcxbmlJpW3GojkN\
+xrzRRdZZ/5FA3hBReE6CiRBCBDl3bqoHnt/ttmGQyTtWZWv9/sO+EmrNVronRDJpYEcy0vRs+vwd\
+KsuO2z1Ow46pntZveKuLrKP+I+7WpojgIcFECNFiUkDoe+5c8D3pLWJVYH+5iksefJODxmhKzGFo\
+1SpG9kxgwaRU0tP09EmOQqVSoSgKWxSL0+PZm7Fwt8bDndDhbo+SkzWnNkUElgQTIUSzyPR4Y/4M\
+Z47Oc/LMitlspqqqyjYjUaNoOWyJ5ZBVx2GLDiNawjHRVWNgcGgeg/Uh3Pj3zCafn7vhobmv353Q\
+4W6PkpO5U5siwSS4SDARQnisNUyP+yMoBGM4azizYrVa+e1QKStXb2Lz4SryTeEoqEhUVTJAW0hX\
+jYEkVaVtO295qcrhDEJzZyzc4U7ocHc5qyF3lokCfUNE0ZQEEyGEx4J1etyfQSFYw1mV0cwPe0tY\
+l1PI+txCjhpqiArVMDalJ/NT9ezb8D/MFaV2n+tsBqG5MxbucDd0eFq/4uuZHuEbEkyEEB4Lxulx\
+fweFYApnh0qryM4tZN2uQjbuL8FottIjMZLJg+oKV0/rlUCYVoOiKDz9nYlyJ8dyNIPQnBkLTzQn\
+dLjDlzM9wjckmAghPBKs0+P+DgqBDGcmi5Wf/zhm20Wzp7ACrVrFab0S+OfZqWSk6emdHN3keS2d\
+QfBXx1RvHteXMz3CNySYCCE8EqzT4/4MCoEIZ6WVRtbn1gWRb3cXUVZjJik6jPTUZG47K4Wx/ZKI\
+CQ9xeRxvzSC0luUPX8/0CO+TYCKE8FiwTY/7Oyj4I5wpisLOo2W2WZFfDx1HUWBwVx0zx/Qis7+e\
+QZ11qNWenaM9ziDIvXFaFwkmQgiPBdvFLRCzOL4IZ1VGM9/vLSErp4DsnCLyy+oKV8f1S+axiwcz\
+MS0ZfUx4i8bd3mcQJJQEPwkmQgiPBePFzd+zON4KZ3+WVJGVU0BWbhE/nihc7Z0UxbmDO5GRpmdk\
+zwRCtd69rZmzGQSZURCB5vNgsvCeJfyybTsjhg3lkfvvBmDurXdSWnqM0NC69dBXlj9FeBtP6UK0\
+NcE2Pe7vWRxX4Sw0NNTu80wWK1sOHiP7RL3I3sIKQjQqRvVKZOHkNDLS9PRKivLqWJ1RqVRB2Y9F\
+tF8qxce3Wvx563aqqqr5Yu26RsFkwbw59OnV0+PjLVi0mCcfus/LoxRCtAX1F9hAzOIoioLRaLR7\
+gR9y2lh+OGggO6eQb/cUUd6gcDWzv56x/ZKJDgvMBLajbdb1gS4YmuWJ9sXnfxOGDx3Mz1u3+/o0\
+Qgjhs1kcd5Y7jEaj7QKvKFCiRJJniebtwjKKvvkGUDGkq47ZY3uRkda8wlVfCKZ+LEJAAGtM7n3o\
+CTRqNZPPyuBvl14UqGEIIdqoloaSk5c3VCoVERER1NTU2F3u+OKrdWzJN5Fn6cEhi45qQgnBTBd1\
+GWmhxUwd3ovLLxjrpVfnPcHYLE+0bwEJJovvXoA+OYmKikru+NcD9OjWhTGnn2b3sWvXrWdt1je2\
+n4uKS/w1TCFEkPJ1TYuj5Y2ysrJGP6/7aRsfbC+mNqEvG/dZsNAXnaqa3tpSuqoNdFRXoFbVrZbn\
+HzT7bLzNFazN8k4W6PML/wpIMNEnJwEQHR1F5sRx7MzZ4zCYTMqcyKTMibafFyxa7I8hCiGCjD8L\
+NB0tb1gUFQXWaPKsOvIsOgxKBOoaKylKKWOii0g2FRKrrrV7zGC4wJ8sWJvlQXDeIFH4h9+Didli\
+oaKigjidDpPJxMZNWzhnUqa/hyGEaEX8fR+chssb1YqWPEtdEDlsjcWElgiMdNMYGK45TGd1GckR\
+sSiKgsFgP5RA8N4sLtia5UHw3iBR+IfPg8nNC+5m774DVNfUct5lV7Pk3jtZ+tyLmC0WrBYrY0ef\
+RsaE4Ft3FUIED38WaFosVvJrQ8g1deKQRUexUrd1N1lVySBtAV01BhJVVTTMGBaLhbS0NLZs2RJU\
+F3h3BFuzPJCC3PbO58Fk+ZMPN/ndGy896+vTCiHaEF8XaFbUmvluTxFZOYVk5xZRVN6zrnBVU0aa\
+uoiuGgMRKsc1Imq1mszMTA4ePBhUF3h3BGOzPCnIbd+k86sQQSTYahCCga8KNA8UV9YFkZxCfjpQ\
+gsmi0Cc5iguHdia67CDHdm9Dhes2T/WzIcF4gXdXMDXLay0FucJ3JJgIEWBS5Oectwo0jWYrmw+W\
+2sLI/uJKQjVqTu+TyKJz+pOR1oHuiZEA1Nb2YeXKprMf9sbWcDYkmC7wzRXoMQdzQa7wDwkmQgRQ\
+oIv8WsPFU1GUZhdoFpbXsD63iOycQjbsKaai1kyH2DAy0vTcdU5/xvRNJDK06T+D9mY/1Go14eHh\
+tj4mrmZDgv19DWbBWJAr/EeCiRABFIgiv9YwQ2OvuVlYWBi1tbVO6zesVoXfDhtO1IoUsj3PgEoF\
+Q7vFccP43mT01zOgU6xbocFfN7prDeHQ34KxIFf4jwQTIQLI30V+gZ6hcYejMQKEh4cTFhbWaMbi\
+tDPGk7W71Fa4WlxRS0y4lvEpyVxzRk8mpCSTGN2y13RycPB2V9lgDIeB1JrrdUTLSTARIkACUeTX\
+GrZhOhoj1F3QBw8eTMrwsWTnFvFWbiHzHv8Gk0Whnz6aacO6kJ6mZ3iPeEI0zusUAqU1hMNg0Bbq\
+dUTzSDARIkACUeTXGrZh2hujRVGRb40hz6Ljv9/VcPybbwnVqhndO5F/nTuAjDQ93RIiPT5XIC54\
+rSEcBhsJJe2LBBMhAsifRX6tYRtmwzFWKSHkWXQcsug4Yo3FjIZIjPQOr+KJK0Yzpm9So8JVd8cd\
+6GWU1hAOhQgkCSZCBJA/i/yCfRum1aqw/bCBnyqT2FvTlRIlClBIVlcyWHuUbhoD8apq4uJ0nDWg\
+I+B5yAj0MkprCIdCBJoEEyECyN9FfsG2DbOsxsSG3cVk5RTyze5CiiuMRGgT6aguZaC6gC6aMsIb\
+dFxtOMbmhIx169YFdBkl2MOhEMFAgokQAebPIr9Ab8NUFIX9xZVk7SokK6eQzQdLMVsVUjpEM214\
+VzJS9QzqGMkbr6+iuPiY0zG6W6vRcFalrKzM6dj8sYwSbOFQiGAjwUSIIOLrb8qB2IZZa7bw0/5S\
+W2+RP0qqCNOqOaNPIvedN4D0ND1d4xsXrrozRndqNTIyMhxuPbbHH8sogQ6HQgQ7CSZCtDP+mKEp\
+KKshO6duVuS7vcVUGS100oWTkabn3ql6zuiTRESoptljdLdWw9HSjSP+WEaRHh1COCfBRIh2zFsX\
+YYtVYVvecVsY+f1IGWoVDOsez03pfclI05PWMcat850cROw9x91ajd27d7v9Gvy5jCI9OoRwzGkw\
+mTFzLuedM4nJZ6aTEB/npyEJIVoDQ7WJDXuK6gpXc4soqTSiiwhhQkoy14/vzfh+ycRHhTZ6jqOL\
+cHO28Lqq1UhJSSEnJ8et19JwGcXfQUFCiRCNOQ0ms66azudffs1Lr73JqBGnMnXymYw5/TQ0GsdT\
+sEII//PHxVRRFPYVVZB1YlZky8FjmK0KqR1iuHRENzL76zm1Wxzakzquugodzd3C66pWIzMz0+WM\
+iUqlQqfT0adPHwBWrFghLeKFCDCV4uye3icUFhWz+qssvli7jvLyCqaclcHUyWfRq2d3f4yxkQWL\
+FvPkQ/f5/byi7WntU+j+aBRWY7Lw4/6SuiWa3EIOlVYTplUzpm8S6Wl60lOTmxSunjxGe6GjPjzU\
+11ps2rTJ7vNVKhUjR450uFOm/j1wVKuxevVqp7MqI0aMIDMz0+UYJZwI4T9uBZN6v2z7jWXPv8ze\
+/QcJDwsjtV8fbr35elL69vHlGBuRYCJaEih8dTH3d8hx54Lf3NeTb6ixzYp8v7eYapOFLnERpKcl\
+k5nWgdF9EgkPcW/WdPXq1S5DR25uLgaDweEx4uLimD9/vstz2fsM6t8nR7MqLQ1GQgjvc1n8ejS/\
+kC/Wfs3qtVmYLRbOPftMHnvgHuLjdbz/30+4676H+fDtlf4Yq2jHvBEovN3101+tze1dcL15vxWL\
+VWHrob8KV3cerStcHdEjgXmZ/chI05PSIbpZwcvVlt6cnBy7sxmNxufmFl57f+7ODhhpES9EcHEa\
+TG687U525uxm3OhR3DH/Rk4bcWqjv/xXz7iU199+z+eDFO2btwKFNy/mvm5t7ir0tPRiaqg28e3u\
+IrJzClm/u4jSSiNxkSFMTEnmhgm9mZCSTFxkqMPnu8OdLb3l5eUuj9PSLbzOdsBIi3ghgo/TYDJh\
+7Bk8cv8idLExDh/z9Sfve31QQjTUnEBh70LizW/GvrxDrKvQM2vWLI8vpoqisKfwr8LVn/84hsWq\
+kNYxhukj6wpXh3aLR6P23sXXnS29rmZLvL2F9+T/JqRFvBDBx2kwufzi810ewNVfaiFayp1AMXny\
+ZIxGo8NZhtDQUK9+M/bl9L+r0JOdne3WxbTWbGXjicLVdbsKOXy8mvAQNWP7JvHABQNJT9XTOS7C\
+5XhaMlvgbEuvK/7qhCot4oUILtJgTQQ1d6baDQYDS5cupaqqqsljGy6teOubsa+n/90JPY4uppVK\
+CHmWOMpNPXjpga9shasZaXoy0vRuF656q37G0ZZeR1QqFdHR0X7thCot4oUILhJMRFBzdzmgoqLC\
+4Z/VL61465uxL6f/3Q096enpHDhwgMKiYgotkeRZ4zhk0XFMiUSFwojoOOaf1pGMND399J4Vrnqz\
+fqZh8Wn9TfScBZTo6GhuueUWv87ESot4IYKLBBMR9FqyHAB/zTLMmTPHa9+MfTX9707oMaLly5wS\
+dsWNIutIPpVmCFeZ6RVexcU9VdxwwQT0cdHNOj94v36mYfHpsmXLnG4NVqvVAVkelhbxQgQPnweT\
+hfcs4Zdt2xkxbCiP3H83AL/vymXJ48swmUxMmZTB7Kv/5uthiFbM0+UAeywWC6GhoV77ZuzL6f+T\
+Q4+iwHElnEOWOPKsOoqqY7D+31YGdIpl5ri+pKfpGdJV16TjanN5q37G3gW+NdRzSCgRIrB8Hkwu\
+m3Y+U6ecxRdr19l+9+SzK3jgX/+kd8/uXD/vDiaMPYO+vXv6eiiilTp5qt1sNlNZWelRSKlfWvHW\
+N2NfTv9nZGSwe99BdhTVcsisI8+qo0IJQ4uFnhG13JiZxqRTOtNJ57pw1VNWq7VF9TOualOknkMI\
+4YrPg8nwoYP5eet2289FxSVYLBb69ekFwFnp4/n+x00STFqRQEx1nxwonnnmGadLAg3VfxN35661\
+LRlTS493+Hg1WTmFZOcU8kNBT2pMVmI1JnqHV9A7vJi+MVbMxhpKNh3ivS3ea+Z2cphwVK9Tz1H9\
+jLu1KVLPIYRwxu81JsUlpSQnJdp+Tk5K5NdtO/w9DOGhQHY5PVl90HC37qS+IdmuXbt8Nu7mhBKz\
+xcovfx4jO7eIrF2F5BaUo1GrGNEjntvOSiEjTU+f5Ghqa2t57bXXPC5Gdee9dBQmHHEU8sD92hSp\
+5xBCOBP0xa9r161nbdY3tp+LiksCOJr2KdBdTu1xVneiVquJjIxEo9FQW1tLTU0NNTU1Xh93cxyv\
+MvL170d5b8MOfiuyUKNoiFCZGazX8vSlg8gY0BldREij52RnZ7tdjOrpe+koTDjiLOQ1pzZFQokQ\
+4mR+DyZJiQmNwkVRcQlJSQkOHz8pcyKTMifafl6waLEvhyfsCHSX0/Dw8CbPc7UkEBoaypo1a+ze\
+nM0b43aXoijk5Jfblmh++fMYVgUSVJWkagx01RhIUlWiKVdx9Kc/CB80u8kx3L3gNydAOjs2/NVX\
+RK1WOw15zelGK4QQ9vg9mCQnJaJWq9mz7wC9e3bnq+xvuev2ef4ehvBAoLqcFhUVsXTpUiIjI+1+\
+63e1JODL3SXOVBstbNxfzLpddWHkiKGGyFANY/smMaOfCvOfW4lUmZqcw15Y8qSZm6cB0p1j1/cV\
++fLLL52GPHe70UooEUK44vNgcvOCu9m77wDVNbWcd9nVPHzfXSyYN5d7lzyO0Whk8lkZUvgaxALZ\
+5RTAZDJhMBhcLr+cfO6WjtvTJZG8Y1W2u/P+sK+EWrOV7gmRTBpY1+RsVO8EwrSauj4eJ4WShmM+\
+OSx50szN0yDm7rHVanWLutHWnysYtgILIYKfz4PJ8icftvv7d1et8PWphRcEustpw8d6svzSknG7\
+sySi0Ybw8x/HyMqtmxXZXVCBVq1iZM8EFkxKJT1NT5/kKK/cydadC34wHLu+G61sBRZCtETQF7+K\
+wAtkl9OGPF02au64HS2JVFs1/JhvJWv51+wu11JWYyYpOpQJKXrmZ6YwLiWJ2PAQO0f865zNCUvu\
+9P4IhmOHh4fLVmAhRItJMBEu+bPLqSueLBs1d9z1yxaKAseUCA5ZdORZ4yiyRqGgIrG4kv6RNUw8\
+NYlrzh9HRETT4lxHmhOW3O39EQzHlq3AQoiWkmDSCvn7H3xfdzn1pN28J8tGzRl3RY2RvdUR7DHq\
+OGSNo0oJRYuFzuoyzgj5g64aQ13hqhWKcg+yatVBj7YdNzcsuXPBD7ZjSygRQjSHSmnuzUcCZMGi\
+xTz50H2BHobf+avBmTu8HYzqX9vu3buprKzEZLJfHKpSqRg5cmSzdwA5Gve+/OO8/NkP/PhnBXnG\
+CCyoiVHV0E1dt523o7ocjcr+X5PmjKnh6/X2coezY4eGhrboc/PluIUQop4Ek1bAUTFm/bfVQDQK\
+85Wamhpee+01h9/MvfFazRarrXB13c4C9hZVosJKR3UF3TQGuqqPo1PXun28uLg45s+f7/Jx9oKR\
+L2e/FEXBaDT6JNDKMo0QwldkKacV8GWDM39y52LmqwLK0koj63PrtvN+u7vIVrjaL9pIt9C9dFaX\
+Eapyb4fQyVqy7diXF3ej0eizjr0SSoQQviLBpBXwZYMzV1r6zbg5S1DeKKBUFIWdR8vIzilkXU4h\
+Ww8dR1FgcFcdM8f0IiNNzylddDz77DMYNI5vBlh/bmcTiy29qZ2vtJVAK4RoXySYBDlfNzizx1v1\
+LN64MHvymqqMZr7fW2Jr/55fVkNUqIZx/ZJ57OLBTExLRh/z1w4adzufpqWlsWXLFq9tO/ZXMAhk\
+oBVCiOaSYBLkfNngzB5vfsv3x4X5z5IqsnIKyMot4sf9JRjNVnolRXHOKZ3ISNNzWq8EQrX23z93\
+39vMzEwOHjzY7G3H9vhjpkvuXSOEaI0kmLQC/mz17c0w4YsLs8liZcvBY3VhJKeQfUWVhGhUjOqV\
+yMLJaWSk6emVFOX28dx5b5uz7TjQwcDfgVYIIbxFgkkr4MsGZyfz5o3vvHVhLqmoZX1uUV3h6p4i\
+ymvMJMeEkZGq546z0xjbL4nosOb9p+zue+tp3UswBAO5d40QojWSYNJAsE5r+7LBWUPeDBMtuTAr\
+isLvR8rIOnFTvG15dYWrQ7rFce3Y3mSk6RnYORa1uuWfVXPeW3f/Gwl0MPBnoBVCCG9p98EkmBqX\
+OeOPVt/e/pbvyYW5stbMd3uLyc4pJDu3kIKyWqLDtIzrl8QVowYzMVVPcoxvPg9fvLeKogQ8GPgr\
+0AohhDe162AS6O2czdVapv9dXZj7Dj2dVd8fICunkJ/2l2K0WOmdHMV5gzuTkaZnRE/Hhau+4u2t\
+0X379qV79+7s27cvIMFA7l0jhGht2nUwCfR2zmDkzW/5J39jN5otFFiiOR7ZhfVVkTz+zA+EatSM\
+6p3AXefUFa72SHS/cDWYOAq5v/zyC0lJScyZM6fFLeFbSkKJEKI1aNfBxJ1Cz8mTJ7erf9C9Pf1f\
+ZoSK5EHklurZsLuY8lozelMY6amJ/HNyf8b1SyKqmYWrwURCrhBCeEfrvyI0kzuFngaDgaeffjpo\
+6058xdPp/4aPsVobFq4WsC3PgEoFg7vGcd34vwpX21rYk2ZmQgjhHe02mLhT6KkoCuXl5UDw1534\
+iqMA0bCeosaskGeOpjS8M3sqQimqMBITpmV8SjJXje7JxNRkkqLb7nsW6J4lQgjRlrTbYALOCz1P\
+JlPyf6mtreWJF99ge7GFPEsH8q3RWFGjU1WTEm3gyWvSOaNfB0I0/i1cDZRg6FkihBBtRbsOJo4K\
+PR1pz1PyRrOVzQdLycop5NOfD1BY3QU1VjqqyxkZkkc39XFi1EZUFhVVB+LRpk4O9JD9KtA9S4QQ\
+oq1o18Hk5EJPs9lMZWWl05DSnqbki8pryc6tuyHehj3FVNSa6RAbhh4Dg0KL6KwuI0TVeAlDURQ2\
+b97Mrl27XNbmtKX3MdA9S4QQoq1o18EEmhZ6PvPMMxgMBoePb8tT8larwm+HDXV3580tZPuJwtWh\
+3eKYM6E36Wl6+neMYdmyZbbaG3uc1ea0loZ2npJmZkII4R3tPpg0VD/l7mxKPiUlxeVxWtNMQHmN\
+ie/2FJ8II0UUV9QSE15XuHrNGT2ZkJJM4kmFq67qKRpqWJuTkZHRKhvauUuamQkhRMtJMDmJs7oT\
+lUrFrl272L17d5Nv+a1pJmB/UYXtPjSbD5Zisij000czbVgX0tP0DO8R77Rw1ZOiYfirNgdoN70+\
+JJQIIUTzqBR3ry4+cOGMmURFRaJWqYiJieaFpY+6fM6CRYt58qH7fDqu+pBRX3dSVVXVZDtofe3A\
+7NmzAezOBDR8TCDDidFsZdOBUltvkYMlVYRq1ZzeO5HMND0ZaXq6JUS6fbz6LqfuFg0DxMTEoFar\
+nS6TxcXFMX/+fLfHIYQQou0J+IzJK889SWRERKCH0UjDKfkvvviCzZs3N3lMw2/5EHwzAYVlNWTn\
+1s2KfLenmEqjhY6x4aSn6Vl0rp4xfROJDG3ex2+vnqKiosJpSFGpVNLrQwghhEsBDybBrn4Jwp76\
+JQpnF2R/bTG2WhW21xeu5hTy22EDahWc2j2eG9P7kp6qp3+nGK9d9E+up1izZo3T2py0tDSn3VGh\
+bRcWCyGEcE9Ag4lKpWLuLQtRq9VcPu0CJp+ZHsjhNOFOR0+z2ezyYuqrmYDyGhMbThSurs8tpLjC\
+SGy4lgmpemaN7cmEFD0JUaEOn++tMalUKre3y0qvDyGEEM4ENJi89Mzj6JOTKC4p5R8LFtGnV0/6\
+9enV6DFr161nbdY3tp+Likv8Nj53OnpqNBqXx/HWTICiKOwvriQ7p5B1u+oKV81WhZQO0Uwb3pXM\
+tA4M6x6H1knhqqsi3eaGFXe2y0qvDyGEEK4EtPi1oedeXEmvnt2ZOvksp4/zR/FrQ6tXr3b6LX/k\
+yJGA85mAkSNH2l3KcScE1Jot/LS/1NZb5I+SKsK0ak7vFU8npZSI4/uJURvd2gVUX7Rqrx4mPDyc\
+sLAwr+0ocvTaGhYWS68PIYQQJwvYjEl1dQ1WxUpUZCRV1dVs+XUbmRPHBWo4Drn7Ld/dmQB3thUX\
+lNXYtvN+v7eYKqOFzrq6wtV7p+oZ3jWGd9583RYw6ludOesHoigKWVlZdkMJQE1NDTU1NbafW9pb\
+xFHgkl4fQgghnAnYjMnhI0dZeO9DAFitVi4492wun3aBy+f5e8YE3PuW7+5j7M9YqDDFdiY27Qy+\
+2VPC70fKbIWrGSe286Z1/KtwdfXq1WzatMnuWBvO0JwcglztnHF2LCGEEMIfgmYpx12BCCYNufMt\
+39FjGgaKWkXDEUssh6w6Dlt01BBCpBbOHNiZjDQ9E1KSiXdQuLps2TKX/UDmzJnjcNnGE9JbRAgh\
+hD/JdmEPubP0YO8xiqKw8ff97DR1IM8aR4E1GgUV8aoq+mmL6aY20C9By60zznV6bHd2ClksFtat\
+W9fiUFJ/LFlyEUII4S8STHyoxmThpwOlZJ+oF/mztCcarHRSl3F6yJ90VRuIVhttj1esMS5DgDs7\
+hdRqtdP+K56Q3iJCCCH8SYKJl+UbGheuVpssdImLID0tmfLcjcRW56NV2V89czcEuHOjwZycnBa/\
+FuktIoQQwt8kmLSQxaqw9dDxut4iOYXsOlqGRq1iePd45mX2IyNNT0qHaFQqFatX57F5cz72qnoc\
+hQB7MyiudgplZma6nDFRqVRER0ejVqupra2ltrZWeosIIYQIOAkmzWCoNvHt7iKycgr5ZncRpZVG\
+4iJDmJiSzJwJvZmQkkxcZNPCVXe3HrvaUuxOMzNXsyojR45k8uTJqFQq6S0ihBAiaMiuHDcoisLe\
+wgqyTsyK/PzHMSxWhbSOMbbtvKd2j0ejdr0M4yoEONpS7OxOxfZmVRzdAdjVHY+l0FUIIUQgSTBx\
+oMZkYeP+Elvhat6xasJD1Izpk0R6mp70ND1d4lp2V2R7IcDdHiXukJkQIYQQrY0s5TRw1FBtuzvv\
+d3uLqTFZ6RofQcaJIDK6dyLhIa7vjeMuezMTzu7A6+mdiqXLqhBCiNZGgskJCz/YzntbDtUVrvaI\
+55YzU8hI09NPH+23C7q7PUqa0+RNQokQQojWQILJCZMHdWRsvyTG90tGFxkSkDG426PEUchw5z48\
+QgghRDCTYHJCepo+0EMAXPcocdRXxFHRbEtvxieEEEL4k/Ov58LvMjIySEpKajIr4qqviKM7ByuK\
+QnFxMVlZWT4ZrxBCCOFNEkyCTH2PkpEjRxIXF0dMTAxxcXGMHDnS6ayHO0WzQgghRLCTpZwg5Olu\
+Gm8WzQohhBCBJDMmftLcdjHu3s24JUWzQgghRLCQGRMf8ucumeYWzQohhBDBRIKJjzRnl0xLllrc\
+vQ+PEEIIEcwkmPiIO7tkpkyZ4rVZFXdu7CeEEEIEOwkmPuLOLpmMjAyv9h6RFvRCCCFaOyl+9QF3\
+d8msW7fOZ71HJJQIIYRojSSY+IC7u2Sc9RaR3iNCCCHaIwkmPpKamupw1kKlUpGSkuJ27xEhhBCi\
+vZBg4iOuWstnZmZK7xEhhBDiJBJMfMSd1vKuZlWk94gQQoj2Rnbl+JCrXTLSe0QIIYRoLKDB5LuN\
+m3h2xatYFYWrpl/CBeeeHcjh+JS9mRHpPSKEEEI0FrBgYrZYeGbFKzz/1CNER0dxzQ3zmTh2NDpd\
+bKCGFBDSe0QIIYT4S8BqTHbuyqV3jx7ok5OIjIhg9Gkj+GnLL4EaTlCQUCKEEKK9C1gwKS4pJTkp\
+0fZzclIiRcUlgRpOi8iWXiGEEMI7gr74de269azN+sb2c7CEF3/eOVgIIYRoLwIWTJISExqFjKLi\
+Egb0T2nyuEmZE5mUOdH284JFi/0xPKeac+dgIYQQQrgWsKWcAf1T2XfwDwqLiqmqrmbjpi2cPmJY\
+oIbjEXfuHCyEEEIIzwVsxkSr0TBvzmxuuv0uFKvCldOntZodOe7cOXjKlCl+HJEQQgjRNgS0xmT8\
+mNMZP+b0QA7BY+7eOVi2/gohhBCek5b0HnL3zsESSoQQQgjPSTBpBrnHjRBCCOEbEkyawdWdg+Ue\
+N0IIIUTzBH0fk2Ak97gRQgghfEOCSTPJPW6EEEII75OlHC+QUCKEEEJ4hwQTIYQQQgQNldLK7kA3\
+Y+ZcunTu6JNjFxWXNLqxoPAdea/9R95r/5L323/kvfYfX77XyUlJLLz1pr9+oQib2+++P9BDaDfk\
+vfYfea/9S95v/5H32n/8+V7LUo4QQgghgoYEEyGEEEIEDQkmDUzKmBDoIbQb8l77j7zX/iXvt//I\
+e+0//nyvW13xqxBCCCHaLpkxEUIIIUTQkGAihBBCiKAhwUQIIYQQQUPulXPCdxs38eyKV7EqCldN\
+v4QLzj070ENqkwoKi7j/kac4dvw4Go2GWVdOJ3PiuEAPq02rqalh+jVzyJgwlnlzrw30cNqsI0fz\
+WfLEMkqPHUejVvPq8qVERIQHelht0rv/+YhPvliLgsLIYUO57eYb5NYgXrTwniX8sm07I4YN5ZH7\
+7wbg9125LHl8GSaTiSmTMph99d98dn4JJoDZYuGZFa/w/FOPEB0dxTU3zGfi2NHodLGBHlqbo9Fo\
+uPWm60jp24eS0lKuueEWzhg1Uv4B96FVb7/HwAFpgR5Gm/fgY09zw6yrGDp4EIayckJCQwI9pDbp\
+2HEDH3z8Ge+sWoFWo2HOLQvZsTOHUwb2D/TQ2ozLpp3P1Cln8cXadbbfPfnsCh741z/p3bM718+7\
+gwljz6Bv754+Ob8s5QA7d+XSu0cP9MlJREZEMPq0Efy05ZdAD6tNSkpMIKVvHwASExLQ6WIpKy8P\
+8Kjarj/zDvPHn3mMPm14oIfSpu0/8AcarYahgwcBoIuNQavRBHhUbZfFYsFoNGK2WLCYLcTHxQV6\
+SG3K8KGDiYyMsP1cVFyCxWKhX59eaDQazkofz/c/bvLZ+WXGBCguKW10D4DkpESKiksCOKL2IWf3\
+HqxWKx30yYEeSpv13Isr+ccNs9n++85AD6VNO3T4CJEREdx+92KKikvImDCGa664PNDDapPi43T8\
+7bKLuWD6NWg1Gi467xy6dukU6GG1afaukb9u2+Gz88mMiQgIQ1k5ix9Zyp233RzoobRZ336/ke5d\
+u9C9W5dAD6XNs1gsbP3td/55y428uvwpNv38Kz9t+TXQw2qTysrL+f7HzXz0zio+ef/fbP99l08v\
+ksL/ZMaEuuWFhjMkRcUlDOifEsARtW1Go4mF9zzI1TMuZfCgAYEeTpu1Y2cuX2V/y7pvvqO6ugaz\
+xUxUVKRPi9baq+SkRPqn9LPN/p1x2kj27N3PqBGnBnhkbc/mn7fStUsndLExAIwZNZIdu3I4dcig\
+AI+s7bJ3jUxKSvDZ+WTGBBjQP5V9B/+gsKiYqupqNm7awukjhgV6WG2Soig8+NhShp86hCmTMgI9\
+nDbtxuuu4ZP33uDjd1fxjzmzuOCcsyWU+Ej/tBSOHT9OWXk5VquVX7fvoGePboEeVpvUQZ/Mb7/v\
+otZoxGKx8Mu27fSQWUGfSk5KRK1Ws2ffASwWC19lf8vY0aN8dj6ZMQG0Gg3z5szmptvvQrEqXDl9\
+muzI8ZFtO3by9foN9O3dk2+/3wjAfXct8Fl1txD+oNVomDP778y9ZSGKAqeNOJWxo08L9LDapEED\
+0hg9agRXX/8P1Co1I4YNYdwZpwd6WG3KzQvuZu++A1TX1HLeZVfz8H13sWDeXO5d8jhGo5HJZ2X4\
+9N9suVeOEEIIIYKGLOUIIYQQImhIMBFCCCFE0JBgIoQQQoigIcFECCGEEEFDgokQQgghgoYEEyGE\
+EEIEDQkmQgghhAgaEkyEEEIIETQkmAghhBAiaEgwEUIIIUTQkGAihAgaBYVFnH3hDH7a8isAJpOJ\
+q6+fx6tvvBPgkQkh/EWCiRAiaHTQJ7Pwtpt54NGnKD12nOdfXkVUZAQzr7w80EMTQviJ3MRPCBF0\
+Hl36HL/tzKGouIQ3X36ODvrkQA9JCOEnMmMihAg60y44l337DzIpY4KEEiHaGQkmQoigYjKZWPL4\
+Ms45O5PVX2WRs3tPoIckhPAjCSZCiKDy/CuvExkRwb/uuIU5s67mniWPU1VdHehhCSH8RIKJECJo\
+bNy0hS/WruP+uxegVqu59KLz6Nm9G089+2KghyaE8BMpfhVCCCFE0JAZEyGEEEIEDQkmQgghhAga\
+EkyEEEIIETQkmAghhBAiaEgwEUIIIUTQkGAihBBCiKDx/xE7y/Y8La/3AAAAAElFTkSuQmCC\
+"
+  frames[2] = "data:image/png;base64,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\
+"
+
+
+    /* set a timeout to make sure all the above elements are created before
+       the object is initialized. */
+    setTimeout(function() {
+        anime4abc970e5b942fb9b3fabc23b44a5ce = new Animation(frames, img_id, slider_id, 2000.0,
+                                 loop_select_id);
+    }, 0);
+  })()
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="normal_likelihood_lin_reg_files/figure-html/cell-7-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

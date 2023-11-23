@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning - Bayes Librarian</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html" rel="" target="">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bayes Librarian</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Retina display</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'retina'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tueplots <span class="im">import</span> bundles</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update(bundles.beamer_moml())</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Also add despine to the bundle using rcParams</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.spines.right'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.spines.top'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Increase font size to match Beamer template</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Make background transparent</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.facecolor'</span>] <span class="op">=</span> <span class="st">'none'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p_l <span class="op">=</span> <span class="fl">1.0</span><span class="op">/</span><span class="fl">21.0</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p_f <span class="op">=</span> <span class="dv">1</span><span class="op">-</span> p_l</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>prior <span class="op">=</span> torch.distributions.Categorical(probs<span class="op">=</span>torch.tensor([p_l, p_f]))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>prior</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>Categorical(probs: torch.Size([2]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pd.Series(index<span class="op">=</span>[<span class="st">"Librarian"</span>, <span class="st">"Farmer"</span>], data<span class="op">=</span>prior.probs).plot(kind<span class="op">=</span><span class="st">'bar'</span>, rot<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the values on top of the bar</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(prior.probs):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    plt.text(i <span class="op">-</span> <span class="fl">0.1</span>, v <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f"</span><span class="sc">{</span>v<span class="sc">.</span>item()<span class="sc">:0.3f}</span><span class="ss">"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Prior"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>Text(0.5, 1.0, 'Prior')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bayes-librarian_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get 210 samples from prior given a seed</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">3</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> prior.sample(torch.Size([<span class="dv">210</span>, ]))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(samples)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(samples.<span class="bu">sum</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tensor([0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+tensor(199)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p_d_l <span class="op">=</span> torch.tensor(<span class="fl">0.4</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p_d_f <span class="op">=</span> torch.tensor(<span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p_l_d <span class="op">=</span> (p_d_l <span class="op">*</span> p_l) <span class="op">/</span> (p_d_l <span class="op">*</span> p_l <span class="op">+</span> p_d_f <span class="op">*</span> p_f)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>p_l_d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+<pre><code>tensor(0.1667)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p_d_l <span class="op">*</span>p_l</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="46">
+<pre><code>tensor(0.0190)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p_d_f<span class="op">*</span>p_f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<pre><code>tensor(0.0952)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Electricity consumption</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior_theta_0 <span class="op">=</span> torch.distributions.Uniform(<span class="dv">80</span>, <span class="dv">100</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>prior_theta_1 <span class="op">=</span> torch.distributions.Uniform(<span class="dv">1</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plottting PDFs</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="fl">1e-3</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>theta_0_lin <span class="op">=</span> torch.linspace(<span class="dv">80</span><span class="op">+</span>eps, <span class="fl">100.0</span><span class="op">-</span>eps, <span class="dv">100</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_0_lin, torch.exp(prior_theta_0.log_prob(theta_0_lin)))</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r'$\theta_0$'</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r'$p(\theta_0)$'</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r'Prior PDF for $\theta_0$'</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill between </span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>plt.fill_between(theta_0_lin, torch.exp(prior_theta_0.log_prob(theta_0_lin)), color<span class="op">=</span><span class="st">'C0'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>&lt;matplotlib.collections.PolyCollection at 0x7f67945e25b0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bayes-librarian_files/figure-html/cell-13-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>theta_1_lin <span class="op">=</span> torch.linspace(<span class="dv">1</span><span class="op">+</span>eps, <span class="fl">2.0</span><span class="op">-</span>eps, <span class="dv">100</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.plot(theta_1_lin, torch.exp(prior_theta_1.log_prob(theta_1_lin)))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r'$\theta_1$'</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r'$p(\theta_1)$'</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r'Prior PDF for $\theta_1$'</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill between </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>plt.fill_between(theta_1_lin, torch.exp(prior_theta_1.log_prob(theta_1_lin)), color<span class="op">=</span><span class="st">'C0'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>&lt;matplotlib.collections.PolyCollection at 0x7f67923c04c0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bayes-librarian_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plotting samples from prior</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>theta_0s <span class="op">=</span> prior_theta_0.sample(torch.Size([n_samples,]))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>theta_1s <span class="op">=</span> prior_theta_1.sample(torch.Size([n_samples,]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the samples</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">2</span>), ncols<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].plot(theta_0_lin, torch.exp(prior_theta_0.log_prob(theta_0_lin)), label<span class="op">=</span><span class="st">'prior'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot theta_0 samples</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(theta_0s, torch.zeros_like(theta_0s),  label<span class="op">=</span><span class="st">'samples'</span>,c<span class="op">=</span><span class="st">'r'</span>, marker<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].plot(theta_1_lin, torch.exp(prior_theta_1.log_prob(theta_1_lin)), label<span class="op">=</span><span class="st">'prior'</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(theta_1s, torch.zeros_like(theta_1s), label<span class="op">=</span><span class="st">'samples'</span>,c<span class="op">=</span><span class="st">'r'</span>, marker<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="vs">r'$\theta_1$'</span>)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="vs">r'$\theta_0$'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>Text(0.5, 1.0, '$\\theta_0$')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bayes-librarian_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating draws from prior</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> torch.linspace(<span class="dv">1</span>, <span class="dv">1000</span>, <span class="dv">100</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward(x, theta_0, theta_1):</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta_0 <span class="op">+</span> theta_1 <span class="op">*</span> x</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> []</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> theta_0, theta_1 <span class="kw">in</span> <span class="bu">zip</span>(theta_0s, theta_1s):</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(theta_0.item(), theta_1.item())</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    preds.append(forward(xs, theta_0, theta_1))</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    plt.plot(xs, preds[<span class="op">-</span><span class="dv">1</span>], color<span class="op">=</span><span class="st">'C1'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Occupants'</span>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Electricity Consumption'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>87.69513702392578 1.0412778854370117
+95.6269760131836 1.1212730407714844
+86.8476333618164 1.2125056982040405
+90.94928741455078 1.1671473979949951
+96.58927154541016 1.3385244607925415
+87.47602844238281 1.558532476425171
+88.01754760742188 1.1025707721710205
+90.33709716796875 1.9295198917388916
+88.80725860595703 1.9910452365875244
+98.52078247070312 1.986382007598877
+84.97046661376953 1.1545259952545166
+89.32050323486328 1.5447709560394287
+96.62725067138672 1.250910997390747
+81.65365600585938 1.5428019762039185
+89.25396728515625 1.5592520236968994
+85.2579574584961 1.0442684888839722
+94.31983947753906 1.6553218364715576
+89.50067138671875 1.9270992279052734
+95.697998046875 1.299673318862915
+98.55661010742188 1.488832950592041
+85.66251373291016 1.7670807838439941
+84.5622787475586 1.9460041522979736
+89.70915222167969 1.7484333515167236
+83.01439666748047 1.6918725967407227
+94.00970458984375 1.6238453388214111
+80.7804946899414 1.3233580589294434
+91.94137573242188 1.953773021697998
+97.56145477294922 1.169715166091919
+92.48450469970703 1.114927887916565
+83.50093078613281 1.102515459060669
+82.62401580810547 1.5394084453582764
+82.85623931884766 1.4271032810211182
+86.58822631835938 1.0481557846069336
+94.35069274902344 1.1144349575042725
+91.43531799316406 1.2319121360778809
+90.06417083740234 1.374377727508545
+99.1529541015625 1.220672369003296
+92.55977630615234 1.6680750846862793
+94.7859115600586 1.1695594787597656
+81.30776977539062 1.3169939517974854
+90.8858413696289 1.424668550491333
+94.4291000366211 1.144008755683899
+86.97049713134766 1.876807689666748
+98.18754577636719 1.5776394605636597
+92.92131042480469 1.9428175687789917
+80.43154907226562 1.4329195022583008
+85.76531219482422 1.875524878501892
+87.48646545410156 1.3303887844085693
+87.47976684570312 1.428504228591919
+86.83807373046875 1.197716474533081
+86.94332885742188 1.5565887689590454
+94.37505340576172 1.4149739742279053
+93.06510162353516 1.067138671875
+96.40441131591797 1.289334774017334
+86.10169982910156 1.5684490203857422
+90.42550659179688 1.2710241079330444
+91.0185775756836 1.0674898624420166
+93.92642211914062 1.3713047504425049
+86.58151245117188 1.1188983917236328
+85.77822875976562 1.5820157527923584
+92.26363372802734 1.3258450031280518
+99.87332916259766 1.6146454811096191
+84.66149139404297 1.1545571088790894
+82.93559265136719 1.6960713863372803
+89.84662628173828 1.5519955158233643
+96.96514892578125 1.7468791007995605
+95.19371795654297 1.976472020149231
+94.27191925048828 1.6630446910858154
+82.7536392211914 1.9746594429016113
+90.74134826660156 1.8186657428741455
+99.88572692871094 1.354374647140503
+93.4601821899414 1.410269856452942
+90.59257507324219 1.2586917877197266
+87.16841888427734 1.2511789798736572
+97.9290542602539 1.339185357093811
+95.5967788696289 1.7606523036956787
+92.15022277832031 1.3517167568206787
+84.46255493164062 1.1570004224777222
+90.3648681640625 1.0489882230758667
+86.80931091308594 1.6851460933685303
+96.78753662109375 1.3440935611724854
+93.14493560791016 1.7365984916687012
+98.11967468261719 1.602406620979309
+80.8687744140625 1.038487195968628
+94.12189483642578 1.223759651184082
+91.72600555419922 1.6831367015838623
+89.2578353881836 1.2158634662628174
+80.0279769897461 1.6264379024505615
+99.61504364013672 1.084007978439331
+83.5066909790039 1.5729857683181763
+80.53050994873047 1.8047398328781128
+89.59612274169922 1.953641653060913
+92.02345275878906 1.1013636589050293
+95.53692626953125 1.4922316074371338
+91.98695373535156 1.2603998184204102
+90.43048095703125 1.0833650827407837
+94.84186553955078 1.9851264953613281
+87.72840118408203 1.065014123916626
+81.46113586425781 1.6820820569992065
+97.96985626220703 1.234586238861084
+82.44818878173828 1.011096477508545
+96.11310577392578 1.4245643615722656
+87.82499694824219 1.6904051303863525
+84.83235931396484 1.1519567966461182
+88.76789093017578 1.13896644115448
+84.79768371582031 1.312787413597107
+80.25230407714844 1.1010459661483765
+95.03224182128906 1.7609448432922363
+81.25543212890625 1.04115629196167
+89.00857543945312 1.1022148132324219
+92.93892669677734 1.6987924575805664
+93.81294250488281 1.2739479541778564
+91.67818450927734 1.8880064487457275
+82.468994140625 1.276659607887268
+94.61796569824219 1.2439587116241455
+80.1130142211914 1.0376932621002197
+97.12281036376953 1.730310082435608
+92.46382141113281 1.7947566509246826
+90.61416625976562 1.8840017318725586
+82.46800231933594 1.7793362140655518
+96.13663482666016 1.5259487628936768
+96.89361572265625 1.305039405822754
+89.8781509399414 1.0746833086013794
+91.61681365966797 1.7047715187072754
+82.93636322021484 1.238344430923462
+82.81407928466797 1.0890676975250244
+96.61282348632812 1.5943901538848877
+99.01074981689453 1.4189800024032593
+81.95106506347656 1.5043325424194336
+96.00111389160156 1.1587986946105957
+93.47216796875 1.2459975481033325
+98.85737609863281 1.9700062274932861
+86.61084747314453 1.6007869243621826
+95.08634948730469 1.1321947574615479
+84.5699234008789 1.842087745666504
+90.51310729980469 1.68861985206604
+87.24632263183594 1.941713571548462
+82.32901000976562 1.665165901184082
+95.54249572753906 1.6798239946365356
+84.75167846679688 1.8800559043884277
+89.34307098388672 1.231102466583252
+86.72317504882812 1.9233851432800293
+89.29837036132812 1.8016605377197266
+88.3612060546875 1.37612783908844
+98.79486083984375 1.523589849472046
+98.48333740234375 1.2476298809051514
+97.07954406738281 1.0195120573043823
+89.96569061279297 1.0555812120437622
+80.99148559570312 1.376490592956543
+93.362060546875 1.7271687984466553
+81.7196044921875 1.5611259937286377
+90.10861206054688 1.8441978693008423
+89.50457000732422 1.5818358659744263
+84.30509948730469 1.2079615592956543
+83.50444793701172 1.7497899532318115
+91.68502044677734 1.3454217910766602
+80.13153839111328 1.0732593536376953
+99.80758666992188 1.6212793588638306
+91.77196502685547 1.2740830183029175
+94.59294128417969 1.097072720527649
+88.84345245361328 1.4506481885910034
+86.78339385986328 1.0639290809631348
+88.83187866210938 1.8970956802368164
+94.25908660888672 1.587091088294983
+88.65489196777344 1.1026930809020996
+82.4282455444336 1.9630863666534424
+97.47400665283203 1.292677402496338
+96.66935729980469 1.2211899757385254
+81.74362182617188 1.0532464981079102
+89.22825622558594 1.754408597946167
+82.65867614746094 1.0193803310394287
+88.86253356933594 1.1457579135894775
+80.92573547363281 1.0950336456298828
+94.04350280761719 1.990125060081482
+96.60394287109375 1.987403154373169
+97.53553771972656 1.4419186115264893
+89.57406616210938 1.6335155963897705
+91.17781066894531 1.4893226623535156
+86.52110290527344 1.6093614101409912
+86.1540756225586 1.9536876678466797
+87.56365203857422 1.566344976425171
+90.33023071289062 1.8433496952056885
+82.40996551513672 1.0289032459259033
+85.71919250488281 1.919156551361084
+99.86544036865234 1.782569408416748
+94.81980895996094 1.4061675071716309
+82.9118881225586 1.4045815467834473
+99.01624298095703 1.5185314416885376
+97.09477233886719 1.645193338394165
+89.12952423095703 1.5449402332305908
+88.90231323242188 1.1528569459915161
+87.5825424194336 1.441185712814331
+87.4133529663086 1.800107479095459
+92.37303161621094 1.5086145401000977
+99.30390167236328 1.9642198085784912
+99.74899291992188 1.4058808088302612
+95.60200500488281 1.5114103555679321
+90.23295593261719 1.444563627243042
+92.5718002319336 1.5712342262268066
+81.01299285888672 1.8754684925079346
+89.2287368774414 1.7894538640975952
+92.5677719116211 1.8815683126449585
+94.48453521728516 1.0842392444610596
+93.99372100830078 1.7238528728485107
+91.33424377441406 1.1637542247772217
+88.50811767578125 1.3193455934524536
+85.53105926513672 1.6868886947631836
+87.34080505371094 1.8577947616577148
+92.7117919921875 1.5039350986480713
+89.24696350097656 1.3948745727539062
+81.40795135498047 1.086325764656067
+96.5345458984375 1.7923710346221924
+98.70243835449219 1.9552621841430664
+92.06018829345703 1.6399625539779663
+87.05399322509766 1.1945961713790894
+81.01774597167969 1.5529268980026245
+98.87288665771484 1.5917402505874634
+89.5815658569336 1.7662642002105713
+82.79290008544922 1.4998633861541748
+80.24394989013672 1.1864984035491943
+95.508056640625 1.1963965892791748
+86.65911865234375 1.5199213027954102
+84.08351135253906 1.8646318912506104
+92.0901870727539 1.1967954635620117
+88.18511199951172 1.326673150062561
+94.06657409667969 1.9710323810577393
+85.5030288696289 1.3380656242370605
+90.45893096923828 1.2146241664886475
+81.58501434326172 1.865027666091919
+96.42964935302734 1.1058900356292725
+98.82797241210938 1.1475470066070557
+98.73994445800781 1.4258317947387695
+94.16300201416016 1.33109450340271
+98.30198669433594 1.634709358215332
+93.94081115722656 1.828623652458191
+86.51219177246094 1.265526294708252
+96.52320861816406 1.8763457536697388
+98.6265869140625 1.1988688707351685
+91.43827819824219 1.8440756797790527
+93.32282257080078 1.0980292558670044
+81.95563507080078 1.354668140411377
+96.27238464355469 1.215299129486084
+84.34428405761719 1.8884146213531494
+81.55213165283203 1.5654256343841553
+89.6497802734375 1.356525182723999
+99.29093933105469 1.6838717460632324
+95.04837799072266 1.3560669422149658
+81.63878631591797 1.2418384552001953
+89.12718963623047 1.3357279300689697
+87.46515655517578 1.4678325653076172
+92.83613586425781 1.7892435789108276
+91.69847106933594 1.2009649276733398
+98.4359130859375 1.905756950378418
+98.43559265136719 1.0245305299758911
+87.91726684570312 1.7803137302398682
+93.9311752319336 1.4504296779632568
+97.53208923339844 1.7488648891448975
+85.20597839355469 1.3056707382202148
+99.80611419677734 1.404740333557129
+88.9251480102539 1.0782647132873535
+85.16576385498047 1.3475453853607178
+85.73490905761719 1.4886318445205688
+91.07793426513672 1.8859808444976807
+81.94158935546875 1.5911576747894287
+87.99101257324219 1.6303831338882446
+98.05056762695312 1.0774091482162476
+95.1716079711914 1.0707284212112427
+96.35324096679688 1.3814113140106201
+85.59410095214844 1.7233291864395142
+98.8589859008789 1.6704661846160889
+82.66046905517578 1.0010724067687988
+82.14085388183594 1.3173435926437378
+96.20088195800781 1.5716652870178223
+97.9405746459961 1.7548600435256958
+90.15998840332031 1.0804041624069214
+94.58312225341797 1.360841155052185
+95.50540161132812 1.0990573167800903
+92.21611022949219 1.5698652267456055
+99.58377075195312 1.6420044898986816
+85.63987731933594 1.9295915365219116
+96.26022338867188 1.0003501176834106
+80.15142822265625 1.0048238039016724
+89.23384094238281 1.9587490558624268
+82.99113464355469 1.1053338050842285
+97.3426284790039 1.5909531116485596
+98.71217346191406 1.1090104579925537
+87.20555114746094 1.298750400543213
+89.35206604003906 1.1972639560699463
+83.49285888671875 1.1133019924163818
+85.85491180419922 1.869433879852295
+88.74373626708984 1.1152124404907227
+84.66169738769531 1.032759189605713
+93.00992584228516 1.9837510585784912
+86.14134979248047 1.6887331008911133
+98.59461975097656 1.080071210861206
+94.73643493652344 1.6711037158966064
+87.08386993408203 1.4622790813446045
+80.96151733398438 1.0804364681243896
+93.2742691040039 1.9616378545761108
+97.86018371582031 1.6221661567687988
+90.74947357177734 1.4679657220840454
+89.17950439453125 1.6991548538208008
+82.93622589111328 1.1061826944351196
+83.94174194335938 1.1872522830963135
+81.08946990966797 1.8086113929748535
+87.80683898925781 1.305240511894226
+85.30784606933594 1.4780648946762085
+80.12765502929688 1.897214412689209
+92.23592376708984 1.33310866355896
+80.84759521484375 1.6072919368743896
+91.5848159790039 1.220404863357544
+96.11167907714844 1.2652465105056763
+92.53817749023438 1.931967854499817
+96.32613372802734 1.3347055912017822
+80.47168731689453 1.7610195875167847
+89.83350372314453 1.9038317203521729
+82.05730438232422 1.3888483047485352
+97.04126739501953 1.524307370185852
+99.83863830566406 1.1387238502502441
+96.62197875976562 1.5320913791656494
+86.57617950439453 1.496248722076416
+90.88282775878906 1.7337374687194824
+84.61872863769531 1.6061371564865112
+80.97779083251953 1.2528002262115479
+80.44483184814453 1.516909122467041
+95.21382904052734 1.9045822620391846
+80.2861328125 1.79441237449646
+94.36021423339844 1.8566420078277588
+92.70948791503906 1.445806622505188
+89.04227447509766 1.3563913106918335
+80.06767272949219 1.36397123336792
+82.87981414794922 1.0417895317077637
+85.39154052734375 1.8766453266143799
+97.44548034667969 1.7993073463439941
+90.1553726196289 1.5245330333709717
+83.11884307861328 1.346864104270935
+88.65609741210938 1.6343283653259277
+81.6729507446289 1.8613231182098389
+83.9632797241211 1.8341238498687744
+88.94541931152344 1.6620174646377563
+96.30646514892578 1.333033800125122
+95.3998031616211 1.1219444274902344
+92.66915893554688 1.8882604837417603
+89.97352600097656 1.9781239032745361
+82.77247619628906 1.8393640518188477
+98.02163696289062 1.6135040521621704
+80.08682250976562 1.1931250095367432
+82.48628234863281 1.7100921869277954
+89.97698211669922 1.8217391967773438
+88.32479095458984 1.6070287227630615
+97.6349868774414 1.8012388944625854
+93.0042495727539 1.4907748699188232
+98.78262329101562 1.9023869037628174
+89.17003631591797 1.1349231004714966
+88.15408325195312 1.9487724304199219
+84.39936828613281 1.0591232776641846
+89.317138671875 1.2374107837677002
+88.28820037841797 1.4968205690383911
+85.02552032470703 1.890254259109497
+84.24485778808594 1.065805435180664
+82.170166015625 1.8334324359893799
+86.24152374267578 1.5876519680023193
+97.01067352294922 1.1534284353256226
+81.58153533935547 1.861690640449524
+83.04762268066406 1.3336613178253174
+93.97317504882812 1.5183649063110352
+90.00640869140625 1.5225598812103271
+90.9233169555664 1.1471093893051147
+97.70230865478516 1.851118564605713
+93.2962875366211 1.4258244037628174
+99.33335876464844 1.4624136686325073
+86.70885467529297 1.0074397325515747
+88.84932708740234 1.8021918535232544
+80.50030517578125 1.0101171731948853
+82.77212524414062 1.1637043952941895
+90.78730010986328 1.0748193264007568
+94.13116455078125 1.8970420360565186
+95.94595336914062 1.6449190378189087
+91.89263916015625 1.7218899726867676
+85.97459411621094 1.4877347946166992
+98.50749206542969 1.1829235553741455
+88.4510498046875 1.6825315952301025
+85.79403686523438 1.259835124015808
+88.90570068359375 1.6126017570495605
+93.93443298339844 1.398136854171753
+81.72805786132812 1.9015271663665771
+96.02115631103516 1.0172184705734253
+98.46682739257812 1.3596460819244385
+84.52902221679688 1.6072989702224731
+88.45693969726562 1.2749097347259521
+94.19126892089844 1.0986212491989136
+99.05484008789062 1.971077799797058
+94.07135772705078 1.2463831901550293
+80.08610534667969 1.6148242950439453
+95.32771301269531 1.4674646854400635
+84.63024139404297 1.4844646453857422
+80.96675109863281 1.1639809608459473
+81.53005981445312 1.3308959007263184
+96.05962371826172 1.8497109413146973
+93.70967864990234 1.4482638835906982
+92.92405700683594 1.2706226110458374
+92.90196990966797 1.797845721244812
+83.52706909179688 1.4338971376419067
+94.42025756835938 1.4818401336669922
+95.91780090332031 1.9951822757720947
+97.80067443847656 1.0893971920013428
+89.46163940429688 1.5250924825668335
+92.21309661865234 1.4673281908035278
+81.63961029052734 1.460693120956421
+96.56671142578125 1.8651611804962158
+81.10565948486328 1.668044090270996
+81.5894775390625 1.271575689315796
+88.22618103027344 1.6871442794799805
+98.44947052001953 1.4937515258789062
+90.52273559570312 1.1085081100463867
+80.44692993164062 1.5279107093811035
+87.55543518066406 1.324415683746338
+90.79936218261719 1.1178081035614014
+81.06486511230469 1.736134648323059
+98.48744201660156 1.4704158306121826
+96.25715637207031 1.3769464492797852
+90.72998809814453 1.8688011169433594
+89.17372131347656 1.819145917892456
+82.09491729736328 1.1790657043457031
+85.36598205566406 1.8264503479003906
+95.80296325683594 1.4930779933929443
+95.19683074951172 1.1025617122650146
+91.56018829345703 1.8875255584716797
+95.2552490234375 1.632291555404663
+91.86444091796875 1.569888710975647
+93.09357452392578 1.1392353773117065
+80.02865600585938 1.7590293884277344
+89.14838409423828 1.4920017719268799
+90.33744812011719 1.127612590789795
+97.77242279052734 1.306746006011963
+95.96150207519531 1.6678380966186523
+90.35309600830078 1.7874670028686523
+86.41181945800781 1.7617707252502441
+85.44058227539062 1.6017524003982544
+99.6016616821289 1.7393227815628052
+96.60693359375 1.774422526359558
+99.51984405517578 1.2080415487289429
+94.75322723388672 1.5050280094146729
+97.84530639648438 1.422541856765747
+96.12996673583984 1.2059016227722168
+96.96800231933594 1.0802865028381348
+99.29610443115234 1.3785951137542725
+99.7637939453125 1.155839443206787
+81.2962646484375 1.4671499729156494
+82.70000457763672 1.8565661907196045
+86.53301239013672 1.3617717027664185
+80.9884033203125 1.0914902687072754
+84.16556549072266 1.1358442306518555
+98.1244125366211 1.3115699291229248
+86.32878875732422 1.7048910856246948
+90.72171020507812 1.3039581775665283
+99.68870544433594 1.5448617935180664
+91.55982208251953 1.6279070377349854
+95.13211822509766 1.8350934982299805
+92.51482391357422 1.5801448822021484
+98.24629974365234 1.1688917875289917
+83.68853759765625 1.5509145259857178
+83.41927337646484 1.1064735651016235
+95.55207824707031 1.4728004932403564
+82.78467559814453 1.4583171606063843
+93.66595458984375 1.4533686637878418
+98.6113052368164 1.9356716871261597
+83.80675506591797 1.8612539768218994
+80.73794555664062 1.8096702098846436
+97.62300109863281 1.3299038410186768
+92.72089385986328 1.5748240947723389
+85.024658203125 1.7261515855789185
+93.6810531616211 1.8122947216033936
+80.28606414794922 1.7277923822402954
+82.3918685913086 1.8946515321731567
+98.45598602294922 1.746030569076538
+86.21611022949219 1.358589768409729
+94.80453491210938 1.5360863208770752
+92.11781311035156 1.71842360496521
+86.97250366210938 1.4501370191574097
+90.20829772949219 1.9510061740875244
+95.7842025756836 1.5418438911437988
+91.82008361816406 1.6570210456848145
+87.27477264404297 1.7911310195922852
+81.82063293457031 1.5614025592803955
+92.24595642089844 1.3466110229492188
+99.67198181152344 1.0122146606445312
+86.72737121582031 1.06300950050354
+87.62284851074219 1.8864786624908447
+93.38764953613281 1.3682794570922852
+81.69622039794922 1.9802289009094238
+90.4000473022461 1.8631947040557861
+98.49722290039062 1.4564552307128906
+88.75487518310547 1.655290961265564
+87.91423797607422 1.1321805715560913
+87.37792205810547 1.6390581130981445
+97.37086486816406 1.4559935331344604
+90.47662353515625 1.4960585832595825
+99.66328430175781 1.7768841981887817
+84.1020736694336 1.6165105104446411
+99.58877563476562 1.5559637546539307
+89.61442565917969 1.0251836776733398
+93.586181640625 1.507324457168579
+98.76620483398438 1.0353035926818848
+81.74576568603516 1.7205651998519897
+98.36883544921875 1.42416512966156
+95.49655151367188 1.8263685703277588
+98.14613342285156 1.0789601802825928
+98.68721008300781 1.3878099918365479
+99.5651626586914 1.1787943840026855
+87.18000030517578 1.6864721775054932
+86.595703125 1.9095823764801025
+95.84112548828125 1.06962251663208
+84.1778793334961 1.7237639427185059
+83.77605438232422 1.8962490558624268
+94.51152038574219 1.7772753238677979
+90.28147888183594 1.5205633640289307
+90.34710693359375 1.8482685089111328
+81.21249389648438 1.7342454195022583
+84.42314910888672 1.6690165996551514
+98.13052368164062 1.8424246311187744
+96.65554809570312 1.8497288227081299
+93.6399917602539 1.477353572845459
+83.35796356201172 1.0414211750030518
+91.53684997558594 1.6548962593078613
+96.76288604736328 1.1879498958587646
+89.65204620361328 1.6149208545684814
+80.90271759033203 1.8829424381256104
+85.37530517578125 1.702674150466919
+80.3994140625 1.4674813747406006
+84.2823486328125 1.4763164520263672
+96.10466766357422 1.0428643226623535
+91.8232650756836 1.146437406539917
+87.81658935546875 1.8529260158538818
+94.59446716308594 1.7889952659606934
+88.49081420898438 1.5795292854309082
+97.00790405273438 1.4620342254638672
+91.68185424804688 1.3564547300338745
+97.39276885986328 1.0309299230575562
+80.75239562988281 1.302687644958496
+87.96551513671875 1.2410178184509277
+91.6697006225586 1.8507330417633057
+95.40574645996094 1.3018969297409058
+96.36846160888672 1.2443230152130127
+80.5966567993164 1.650611400604248
+88.48704528808594 1.0398454666137695
+99.28273010253906 1.5687675476074219
+89.9427490234375 1.6616110801696777
+83.8802490234375 1.0650686025619507
+80.98805236816406 1.3144359588623047
+90.46640014648438 1.4533863067626953
+87.94342041015625 1.4379196166992188
+96.86217498779297 1.722522497177124
+97.1824951171875 1.7648491859436035
+94.94293975830078 1.7476022243499756
+88.57774353027344 1.9936397075653076
+81.87714385986328 1.3116981983184814
+84.58016967773438 1.3853662014007568
+90.22624969482422 1.8877133131027222
+93.26171875 1.3057349920272827
+85.26964569091797 1.7732207775115967
+88.49036407470703 1.4678995609283447
+83.45116424560547 1.398559808731079
+81.73490142822266 1.3599162101745605
+80.60186004638672 1.607072114944458
+92.12307739257812 1.3804558515548706
+82.58917236328125 1.9838064908981323
+96.34735107421875 1.0393333435058594
+92.86759948730469 1.4368032217025757
+84.02291107177734 1.7780158519744873
+80.03865814208984 1.6370843648910522
+85.43888854980469 1.7002469301223755
+95.39344787597656 1.953841209411621
+82.55075073242188 1.362874984741211
+89.55502319335938 1.2146159410476685
+91.37075805664062 1.6585370302200317
+93.4520034790039 1.9682751893997192
+89.2584228515625 1.5960586071014404
+96.02014923095703 1.2836705446243286
+87.00834655761719 1.1300926208496094
+91.74502563476562 1.676926612854004
+85.42420959472656 1.4379678964614868
+91.68942260742188 1.5796723365783691
+92.3317642211914 1.992002010345459
+93.67393493652344 1.5307087898254395
+82.57008361816406 1.2691798210144043
+90.5518569946289 1.7374107837677002
+96.5008316040039 1.7301230430603027
+95.30280303955078 1.5667967796325684
+96.31549072265625 1.2386984825134277
+86.32937622070312 1.1683495044708252
+93.25740814208984 1.2452566623687744
+88.98576354980469 1.1448354721069336
+91.8854751586914 1.7744994163513184
+85.98224639892578 1.1230238676071167
+93.2282485961914 1.1721405982971191
+95.08592987060547 1.9898439645767212
+87.02610778808594 1.5295970439910889
+87.21879577636719 1.9920413494110107
+89.9481430053711 1.9008828401565552
+93.08697509765625 1.6155953407287598
+88.41838073730469 1.7965482473373413
+89.20204162597656 1.735062599182129
+91.37265014648438 1.138883113861084
+94.8079605102539 1.4398438930511475
+99.36428833007812 1.8113322257995605
+88.27420043945312 1.9618552923202515
+83.03826904296875 1.1955100297927856
+96.51607513427734 1.683363676071167
+83.83062744140625 1.3281757831573486
+96.16497802734375 1.5947082042694092
+90.38520050048828 1.2728993892669678
+88.38111877441406 1.6290942430496216
+80.53921508789062 1.7611379623413086
+81.95087432861328 1.1960370540618896
+81.45306396484375 1.673715591430664
+91.85885620117188 1.1945915222167969
+81.97167205810547 1.0205057859420776
+81.46564483642578 1.524099588394165
+81.84530639648438 1.8652347326278687
+91.78020477294922 1.750521183013916
+92.25891876220703 1.0031507015228271
+86.03592681884766 1.903341293334961
+84.34727478027344 1.448254108428955
+91.22293853759766 1.0013437271118164
+85.41646575927734 1.6531617641448975
+88.41971588134766 1.967858910560608
+97.15705108642578 1.1303396224975586
+88.0723648071289 1.7646214962005615
+95.79047393798828 1.6941215991973877
+84.21778106689453 1.778570532798767
+84.01835632324219 1.653878927230835
+93.9107437133789 1.1549937725067139
+84.52613830566406 1.7052514553070068
+84.23381042480469 1.253612995147705
+98.05361938476562 1.1652004718780518
+87.08734130859375 1.5861719846725464
+84.90568542480469 1.189119577407837
+92.3504638671875 1.9187812805175781
+87.37548828125 1.3960113525390625
+84.04778289794922 1.3164339065551758
+92.84234619140625 1.783273696899414
+90.77714538574219 1.665143370628357
+97.57646942138672 1.3605051040649414
+81.65654754638672 1.3727788925170898
+81.46382141113281 1.6269168853759766
+92.97415161132812 1.4338579177856445
+92.45384216308594 1.4932732582092285
+98.71630859375 1.9220644235610962
+99.18801879882812 1.5020290613174438
+94.50535583496094 1.6706345081329346
+93.87782287597656 1.8368029594421387
+80.73177337646484 1.9445865154266357
+90.4026870727539 1.7702679634094238
+96.26884460449219 1.0647261142730713
+96.21143341064453 1.7131527662277222
+83.15489196777344 1.9959337711334229
+92.94298553466797 1.4255867004394531
+86.27571868896484 1.2139116525650024
+89.59510803222656 1.83095383644104
+98.43739318847656 1.6682121753692627
+81.6409912109375 1.2444205284118652
+90.85409545898438 1.7423512935638428
+93.0773696899414 1.0354089736938477
+84.70011138916016 1.230469822883606
+85.11830139160156 1.4981557130813599
+87.32134246826172 1.5977025032043457
+90.03490447998047 1.7946093082427979
+90.2147216796875 1.104181170463562
+89.17416381835938 1.6704487800598145
+83.1048355102539 1.7645598649978638
+82.71820831298828 1.4501047134399414
+94.20553588867188 1.3868703842163086
+99.91905212402344 1.7349451780319214
+94.77164459228516 1.1228876113891602
+81.1861343383789 1.5759849548339844
+90.24392700195312 1.784378170967102
+88.24333190917969 1.5038079023361206
+92.0295181274414 1.355574607849121
+92.56514739990234 1.2769356966018677
+85.94490814208984 1.9950015544891357
+86.05892181396484 1.0340492725372314
+91.34903717041016 1.6086660623550415
+81.53462982177734 1.8889412879943848
+82.08914184570312 1.0108835697174072
+82.99040985107422 1.5281376838684082
+94.89295959472656 1.6591260433197021
+88.80055236816406 1.74747896194458
+86.06137084960938 1.4740259647369385
+86.14717102050781 1.9505882263183594
+82.40860748291016 1.3710678815841675
+94.55815124511719 1.6016926765441895
+83.80721282958984 1.3749752044677734
+80.2197265625 1.3133662939071655
+82.26643371582031 1.3465780019760132
+84.53607940673828 1.9912424087524414
+83.35774230957031 1.839600920677185
+84.59407043457031 1.4957480430603027
+93.56404113769531 1.4851701259613037
+92.06135559082031 1.1837477684020996
+81.80078887939453 1.003249168395996
+86.82144927978516 1.3300600051879883
+88.28636932373047 1.1090788841247559
+91.64513397216797 1.5997440814971924
+99.58380889892578 1.9814856052398682
+80.24290466308594 1.8041205406188965
+98.6710205078125 1.2375580072402954
+84.29248046875 1.5288810729980469
+80.7286605834961 1.0446298122406006
+97.26927947998047 1.9321799278259277
+82.84217834472656 1.2857847213745117
+91.19561004638672 1.8906525373458862
+89.48432159423828 1.4106606245040894
+81.46939086914062 1.2941572666168213
+83.37738800048828 1.130700707435608
+88.78155517578125 1.6292293071746826
+85.92105102539062 1.5038135051727295
+98.54142761230469 1.201120138168335
+86.03743743896484 1.6141196489334106
+96.57463073730469 1.8828784227371216
+82.45696258544922 1.755530595779419
+94.83319091796875 1.4144964218139648
+87.38792419433594 1.395566701889038
+86.35507202148438 1.953106164932251
+94.02960968017578 1.4930729866027832
+98.34146881103516 1.3978049755096436
+94.55321502685547 1.219794511795044
+86.0677490234375 1.9958608150482178
+93.33192443847656 1.391430377960205
+84.49732971191406 1.7394044399261475
+99.59793090820312 1.265183448791504
+82.78313446044922 1.2995491027832031
+82.94720458984375 1.5027931928634644
+90.03015899658203 1.6642940044403076
+85.33958435058594 1.2336509227752686
+82.81128692626953 1.5233395099639893
+83.21725463867188 1.9979586601257324
+94.02526092529297 1.9433088302612305
+96.185546875 1.39166259765625
+94.62015533447266 1.422394037246704
+85.43770599365234 1.3459270000457764
+87.85009002685547 1.6309995651245117
+90.31221008300781 1.1308749914169312
+85.93450927734375 1.2944839000701904
+95.16260528564453 1.6092753410339355
+88.80064392089844 1.8153597116470337
+94.45771026611328 1.3654019832611084
+91.87638092041016 1.607332468032837
+92.98275756835938 1.7597867250442505
+82.830810546875 1.2815625667572021
+99.4336929321289 1.0294337272644043
+96.1424331665039 1.63151216506958
+91.74088287353516 1.8203094005584717
+94.86433410644531 1.6463167667388916
+85.03170776367188 1.8908147811889648
+81.66612243652344 1.9308836460113525
+97.11016845703125 1.944331407546997
+93.381103515625 1.7135376930236816
+88.73222351074219 1.8859648704528809
+94.90327453613281 1.683983325958252
+80.44949340820312 1.901411533355713
+97.26458740234375 1.1535134315490723
+88.45130920410156 1.220460057258606
+96.82727813720703 1.510488510131836
+84.75334167480469 1.760849952697754
+98.310791015625 1.583519697189331
+97.90435791015625 1.668187141418457
+89.99076843261719 1.2872053384780884
+94.72821044921875 1.4270225763320923
+93.0601577758789 1.5296818017959595
+94.30963897705078 1.1160366535186768
+93.94793701171875 1.6426379680633545
+86.19263458251953 1.08041512966156
+80.5118408203125 1.8654968738555908
+84.01466369628906 1.3280844688415527
+96.20509338378906 1.6256213188171387
+93.00784301757812 1.2826988697052002
+90.70428466796875 1.8038830757141113
+85.2476806640625 1.7395219802856445
+82.3729476928711 1.6036834716796875
+89.78605651855469 1.6776859760284424
+80.54756927490234 1.8309955596923828
+99.66976928710938 1.2932779788970947
+99.87591552734375 1.1250203847885132
+98.35208129882812 1.9846861362457275
+92.65155029296875 1.107607126235962
+89.141357421875 1.3425897359848022
+86.205078125 1.5620756149291992
+98.31776428222656 1.5817723274230957
+83.6128921508789 1.104830265045166
+82.37863159179688 1.130692720413208
+84.2057113647461 1.9208526611328125
+84.14820861816406 1.1117706298828125
+95.58302307128906 1.798877477645874
+99.08193969726562 1.109937310218811
+96.45347595214844 1.0028170347213745
+90.14459991455078 1.5874903202056885
+95.96649169921875 1.7088102102279663
+91.61677551269531 1.8787145614624023
+90.53985595703125 1.1856184005737305
+86.97960662841797 1.5280441045761108
+80.56758117675781 1.1526362895965576
+85.12653350830078 1.779416561126709
+80.04230499267578 1.4652273654937744
+91.02215576171875 1.9656496047973633
+88.33577728271484 1.4623045921325684
+98.91292572021484 1.866753101348877
+94.00769805908203 1.5757315158843994
+92.6316909790039 1.8505401611328125
+84.2348403930664 1.1799921989440918
+95.00141906738281 1.9301543235778809
+90.13406372070312 1.0038076639175415
+88.1715316772461 1.2157790660858154
+93.29283142089844 1.9890989065170288
+89.0271224975586 1.7377375364303589
+91.8408203125 1.7466797828674316
+99.33059692382812 1.4390294551849365
+98.48324584960938 1.758401870727539
+83.00625610351562 1.3527941703796387
+98.83973693847656 1.079725742340088
+92.71626281738281 1.8784775733947754
+99.38002014160156 1.965032696723938
+95.19747161865234 1.8720885515213013
+80.86019897460938 1.009787917137146
+87.3360366821289 1.2022541761398315
+81.04074096679688 1.8308234214782715
+98.82062530517578 1.1745812892913818
+90.1404800415039 1.9698154926300049
+80.95049285888672 1.7338175773620605
+91.59555053710938 1.0537080764770508
+92.85134887695312 1.5899709463119507
+89.0922622680664 1.7719515562057495
+87.76759338378906 1.7769479751586914
+94.38178253173828 1.0224690437316895
+98.71640014648438 1.6177469491958618
+89.71712493896484 1.4378740787506104
+83.92728424072266 1.8954205513000488
+83.64366912841797 1.7923521995544434
+98.96711730957031 1.6632966995239258
+96.44139862060547 1.7354342937469482
+81.7240219116211 1.1570839881896973
+86.23362731933594 1.757424235343933
+86.37788391113281 1.4433300495147705
+80.74813842773438 1.4932761192321777
+97.84660339355469 1.9760985374450684
+93.23468780517578 1.0188976526260376
+84.22872924804688 1.3363087177276611
+96.82887268066406 1.221339225769043
+81.30179595947266 1.9991141557693481
+84.09915161132812 1.252927303314209
+90.10759735107422 1.9463887214660645
+93.94319915771484 1.526930809020996
+94.18348693847656 1.9327185153961182
+84.27458190917969 1.7738151550292969
+93.13091278076172 1.7500479221343994
+80.47447967529297 1.9000530242919922
+98.79817199707031 1.4553866386413574
+86.2924575805664 1.3707048892974854
+88.50386047363281 1.667838215827942
+88.3800048828125 1.0530340671539307
+91.60956573486328 1.302704095840454
+86.78005981445312 1.4603569507598877
+90.30412292480469 1.517063856124878
+84.20452880859375 1.890026330947876
+89.8901596069336 1.0054442882537842
+93.95210266113281 1.5633063316345215
+99.6352310180664 1.0056164264678955
+98.12481689453125 1.6828978061676025
+87.24083709716797 1.657820224761963
+88.11785888671875 1.1198830604553223
+94.37049865722656 1.6802012920379639
+82.21324157714844 1.0426301956176758
+90.2756576538086 1.7751855850219727
+97.32678985595703 1.5809354782104492
+80.03449249267578 1.877395510673523
+90.29203796386719 1.1785944700241089
+94.00375366210938 1.9306368827819824
+87.07160186767578 1.0483334064483643
+93.4297866821289 1.231441855430603
+93.20204162597656 1.9675328731536865
+87.07601165771484 1.1881678104400635
+82.18881225585938 1.1132152080535889
+95.82549285888672 1.9563894271850586
+89.05828857421875 1.929946780204773
+80.41268157958984 1.9739079475402832
+88.15396118164062 1.0157376527786255
+94.43635559082031 1.439072847366333
+80.95018005371094 1.2114360332489014
+97.67599487304688 1.9241340160369873
+97.97877502441406 1.38897705078125
+82.70357513427734 1.4984066486358643
+80.9278335571289 1.8461503982543945
+82.1534194946289 1.3695964813232422
+96.12203979492188 1.37688410282135
+84.20735168457031 1.0404396057128906
+89.20557403564453 1.8401185274124146
+85.48104858398438 1.667121410369873
+96.72209167480469 1.595235824584961
+83.95387268066406 1.9338353872299194
+89.39398956298828 1.9475802183151245
+87.39876556396484 1.826859474182129
+84.99310302734375 1.478555679321289
+95.20046997070312 1.8166275024414062
+84.63009643554688 1.2446922063827515
+90.1427001953125 1.2517023086547852
+92.98526763916016 1.2036794424057007
+94.19744873046875 1.0349105596542358
+95.95453643798828 1.812288522720337
+82.15237426757812 1.9743807315826416
+92.40218353271484 1.7967054843902588
+89.28179931640625 1.2706964015960693
+94.41395568847656 1.0045077800750732
+93.30809020996094 1.5501983165740967
+93.10982513427734 1.1014915704727173
+85.00166320800781 1.9952356815338135
+94.99205780029297 1.593123197555542
+92.78434753417969 1.5873770713806152
+85.2752685546875 1.8876330852508545
+96.14407348632812 1.6973540782928467
+96.59182739257812 1.777432918548584
+85.21195983886719 1.247289776802063
+89.11259460449219 1.9683427810668945
+84.28923797607422 1.442199945449829
+95.35619354248047 1.0686843395233154
+81.9161376953125 1.6271142959594727
+98.88188171386719 1.9269213676452637
+94.53003692626953 1.381432294845581
+80.15739440917969 1.875699758529663
+99.72911071777344 1.9995348453521729
+88.91797637939453 1.2367712259292603
+94.02236938476562 1.9013264179229736
+92.25674438476562 1.1762142181396484
+87.81084442138672 1.028839349746704
+93.73471069335938 1.3626747131347656
+85.55268096923828 1.481982707977295
+88.40141296386719 1.7987523078918457
+81.53286743164062 1.2459611892700195
+95.06607055664062 1.9266705513000488
+98.91923522949219 1.6137280464172363
+86.81133270263672 1.1890655755996704
+85.51641082763672 1.8769354820251465
+95.20496368408203 1.021319031715393
+91.9203872680664 1.3852016925811768
+90.42877197265625 1.4692349433898926
+93.15274810791016 1.7049617767333984
+92.43025207519531 1.815345048904419
+90.53237915039062 1.2616076469421387
+97.911376953125 1.6995875835418701
+99.65914916992188 1.1845998764038086
+91.41571807861328 1.7571431398391724
+86.17327117919922 1.4590321779251099
+82.06706237792969 1.583986520767212
+81.95830535888672 1.8748775720596313
+89.40499114990234 1.8530055284500122
+87.00450134277344 1.7186863422393799
+90.86737060546875 1.1591532230377197
+87.36505889892578 1.1975839138031006
+86.66249084472656 1.802229881286621
+91.9198989868164 1.3777878284454346
+80.39051818847656 1.9387800693511963
+87.5408935546875 1.2266218662261963
+92.21771240234375 1.302396297454834
+89.4444580078125 1.4973241090774536
+82.5759048461914 1.4075777530670166
+93.01850128173828 1.1784536838531494
+87.36629486083984 1.3914499282836914
+93.0128173828125 1.9193010330200195
+99.21200561523438 1.8135334253311157
+82.42012023925781 1.9386579990386963
+91.3363037109375 1.080588698387146
+84.02668762207031 1.849124550819397
+85.27171325683594 1.414588451385498
+84.32006072998047 1.6265616416931152
+90.93821716308594 1.0528053045272827
+81.02252960205078 1.7647711038589478
+83.12752532958984 1.9332249164581299
+80.77437591552734 1.6287462711334229
+81.12611389160156 1.7884021997451782
+96.69781494140625 1.6648938655853271
+82.15121459960938 1.7358323335647583
+85.9214859008789 1.6570940017700195
+84.7430648803711 1.4608850479125977
+95.41434478759766 1.7912076711654663
+82.72222900390625 1.8343868255615234
+87.48568725585938 1.8611987829208374
+86.147705078125 1.5697367191314697
+81.70919799804688 1.4862655401229858
+87.0477066040039 1.3368690013885498
+98.66348266601562 1.7423510551452637
+96.37520599365234 1.3208246231079102
+92.814453125 1.8332717418670654
+80.84992218017578 1.9198791980743408
+87.80859375 1.0776509046554565
+84.58948516845703 1.8839328289031982
+89.78652954101562 1.70749831199646
+81.93563842773438 1.118016242980957
+84.79975891113281 1.4021191596984863
+90.56642150878906 1.2989983558654785
+82.07353210449219 1.1830602884292603
+82.82074737548828 1.949235200881958</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>Text(0, 0.5, 'Electricity Consumption')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bayes-librarian_files/figure-html/cell-17-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>torch.distributions.Uniform(<span class="dv">0</span>, <span class="dv">1</span>).support</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>Interval(lower_bound=0.0, upper_bound=1.0)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>torch.distributions.LogNormal(<span class="dv">0</span>, <span class="dv">1</span>).support</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>GreaterThan(lower_bound=0.0)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="84">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>forward(xs, theta_0, theta_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="84">
+<pre><code>tensor([83.7934])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="110">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>torch.stack(preds).<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">0</span>).values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="110">
+<pre><code>tensor([ 100.2101,  118.9044,  137.5986,  156.2929,  175.8384,  195.5405,
+         215.2426,  234.9448,  254.6469,  274.3490,  294.0511,  313.7533,
+         333.4554,  353.1575,  372.8596,  392.5617,  412.2639,  431.9660,
+         451.6681,  471.3702,  491.0724,  510.7745,  530.4766,  550.1788,
+         569.8809,  589.5830,  609.2852,  628.9872,  648.6894,  668.3915,
+         688.0936,  707.7958,  727.4979,  747.2000,  766.9022,  786.6043,
+         806.3064,  826.0085,  845.7106,  865.4127,  885.1149,  904.8170,
+         924.5192,  944.2213,  963.9234,  983.6255, 1003.3276, 1023.0298,
+        1042.7319, 1062.4340, 1082.1361, 1101.8383, 1121.5404, 1141.2424,
+        1160.9446, 1180.6467, 1200.3489, 1220.0510, 1239.7531, 1259.4552,
+        1279.1573, 1298.8595, 1318.5615, 1338.2638, 1357.9658, 1377.6680,
+        1397.3701, 1417.0723, 1436.7743, 1456.4764, 1476.1786, 1495.8806,
+        1515.5829, 1535.2849, 1554.9871, 1574.6892, 1594.3914, 1614.0935,
+        1633.7955, 1653.4977, 1673.1998, 1692.9020, 1712.6040, 1732.3063,
+        1752.0083, 1771.7104, 1791.4126, 1811.1147, 1830.8168, 1850.5189,
+        1870.2211, 1889.9231, 1909.6254, 1929.3274, 1949.0295, 1968.7317,
+        1988.4338, 2008.1359, 2027.8381, 2047.5402])</code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

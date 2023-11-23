@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning – notebooks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      page: 25,
+    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./notebooks.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+
+
+
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1700712715566" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/laplace-approx.html"> <p class="card-img-top"><img src="notebooks/laplace-approx_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/laplace-approx.html">
+<h3 class="no-anchor listing-title">
+1D Taylor approximation
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Checking that two times jacobian is a hessian
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/laplace-approx.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-listing-file-modified-sort="1700712715298" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/active-learning.html"> <p class="card-img-top"><img src="notebooks/active-learning_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/active-learning.html">
+<h3 class="no-anchor listing-title">
+Active Learning
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/active-learning.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1700712715298" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/baseball.html"> <p class="card-img-top"><img src="notebooks/baseball_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/baseball.html">
+<h3 class="no-anchor listing-title">
+Baseball
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+322 rows × 20 columns
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/baseball.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1700712716306" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/vae.html"> <p class="card-img-top"><img src="notebooks/vae_files/figure-html/cell-18-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/vae.html">
+<h3 class="no-anchor listing-title">
+Basic Imports
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/vae.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1700712715302" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/basis.html"> <p class="card-img-top"><img src="notebooks/basis_files/figure-html/cell-3-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/basis.html">
+<h3 class="no-anchor listing-title">
+Basis Functions Regression
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/basis.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-listing-file-modified-sort="1700712715306" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/bayes-librarian.html"> <p class="card-img-top"><img src="notebooks/bayes-librarian_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/bayes-librarian.html">
+<h3 class="no-anchor listing-title">
+Bayes Librarian
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/bayes-librarian.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-listing-file-modified-sort="1700712715306" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/bayesopt-motivation.html"> <p class="card-img-top"><img src="notebooks/bayesopt-motivation_files/figure-html/cell-3-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/bayesopt-motivation.html">
+<h3 class="no-anchor listing-title">
+BayesOpt Motivation
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/bayesopt-motivation.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1700712715370" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/blr.html"> <p class="card-img-top"><img src="notebooks/blr_files/figure-html/cell-2-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/blr.html">
+<h3 class="no-anchor listing-title">
+Bayesian Linear Regression
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/blr.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-listing-file-modified-sort="1700712715374" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/blr_posterior_figures.html"> <p class="card-img-top"><img src="notebooks/blr_posterior_figures_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/blr_posterior_figures.html">
+<h3 class="no-anchor listing-title">
+Bayesian Linear Regression Posterior Figures
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/blr_posterior_figures.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1700712715306" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/bayesian-logistic-regression.html"> <p class="card-img-top"><img src="notebooks/bayesian-logistic-regression_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/bayesian-logistic-regression.html">
+<h3 class="no-anchor listing-title">
+Bayesian Logistic Regression
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Can we find closed form MLE solution for Bayesian Logistic Regression? It seems, yes. Stay tuned!
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/bayesian-logistic-regression.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-listing-file-modified-sort="1700712715366" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/bayesopt.html"> <p class="card-img-top"><img src="notebooks/bayesopt_files/figure-html/cell-3-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/bayesopt.html">
+<h3 class="no-anchor listing-title">
+Bayesian Optimization
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/bayesopt.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1689100200000" data-listing-file-modified-sort="1700712715370" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/biased-mle-normal.html"> <p class="card-img-top"><img src="notebooks/biased-mle-normal_files/figure-html/cell-4-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/biased-mle-normal.html">
+<h3 class="no-anchor listing-title">
+Biased and Unbiased Estimators
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>Biased and Unbiased Estimators</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/biased-mle-normal.html">
+<div class="listing-date">
+Jul 12, 2023
+</div>
+<div class="listing-author">
+Nipun Batra
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-listing-file-modified-sort="1700712715642" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/reliability.html"> <p class="card-img-top"><img src="diagrams/weather.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/reliability.html">
+<h3 class="no-anchor listing-title">
+CIFAR10 and CIFAR100 dataset
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+https://www.cs.toronto.edu/~kriz/cifar.html
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/reliability.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-listing-file-modified-sort="1700712715374" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/calculus.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/calculus.html">
+<h3 class="no-anchor listing-title">
+Calculus
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+If we are to directly call: <code>z.backward()</code> we get the following error.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/calculus.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="14" data-listing-file-modified-sort="1700712715610" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/nn-variants-final.html"> <p class="card-img-top"><img src="figures/nn_variants/notation.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/nn-variants-final.html">
+<h3 class="no-anchor listing-title">
+Capturing uncertainty in neural nets:
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+The model is the same as in case 1.1.1, but the noise is learned from the data.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/nn-variants-final.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="15" data-listing-file-modified-sort="1700712715614" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/nn-variants.html"> <p class="card-img-top"><img src="notebooks/nn-variants_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/nn-variants.html">
+<h3 class="no-anchor listing-title">
+Capturing uncertainty in neural nets:
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+The model is the same as in case 1.1.1, but the noise is learned from the data. Thus, we need to modify the loss function to include the noise parameter <span class="math inline">\(\sigma\)</span>.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/nn-variants.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="16" data-listing-file-modified-sort="1700712715622" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/nn-variants_zeel.html"> <p class="card-img-top"><img src="figures/nn_variants/notation.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/nn-variants_zeel.html">
+<h3 class="no-anchor listing-title">
+Capturing uncertainty in neural nets:
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+The model is the same as in case 1.1.1, but the noise is learned from the data.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/nn-variants_zeel.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="17" data-listing-file-modified-sort="1700712715546" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/information-theory.html"> <p class="card-img-top"><img src="notebooks/information-theory_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/information-theory.html">
+<h3 class="no-anchor listing-title">
+Closed form solution for prior predictive distribution
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/information-theory.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="18" data-listing-file-modified-sort="1700712715574" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/mc-linreg-predictive.html"> <p class="card-img-top"><img src="notebooks/mc-linreg-predictive_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mc-linreg-predictive.html">
+<h3 class="no-anchor listing-title">
+Closed form solution for prior predictive distribution
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<span class="math display">\[ I = \int p(\mathcal{D} \mid \theta) p(\theta) \mathrm{d}\theta \]</span>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mc-linreg-predictive.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="19" data-listing-file-modified-sort="1700712715570" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/mc-linreg-evidence.html"> <p class="card-img-top"><img src="notebooks/mc-linreg-evidence_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mc-linreg-evidence.html">
+<h3 class="no-anchor listing-title">
+Computing the evidence term
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<span class="math display">\[ I = \int p(\mathcal{D} \mid \theta) p(\theta) \mathrm{d}\theta \]</span>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mc-linreg-evidence.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="20" data-listing-file-modified-sort="1700712715414" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/distributions.html"> <p class="card-img-top"><img src="notebooks/distributions_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/distributions.html">
+<h3 class="no-anchor listing-title">
+Discrete distributions
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+The PDF of the Bernoulli distribution is given by
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/distributions.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="21" data-listing-file-modified-sort="1700712715470" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/error-code-dilbert.html"> <p class="card-img-top"><img src="notebooks/error-code-dilbert_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/error-code-dilbert.html">
+<h3 class="no-anchor listing-title">
+Error Code Dilbert
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/error-code-dilbert.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="22" data-listing-file-modified-sort="1700712716158" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/sampling/gibbs_sampling_bivariate_normal.html"> <p class="card-img-top"><img src="notebooks/sampling/gibbs_sampling_bivariate_normal_files/figure-html/cell-8-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/sampling/gibbs_sampling_bivariate_normal.html">
+<h3 class="no-anchor listing-title">
+Gibbs Sampling for Bivariate Normal Distribution
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/sampling/gibbs_sampling_bivariate_normal.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="23" data-listing-file-modified-sort="1700712716318" data-listing-reading-time-sort="5">
+<div class="thumbnail">
+<p><a href="./notebooks/variational-inference-zeel.html"> <p class="card-img-top"><img src="notebooks/dkl.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/variational-inference-zeel.html">
+<h3 class="no-anchor listing-title">
+Goals:
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Let us first look at G1. Look at the illustration below. We have a normal distribution <span class="math inline">\(p\)</span> and two other normal distributions <span class="math inline">\(q_1\)</span> and <span class="math inline">\(q_2\)</span>. Which of <span class="math inline">\(q_1\)</span> and <span class="math inline">\…</span><span class="math inline"></span><span class="math inline"></span>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/variational-inference-zeel.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="24" data-listing-file-modified-sort="1700712716330" data-listing-reading-time-sort="5">
+<div class="thumbnail">
+<p><a href="./notebooks/variational-inference.html"> <p class="card-img-top"><img src="notebooks/dkl.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/variational-inference.html">
+<h3 class="no-anchor listing-title">
+Goals:
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Let us first look at G1. Look at the illustration below. We have a normal distribution <span class="math inline">\(p\)</span> and two other normal distributions <span class="math inline">\(q_1\)</span> and <span class="math inline">\(q_2\)</span>. Which of <span class="math inline">\(q_1\)</span> and <span class="math inline">\…</span><span class="math inline"></span><span class="math inline"></span>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/variational-inference.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="25" data-listing-file-modified-sort="1700712715470" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/heteroskedastic-n.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/heteroskedastic-n.html">
+<h3 class="no-anchor listing-title">
+Heteroskedastic N
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Empty notebook
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/heteroskedastic-n.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="26" data-listing-file-modified-sort="1700712716218" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/siren.html"> <p class="card-img-top"><img data-src="notebooks/siren_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/siren.html">
+<h3 class="no-anchor listing-title">
+Hypernetwork
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Let us now write a function to generate…
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/siren.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="27" data-listing-file-modified-sort="1700712716158" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/sampling/importance_sampling_var.html"> <p class="card-img-top"><img data-src="notebooks/sampling/importance_sampling_var_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/sampling/importance_sampling_var.html">
+<h3 class="no-anchor listing-title">
+Importance Sampling
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/sampling/importance_sampling_var.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="28" data-listing-file-modified-sort="1700712716246" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/ssl.html"> <p class="card-img-top"><img data-src="notebooks/ssl_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/ssl.html">
+<h3 class="no-anchor listing-title">
+Imports
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Create a dataset with rotated images and corresponding labels. We can now use a much larger dataset
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/ssl.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="29" data-listing-file-modified-sort="1700712716158" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/sampling/inverse_cdf_normal.html"> <p class="card-img-top"><img data-src="notebooks/sampling/inverse_cdf_normal_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/sampling/inverse_cdf_normal.html">
+<h3 class="no-anchor listing-title">
+Inverse CDF Sampling
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/sampling/inverse_cdf_normal.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="30" data-listing-file-modified-sort="1700712715566" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/linear_regression.html"> <p class="card-img-top"><img data-src="notebooks/linear_regression_files/figure-html/cell-10-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/linear_regression.html">
+<h3 class="no-anchor listing-title">
+Linear Regression Tutorial
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Let us compute the maximum likelihood estimate for a given training set
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/linear_regression.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="31" data-listing-file-modified-sort="1700712715606" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/monte-carlo-dropout.html"> <p class="card-img-top"><img data-src="diagrams/nn-archs.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/monte-carlo-dropout.html">
+<h3 class="no-anchor listing-title">
+Monte Carlo Dropout and Deep Ensemble for Bayesian Deep Learning
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+References
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/monte-carlo-dropout.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="32" data-listing-file-modified-sort="1700712716158" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/sampling/mc_sampling_dist.html"> <p class="card-img-top"><img data-src="notebooks/sampling/mc_sampling_dist_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/sampling/mc_sampling_dist.html">
+<h3 class="no-anchor listing-title">
+Monte Carlo Sampling
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/sampling/mc_sampling_dist.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="33" data-listing-file-modified-sort="1700712715414" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/cats-dogs.html"> <p class="card-img-top"><img data-src="notebooks/cats-dogs_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/cats-dogs.html">
+<h3 class="no-anchor listing-title">
+Overconfident Neural Networks
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Reference: https://www.kaggle.com/code/jramkiss/overconfident-neural-networks/notebook
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/cats-dogs.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="34" data-listing-file-modified-sort="1700712715570" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/markov-chain.html"> <p class="card-img-top"><img data-src="notebooks/markov-chain_files/figure-html/cell-14-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/markov-chain.html">
+<h3 class="no-anchor listing-title">
+Parameters
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+The transition matrix is the same for all time steps.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/markov-chain.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="35" data-listing-file-modified-sort="1700712715586" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/mcmc-hamiltorch.html"> <p class="card-img-top"><img data-src="notebooks/mcmc-hamiltorch_files/figure-html/cell-8-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mcmc-hamiltorch.html">
+<h3 class="no-anchor listing-title">
+Sampling from an unnormalized distribution
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mcmc-hamiltorch.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="36" data-listing-file-modified-sort="1700712715266" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/MAP-old.html"> <p class="card-img-top"><img data-src="notebooks/MAP-old_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/MAP-old.html">
+<h3 class="no-anchor listing-title">
+Setting Up &amp; Imports
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/MAP-old.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="37" data-listing-file-modified-sort="1700712715270" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/MAP.html"> <p class="card-img-top"><img data-src="notebooks/MAP_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/MAP.html">
+<h3 class="no-anchor listing-title">
+Setting Up &amp; Imports
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/MAP.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="38" data-listing-file-modified-sort="1700712715542" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/hypernet-np.html"> <p class="card-img-top"><img data-src="notebooks/hypernet-np_files/figure-html/cell-9-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/hypernet-np.html">
+<h3 class="no-anchor listing-title">
+Train on all tasks
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/hypernet-np.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="39" data-listing-file-modified-sort="1700712715534" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/hierarchical_lr_numpyro.html"> <p class="card-img-top"><img data-src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/hierarchical_lr_numpyro.html">
+<h3 class="no-anchor listing-title">
+Vanilla Linear Regression
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<span class="math inline">\(\alpha \sim \text{Normal}(0, 500)\)</span>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/hierarchical_lr_numpyro.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="40" data-listing-file-modified-sort="1700712716162" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/sampling/prediction_var_mc_pi.html"> <p class="card-img-top"><img data-src="notebooks/sampling/prediction_var_mc_pi_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/sampling/prediction_var_mc_pi.html">
+<h3 class="no-anchor listing-title">
+Variance in Value of Pi in MC Sampling
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/sampling/prediction_var_mc_pi.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="41" data-listing-file-modified-sort="1700712715546" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/inverse-cdf.html"> <p class="card-img-top"><img data-src="notebooks/inverse-cdf_files/figure-html/cell-4-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/inverse-cdf.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/inverse-cdf.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="42" data-listing-file-modified-sort="1700712715566" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/lin_reg_slider.html"> <p class="card-img-top"><img data-src="notebooks/lin_reg_slider_files/figure-html/cell-7-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/lin_reg_slider.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/lin_reg_slider.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="43" data-listing-file-modified-sort="1700712715570" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/log-likelihood-linreg.html"> <p class="card-img-top"><img data-src="notebooks/log-likelihood-linreg_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/log-likelihood-linreg.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/log-likelihood-linreg.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="44" data-listing-file-modified-sort="1700712715570" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/log_reg_slider.html"> <p class="card-img-top"><img data-src="notebooks/log_reg_slider_files/figure-html/cell-7-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/log_reg_slider.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/log_reg_slider.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="45" data-listing-file-modified-sort="1700712715574" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/mc_sampling_intro.html"> <p class="card-img-top"><img data-src="notebooks/mc_sampling_intro_files/figure-html/cell-6-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mc_sampling_intro.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mc_sampling_intro.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="46" data-listing-file-modified-sort="1700712715590" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/mcmc-hamiltorch_zeel.html"> <p class="card-img-top"><img data-src="notebooks/mcmc-hamiltorch_zeel_files/figure-html/cell-8-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mcmc-hamiltorch_zeel.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+Sampling (Sampler.HMC; Integrator.IMPLICIT) Time spent | Time remain.| Progress | Samples | Samples/sec tensor(-1433.3967, grad_fn=<addbackward0>) tensor(-1.8629, grad_fn=<sumbackward0>)…<sumbackward0><addbackward0><sumbackward0><sumbackward0><addbackward0><sumbackward0><sumbackward0><addbackward0><sumbackward0><sumbackward0><addbackward0><sumbackward0><sumbackward0><addbackward0><sumbackward0><sumbackward0><addbackward0><sumbackward0><sumbackward0><addbackward0><sumbackward0><sumbackward0><br></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0></sumbackward0></sumbackward0></addbackward0>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mcmc-hamiltorch_zeel.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="47" data-listing-file-modified-sort="1700712715590" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/mcmc-optimization.html"> <p class="card-img-top"><img data-src="notebooks/mcmc-optimization_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mcmc-optimization.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mcmc-optimization.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="48" data-listing-file-modified-sort="1700712715594" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/mle-univariate.html"> <p class="card-img-top"><img data-src="notebooks/mle-univariate_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mle-univariate.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+100 rows × 100 columns
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mle-univariate.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="49" data-listing-file-modified-sort="1700712715594" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/mle_bernoulli.html"> <p class="card-img-top"><img data-src="notebooks/mle_bernoulli_files/figure-html/cell-10-output-3.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mle_bernoulli.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mle_bernoulli.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="50" data-listing-file-modified-sort="1700712715594" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/mle_log_reg.html"> <p class="card-img-top"><img data-src="notebooks/mle_log_reg_files/figure-html/cell-7-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mle_log_reg.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mle_log_reg.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="51" data-listing-file-modified-sort="1700712715598" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/mle_multivariate.html"> <p class="card-img-top"><img data-src="notebooks/mle_multivariate_files/figure-html/cell-9-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/mle_multivariate.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/mle_multivariate.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="52" data-listing-file-modified-sort="1700712715626" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/normal_likelihood_lin_reg.html"> <p class="card-img-top"><img data-src="notebooks/normal_likelihood_lin_reg_files/figure-html/cell-5-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/normal_likelihood_lin_reg.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/normal_likelihood_lin_reg.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="53" data-listing-file-modified-sort="1700712715630" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/quantile-regression.html"> <p class="card-img-top"><img data-src="notebooks/quantile-regression_files/figure-html/cell-3-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/quantile-regression.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/quantile-regression.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="54" data-listing-file-modified-sort="1700712715630" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/random-uniform.html"> <p class="card-img-top"><img data-src="notebooks/random-uniform_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/random-uniform.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/random-uniform.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="55" data-listing-file-modified-sort="1700712715638" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./notebooks/rejection-sampling-importance-sampling.html"> <p class="card-img-top"><img data-src="notebooks/rejection-sampling-importance-sampling_files/figure-html/cell-6-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/rejection-sampling-importance-sampling.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/rejection-sampling-importance-sampling.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="56" data-listing-file-modified-sort="1700712716158" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/sampling-normal.html"> <p class="card-img-top"><img data-src="notebooks/sampling-normal_files/figure-html/cell-4-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/sampling-normal.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/sampling-normal.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="57" data-listing-file-modified-sort="1700712716246" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/test.html"> <p class="card-img-top"><img data-src="notebooks/test_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/test.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/test.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="58" data-listing-file-modified-sort="1700712716330" data-listing-reading-time-sort="0">
+<div class="thumbnail">
+<p><a href="./notebooks/visualise_normal.html"> <p class="card-img-top"><img data-src="notebooks/visualise_normal_files/figure-html/cell-3-output-2.png"  class="thumbnail-image card-img"/></p> </a></p>
+</div>
+<div class="body">
+<a href="./notebooks/visualise_normal.html">
+<h3 class="no-anchor listing-title">
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./notebooks/visualise_normal.html"> </a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
+  <ul class="pagination"></ul>
+</nav>
+</div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

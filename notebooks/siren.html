@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning - Hypernetwork</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html" rel="" target="">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#using-our-homegrown-library-astra" id="toc-using-our-homegrown-library-astra" class="nav-link active" data-scroll-target="#using-our-homegrown-library-astra">Using our homegrown library (Astra)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hypernetwork</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.transforms <span class="im">as</span> transforms</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.gridspec <span class="im">as</span> gridspec</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove all the warnings</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set env CUDA_LAUNCH_BLOCKING=1</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'CUDA_LAUNCH_BLOCKING'</span>] <span class="op">=</span> <span class="st">'1'</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Retina display</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'retina'</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> einops <span class="im">import</span> rearrange</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install einops</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> einops <span class="im">import</span> rearrange</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(<span class="st">'dog.jpg'</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'dog.jpg exists'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>wget https:<span class="op">//</span>segment<span class="op">-</span>anything.com<span class="op">/</span>assets<span class="op">/</span>gallery<span class="op">/</span>AdobeStock_94274587_welsh_corgi_pembroke_CD.jpg <span class="op">-</span>O dog.jpg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>dog.jpg exists</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in a image from torchvision</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> torchvision.io.read_image(<span class="st">"dog.jpg"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(img.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([3, 1365, 2048])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the image</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(rearrange(img, <span class="st">'c h w -&gt; h w c'</span>).numpy())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>&lt;matplotlib.image.AxesImage at 0x7fc2316addf0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use sklearn to normalize the image and store the transform to be used later</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> preprocessing</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>scaler_img <span class="op">=</span> preprocessing.MinMaxScaler().fit(img.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>scaler_img</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<style>#sk-container-id-1 {color: black;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>MinMaxScaler()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">MinMaxScaler</label><div class="sk-toggleable__content"><pre>MinMaxScaler()</pre></div></div></div></div></div>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>img_scaled <span class="op">=</span> scaler_img.transform(img.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)).reshape(img.shape)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>img_scaled.shape</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>img_scaled <span class="op">=</span> torch.tensor(img_scaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>img_scaled.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>torch.Size([3, 1365, 2048])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img_scaled <span class="op">=</span> img_scaled.to(device)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>img_scaled</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>tensor([[[0.3098, 0.3137, 0.3137,  ..., 0.2941, 0.2941, 0.2980],
+         [0.3098, 0.3137, 0.3137,  ..., 0.2941, 0.2941, 0.2980],
+         [0.3098, 0.3137, 0.3137,  ..., 0.2941, 0.2941, 0.2980],
+         ...,
+         [0.4745, 0.4745, 0.4784,  ..., 0.3804, 0.3765, 0.3765],
+         [0.4745, 0.4745, 0.4784,  ..., 0.3804, 0.3804, 0.3765],
+         [0.4745, 0.4745, 0.4784,  ..., 0.3843, 0.3804, 0.3804]],
+
+        [[0.2039, 0.2078, 0.2078,  ..., 0.2157, 0.2157, 0.2118],
+         [0.2039, 0.2078, 0.2078,  ..., 0.2157, 0.2157, 0.2118],
+         [0.2039, 0.2078, 0.2078,  ..., 0.2157, 0.2157, 0.2118],
+         ...,
+         [0.4039, 0.4039, 0.4078,  ..., 0.3216, 0.3176, 0.3176],
+         [0.4039, 0.4039, 0.4078,  ..., 0.3216, 0.3216, 0.3176],
+         [0.4039, 0.4039, 0.4078,  ..., 0.3255, 0.3216, 0.3216]],
+
+        [[0.1373, 0.1412, 0.1412,  ..., 0.1176, 0.1176, 0.1176],
+         [0.1373, 0.1412, 0.1412,  ..., 0.1176, 0.1176, 0.1176],
+         [0.1373, 0.1412, 0.1412,  ..., 0.1176, 0.1176, 0.1176],
+         ...,
+         [0.1451, 0.1451, 0.1490,  ..., 0.1686, 0.1647, 0.1647],
+         [0.1451, 0.1451, 0.1490,  ..., 0.1686, 0.1686, 0.1647],
+         [0.1451, 0.1451, 0.1490,  ..., 0.1725, 0.1686, 0.1686]]],
+       device='cuda:0', dtype=torch.float64)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>crop <span class="op">=</span> torchvision.transforms.functional.crop(img_scaled.cpu(), <span class="dv">600</span>, <span class="dv">750</span>, <span class="dv">400</span>, <span class="dv">400</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>crop.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>torch.Size([3, 400, 400])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the crop using matplotlib and using torch.einsum to convert the image </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from C, H, W to H, W, C</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.imshow(rearrange(crop, <span class="st">'c h w -&gt; h w c'</span>).cpu().numpy())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>&lt;matplotlib.image.AxesImage at 0x7fc4461d7700&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-11-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>crop <span class="op">=</span> crop.to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the dimensions of the image tensor</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>num_channels, height, width <span class="op">=</span> crop.shape</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(num_channels, height, width)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3 400 400</code></pre>
+</div>
+</div>
+<p>Let us now write a function to generate the coordinate inputs. We want to first have changes in the y coordinate and then in the x coordinate. This is equivlent to lower bit changes first and then higher bit changes.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>num_channels, height, width <span class="op">=</span> <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2D grid of (x,y) coordinates</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>w_coords <span class="op">=</span> torch.arange(width).repeat(height, <span class="dv">1</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>h_coords <span class="op">=</span> torch.arange(height).repeat(width, <span class="dv">1</span>).t()</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>w_coords <span class="op">=</span> w_coords.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>h_coords <span class="op">=</span> h_coords.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the x and y coordinates into a single tensor</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.stack([h_coords, w_coords], dim<span class="op">=</span><span class="dv">1</span>).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>tensor([[0., 0.],
+        [0., 1.],
+        [0., 2.],
+        [0., 3.],
+        [1., 0.],
+        [1., 1.],
+        [1., 2.],
+        [1., 3.],
+        [2., 0.],
+        [2., 1.],
+        [2., 2.],
+        [2., 3.]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_coordinate_map(img):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">    img: torch.Tensor of shape (num_channels, height, width)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">    return: tuple of torch.Tensor of shape (height * width, 2) and torch.Tensor of shape (height * width, num_channels)</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    num_channels, height, width <span class="op">=</span> img.shape</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a 2D grid of (x,y) coordinates (h, w)</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># width values change faster than height values</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    w_coords <span class="op">=</span> torch.arange(width).repeat(height, <span class="dv">1</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    h_coords <span class="op">=</span> torch.arange(height).repeat(width, <span class="dv">1</span>).t()</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    w_coords <span class="op">=</span> w_coords.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    h_coords <span class="op">=</span> h_coords.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combine the x and y coordinates into a single tensor</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> torch.stack([h_coords, w_coords], dim<span class="op">=</span><span class="dv">1</span>).<span class="bu">float</span>()</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Move X to GPU if available</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> X.to(device)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reshape the image to (h * w, num_channels)</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    Y <span class="op">=</span> rearrange(img, <span class="st">'c h w -&gt; (h w) c'</span>).<span class="bu">float</span>()</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dog_X, dog_Y <span class="op">=</span> create_coordinate_map(crop)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>dog_X.shape, dog_Y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>(torch.Size([160000, 2]), torch.Size([160000, 3]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dog_X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>tensor([[  0.,   0.],
+        [  0.,   1.],
+        [  0.,   2.],
+        ...,
+        [399., 397.],
+        [399., 398.],
+        [399., 399.]], device='cuda:0')</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MinMaxScaler from -1 to 1</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>scaler_X <span class="op">=</span> preprocessing.MinMaxScaler(feature_range<span class="op">=</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)).fit(dog_X.cpu())</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale the X coordinates</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>dog_X_scaled <span class="op">=</span> scaler_X.transform(dog_X.cpu())</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Move the scaled X coordinates to the GPU</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>dog_X_scaled <span class="op">=</span> torch.tensor(dog_X_scaled).to(device)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Set to dtype float32</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>dog_X_scaled <span class="op">=</span> dog_X_scaled.<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dog_X_scaled.shape, dog_Y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>(torch.Size([160000, 2]), torch.Size([160000, 3]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dog_X[:<span class="dv">2</span>], dog_X_scaled[:<span class="dv">2</span>], dog_Y[:<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>(tensor([[0., 0.],
+         [0., 1.]], device='cuda:0'),
+ tensor([[-1.0000, -1.0000],
+         [-1.0000, -0.9950]], device='cuda:0'),
+ tensor([[0.7686, 0.6941, 0.4745],
+         [0.7686, 0.6941, 0.4745]], device='cuda:0'))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a MLP with 5 hidden layers with 256 neurons each and ReLU activations.</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Input is (x, y) and output is (r, g, b) or (g) for grayscale</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NN(nn.Module):</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _init_siren(<span class="va">self</span>, activation_scale):</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc1.weight.data.uniform_(<span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="va">self</span>.fc1.in_features, <span class="dv">1</span><span class="op">/</span><span class="va">self</span>.fc1.in_features)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> layers <span class="kw">in</span> [<span class="va">self</span>.fc2, <span class="va">self</span>.fc3, <span class="va">self</span>.fc4, <span class="va">self</span>.fc5]:</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>            layers.weight.data.uniform_(<span class="op">-</span>np.sqrt(<span class="dv">6</span><span class="op">/</span><span class="va">self</span>.fc2.in_features)<span class="op">/</span>activation_scale, </span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>                                        np.sqrt(<span class="dv">6</span><span class="op">/</span><span class="va">self</span>.fc2.in_features)<span class="op">/</span>activation_scale)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, activation<span class="op">=</span>torch.sin, n_out<span class="op">=</span><span class="dv">1</span>, activation_scale<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.activation <span class="op">=</span> activation    </span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.activation_scale <span class="op">=</span> activation_scale</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc1 <span class="op">=</span> nn.Linear(<span class="dv">2</span>, s)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc2 <span class="op">=</span> nn.Linear(s, s)</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc3 <span class="op">=</span> nn.Linear(s, s)</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc4 <span class="op">=</span> nn.Linear(s, s)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc5 <span class="op">=</span> nn.Linear(s, n_out) <span class="co">#gray scale image (1) or RGB (3)</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.activation <span class="op">==</span> torch.sin:</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>            <span class="co"># init weights and biases for sine activation</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>._init_siren(activation_scale<span class="op">=</span><span class="va">self</span>.activation_scale)</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.activation(<span class="va">self</span>.activation_scale<span class="op">*</span><span class="va">self</span>.fc1(x))</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.activation(<span class="va">self</span>.activation_scale<span class="op">*</span><span class="va">self</span>.fc2(x))</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.activation(<span class="va">self</span>.activation_scale<span class="op">*</span><span class="va">self</span>.fc3(x))</span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.activation(<span class="va">self</span>.activation_scale<span class="op">*</span><span class="va">self</span>.fc4(x))</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.fc5(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shuffle data</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># shuffled index</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>sh_index <span class="op">=</span> torch.randperm(dog_X_scaled.shape[<span class="dv">0</span>])</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Shuffle the dataset</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>dog_X_sh <span class="op">=</span> dog_X_scaled[sh_index]</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>dog_Y_sh <span class="op">=</span> dog_Y[sh_index]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>nns <span class="op">=</span> {}</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>nns[<span class="st">"dog"</span>] <span class="op">=</span> {}</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>nns[<span class="st">"dog"</span>][<span class="st">"relu"</span>] <span class="op">=</span> NN(activation<span class="op">=</span>torch.relu, n_out<span class="op">=</span><span class="dv">3</span>).to(device)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>] <span class="op">=</span> NN(activation<span class="op">=</span>torch.sin, n_out<span class="op">=</span><span class="dv">3</span>, activation_scale<span class="op">=</span><span class="fl">30.0</span>).to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>nns[<span class="st">"dog"</span>][<span class="st">"relu"</span>](dog_X_sh).shape, nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>](dog_X_sh).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>(torch.Size([160000, 3]), torch.Size([160000, 3]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>n_iter <span class="op">=</span> <span class="dv">2200</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train(net, lr, X, Y, epochs, verbose<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">    net: torch.nn.Module</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">    lr: float</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">    X: torch.Tensor of shape (num_samples, 2)</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Y: torch.Tensor of shape (num_samples, 3)</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    criterion <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> torch.optim.Adam(net.parameters(), lr<span class="op">=</span>lr)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> net(X)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(outputs, Y)</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> verbose <span class="kw">and</span> epoch <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss"> loss: </span><span class="sc">{</span>loss<span class="sc">.</span>item()<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loss.item()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>train(nns[<span class="st">"dog"</span>][<span class="st">"relu"</span>], lr<span class="op">=</span><span class="fl">3e-4</span>, X<span class="op">=</span>dog_X_sh, Y<span class="op">=</span>dog_Y_sh, epochs<span class="op">=</span>n_iter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 0 loss: 0.362823
+Epoch 100 loss: 0.030849
+Epoch 200 loss: 0.027654
+Epoch 300 loss: 0.024760
+Epoch 400 loss: 0.021445
+Epoch 500 loss: 0.017849
+Epoch 600 loss: 0.015446
+Epoch 700 loss: 0.013979
+Epoch 800 loss: 0.013087
+Epoch 900 loss: 0.013066
+Epoch 1000 loss: 0.011910
+Epoch 1100 loss: 0.011552
+Epoch 1200 loss: 0.011221
+Epoch 1300 loss: 0.010859
+Epoch 1400 loss: 0.010564
+Epoch 1500 loss: 0.010345
+Epoch 1600 loss: 0.010518
+Epoch 1700 loss: 0.009886
+Epoch 1800 loss: 0.009697
+Epoch 1900 loss: 0.009528
+Epoch 2000 loss: 0.009371
+Epoch 2100 loss: 0.009229</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>0.009103643707931042</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_reconstructed_and_original_image(original_img, net, X, title<span class="op">=</span><span class="st">""</span>):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co">    net: torch.nn.Module</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co">    X: torch.Tensor of shape (num_samples, 2)</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Y: torch.Tensor of shape (num_samples, 3)</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    num_channels, height, width <span class="op">=</span> original_img.shape</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    net.<span class="bu">eval</span>()</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> net(X)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> outputs.reshape(height, width, num_channels)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">#outputs = outputs.permute(1, 2, 0)</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    gs <span class="op">=</span> gridspec.GridSpec(<span class="dv">1</span>, <span class="dv">2</span>, width_ratios<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    ax0 <span class="op">=</span> plt.subplot(gs[<span class="dv">0</span>])</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    ax1 <span class="op">=</span> plt.subplot(gs[<span class="dv">1</span>])</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    ax0.imshow(outputs.cpu())</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>    ax0.set_title(<span class="st">"Reconstructed Image"</span>)</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    ax1.imshow(original_img.cpu().permute(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">"Original Image"</span>)</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a <span class="kw">in</span> [ax0, ax1]:</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>        a.axis(<span class="st">"off"</span>)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>    fig.suptitle(title, y<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>plot_reconstructed_and_original_image(crop, nns[<span class="st">"dog"</span>][<span class="st">"relu"</span>], dog_X_scaled, title<span class="op">=</span><span class="st">"ReLU"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-29-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>imgs_dog_sin <span class="op">=</span> train(nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>], lr<span class="op">=</span><span class="fl">3e-4</span>, X<span class="op">=</span>dog_X_sh, Y<span class="op">=</span>dog_Y_sh, epochs<span class="op">=</span>n_iter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 0 loss: 0.409131
+Epoch 100 loss: 0.003556
+Epoch 200 loss: 0.002283
+Epoch 300 loss: 0.001715
+Epoch 400 loss: 0.001379
+Epoch 500 loss: 0.001163
+Epoch 600 loss: 0.000990
+Epoch 700 loss: 0.000902
+Epoch 800 loss: 0.000778
+Epoch 900 loss: 0.000713
+Epoch 1000 loss: 0.000647
+Epoch 1100 loss: 0.000597
+Epoch 1200 loss: 0.000548
+Epoch 1300 loss: 0.000509
+Epoch 1400 loss: 0.000494
+Epoch 1500 loss: 0.000448
+Epoch 1600 loss: 0.000423
+Epoch 1700 loss: 0.000401
+Epoch 1800 loss: 0.000386
+Epoch 1900 loss: 0.000363
+Epoch 2000 loss: 0.000342
+Epoch 2100 loss: 0.000335</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>plot_reconstructed_and_original_image(crop, nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>], dog_X_scaled, title<span class="op">=</span><span class="st">"Sine"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-31-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>test_error_all_data <span class="op">=</span> {}</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>test_error_all_data[<span class="st">"sin"</span>] <span class="op">=</span> torch.nn.MSELoss()(nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>](dog_X_scaled), dog_Y).item()</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>test_error_all_data[<span class="st">"relu"</span>] <span class="op">=</span> torch.nn.MSELoss()(nns[<span class="st">"dog"</span>][<span class="st">"relu"</span>](dog_X_scaled), dog_Y).item()</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>test_error_all_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>{'sin': 0.00031630051671527326, 'relu': 0.009100575000047684}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>context_lengths <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>, <span class="bu">len</span>(dog_X)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now, reconstruct the image using a sine activation function with varying number of context points (subsampled from the original image)</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>test_nets_sirens <span class="op">=</span> {}</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(dog_X_sh.shape, dog_Y_sh.shape)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>loss_context <span class="op">=</span> {<span class="st">"train"</span>: {}, <span class="st">"test"</span>: {}}</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> num_context <span class="kw">in</span> context_lengths:</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">50</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Number of context points: </span><span class="sc">{</span>num_context<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>    test_nets_sirens[num_context] <span class="op">=</span> NN(activation<span class="op">=</span>torch.sin, n_out<span class="op">=</span><span class="dv">3</span>, activation_scale<span class="op">=</span><span class="fl">30.0</span>).to(device)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>    loss_context[<span class="st">"train"</span>][num_context] <span class="op">=</span> train(test_nets_sirens[num_context],</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>                                               lr<span class="op">=</span><span class="fl">3e-4</span>, X<span class="op">=</span>dog_X_sh[:num_context], </span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>                                               Y<span class="op">=</span>dog_Y_sh[:num_context], epochs<span class="op">=</span>n_iter, verbose<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find the loss on the test set</span></span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>        loss_context[<span class="st">"test"</span>][num_context] <span class="op">=</span> nn.MSELoss()(test_nets_sirens[num_context](dog_X_scaled), dog_Y).item()</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Test loss: </span><span class="sc">{</span>loss_context[<span class="st">'test'</span>][num_context]<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([160000, 2]) torch.Size([160000, 3])
+==================================================
+Number of context points: 5
+Test loss: 0.226195
+==================================================
+Number of context points: 10
+Test loss: 0.043449
+==================================================
+Number of context points: 100
+Test loss: 0.029126
+==================================================
+Number of context points: 1000
+Test loss: 0.013547
+==================================================
+Number of context points: 10000
+Test loss: 0.003966
+==================================================
+Number of context points: 160000
+Test loss: 0.000310</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the test loss vs number of context points</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>series <span class="op">=</span> pd.Series(loss_context[<span class="st">"test"</span>])</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>series.plot(kind<span class="op">=</span><span class="st">'bar'</span>)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of context points"</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Test loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>Text(0, 0.5, 'Test loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-35-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the reconstructed image for each number of context points</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> num_context <span class="kw">in</span> context_lengths:</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Number of context points: </span><span class="sc">{</span>num_context<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    plot_reconstructed_and_original_image(crop, test_nets_sirens[num_context], </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>                                          dog_X_scaled, title<span class="op">=</span><span class="ss">f"Number of context points: </span><span class="sc">{</span>num_context<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of context points: 5
+Number of context points: 10
+Number of context points: 100
+Number of context points: 1000
+Number of context points: 10000
+Number of context points: 160000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-36-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-36-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-36-output-5.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-36-output-6.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-36-output-7.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="siren_files/figure-html/cell-36-output-8.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Comparison of network size (number of floats) v/s the image size</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>img_size <span class="op">=</span> crop.shape[<span class="dv">1</span>]<span class="op">*</span>crop.shape[<span class="dv">2</span>]</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>nw_size <span class="op">=</span> torch.<span class="bu">sum</span>(torch.tensor([p.numel() <span class="cf">for</span> p <span class="kw">in</span> nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>].parameters()]))</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Image size: </span><span class="sc">{</span>img_size<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Network size: </span><span class="sc">{</span>nw_size<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Image size: 160000
+Network size: 50307</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> tabulate <span class="im">import</span> tabulate</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install tabulate</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> tabulate <span class="im">import</span> tabulate</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>]</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>table_data <span class="op">=</span> []</span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>total_params <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>start_end_mapping <span class="op">=</span> {}</span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, param <span class="kw">in</span> model.named_parameters():</span>
+<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a>    param_count <span class="op">=</span> torch.prod(torch.tensor(param.shape)).item()</span>
+<span id="cb62-16"><a href="#cb62-16" aria-hidden="true" tabindex="-1"></a>    total_params <span class="op">+=</span> param_count</span>
+<span id="cb62-17"><a href="#cb62-17" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> total_params</span>
+<span id="cb62-18"><a href="#cb62-18" aria-hidden="true" tabindex="-1"></a>    table_data.append([name, param.shape, param_count, start, end])</span>
+<span id="cb62-19"><a href="#cb62-19" aria-hidden="true" tabindex="-1"></a>    start_end_mapping[name] <span class="op">=</span> (start, end)</span>
+<span id="cb62-20"><a href="#cb62-20" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> end</span>
+<span id="cb62-21"><a href="#cb62-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-22"><a href="#cb62-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tabulate(table_data, headers<span class="op">=</span>[<span class="st">"Layer Name"</span>, <span class="st">"Shape"</span>, <span class="st">"Parameter Count"</span>, <span class="st">"Start Index"</span>, <span class="st">"End Index"</span>]))</span>
+<span id="cb62-23"><a href="#cb62-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total number of parameters: </span><span class="sc">{</span>total_params<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Layer Name    Shape                     Parameter Count    Start Index    End Index
+------------  ----------------------  -----------------  -------------  -----------
+fc1.weight    torch.Size([128, 2])                  256              0          256
+fc1.bias      torch.Size([128])                     128            256          384
+fc2.weight    torch.Size([128, 128])              16384            384        16768
+fc2.bias      torch.Size([128])                     128          16768        16896
+fc3.weight    torch.Size([128, 128])              16384          16896        33280
+fc3.bias      torch.Size([128])                     128          33280        33408
+fc4.weight    torch.Size([128, 128])              16384          33408        49792
+fc4.bias      torch.Size([128])                     128          49792        49920
+fc5.weight    torch.Size([3, 128])                  384          49920        50304
+fc5.bias      torch.Size([3])                         3          50304        50307
+Total number of parameters: 50307</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>start_end_mapping</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>{'fc1.weight': (0, 256),
+ 'fc1.bias': (256, 384),
+ 'fc2.weight': (384, 16768),
+ 'fc2.bias': (16768, 16896),
+ 'fc3.weight': (16896, 33280),
+ 'fc3.bias': (33280, 33408),
+ 'fc4.weight': (33408, 49792),
+ 'fc4.bias': (49792, 49920),
+ 'fc5.weight': (49920, 50304),
+ 'fc5.bias': (50304, 50307)}</code></pre>
+</div>
+</div>
+<section id="input-x-y-r-g-b" class="level4">
+<h4 class="anchored" data-anchor-id="input-x-y-r-g-b">Input: (x, y, R, G, B)</h4>
+</section>
+<section id="output-our-hypernetwork-should-have-the-output-equal-to-the-number-of-parameters-in-the-main-network." class="level4">
+<h4 class="anchored" data-anchor-id="output-our-hypernetwork-should-have-the-output-equal-to-the-number-of-parameters-in-the-main-network.">Output: Our Hypernetwork should have the output equal to the number of parameters in the main network.</h4>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HyperNet(nn.Module):</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_layers<span class="op">=</span><span class="dv">5</span>, num_neurons<span class="op">=</span><span class="dv">256</span>, activation<span class="op">=</span>torch.sin, n_out<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.activation <span class="op">=</span> activation</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_out <span class="op">=</span> total_params</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc1 <span class="op">=</span> nn.Linear(<span class="dv">5</span>, <span class="dv">512</span>)</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc2 <span class="op">=</span> nn.Linear(<span class="dv">512</span>, <span class="dv">512</span>)</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc3 <span class="op">=</span> nn.Linear(<span class="dv">512</span>, total_params)</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.activation(<span class="va">self</span>.fc1(x))</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.activation(<span class="va">self</span>.fc2(x))</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.fc3(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>hp <span class="op">=</span> HyperNet().to(device)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>out_hp <span class="op">=</span> hp(torch.rand(<span class="dv">10</span>, <span class="dv">5</span>).to(device))</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(out_hp.shape)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>weights_flattened  <span class="op">=</span> out_hp.mean(dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weights_flattened.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([10, 50307])
+torch.Size([50307])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the weights of the model using start_end_mapping</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> nns[<span class="st">"dog"</span>][<span class="st">"sin"</span>]</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, param <span class="kw">in</span> model.named_parameters():</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>    start, end <span class="op">=</span> start_end_mapping[name]</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>    param.data <span class="op">=</span> weights_flattened[start:end].reshape(param.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="using-our-homegrown-library-astra" class="level3">
+<h3 class="anchored" data-anchor-id="using-our-homegrown-library-astra">Using our homegrown library (Astra)</h3>
+<ol type="1">
+<li>Flattening and unflattening the weights</li>
+<li>Easily creating SIREN models</li>
+<li>Easily creating training loops</li>
+</ol>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.utils <span class="im">import</span> ravel_pytree</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>flat_weights, unravel_fn <span class="op">=</span> ravel_pytree(<span class="bu">dict</span>(model.named_parameters()))</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(flat_weights.shape)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(unravel_fn(flat_weights))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([50307])
+{'fc1.weight': tensor([[ 7.2303e-02,  1.8475e-01],
+        [-6.9180e-03,  1.2231e-02],
+        [-1.9431e-01,  1.1563e-01],
+        [ 3.7423e-02,  3.5960e-02],
+        [ 3.5826e-02,  9.0268e-02],
+        [ 7.2428e-02,  2.3853e-02],
+        [ 6.7613e-02, -1.1572e-01],
+        [-1.8519e-01, -2.0865e-02],
+        [ 2.3674e-01, -5.3692e-02],
+        [ 1.3188e-01, -4.3248e-02],
+        [-1.7791e-01, -3.5844e-01],
+        [ 1.1637e-01,  1.0213e-01],
+        [ 3.6082e-02, -1.2981e-01],
+        [-8.9860e-02,  3.0743e-01],
+        [ 9.0076e-02, -1.3024e-01],
+        [ 2.0144e-01, -1.3623e-01],
+        [ 1.0967e-01,  1.1245e-01],
+        [ 2.1241e-02,  3.6728e-02],
+        [-7.0298e-02,  1.7884e-01],
+        [-7.9913e-02, -9.6210e-03],
+        [-1.2231e-03, -6.7778e-02],
+        [-6.1415e-02,  1.7982e-01],
+        [ 8.7729e-02,  7.6696e-02],
+        [ 1.1200e-02, -1.8881e-01],
+        [-6.9393e-02,  1.3919e-01],
+        [ 1.9506e-01,  1.5109e-01],
+        [ 1.0525e-01,  1.6728e-02],
+        [-7.1199e-02, -5.0646e-02],
+        [-3.4556e-02, -3.8549e-02],
+        [-6.5598e-02,  1.4262e-01],
+        [-6.3033e-02,  4.6765e-02],
+        [ 1.6343e-01, -1.1612e-01],
+        [ 5.3650e-02,  2.0001e-02],
+        [ 4.4351e-02, -1.2483e-01],
+        [-6.9576e-02,  1.9289e-02],
+        [ 2.1541e-01, -1.4095e-01],
+        [-4.7398e-02, -1.5326e-01],
+        [-5.5390e-02, -7.6401e-03],
+        [ 1.1270e-01, -3.3292e-02],
+        [ 2.6212e-01, -1.9070e-02],
+        [-2.2660e-02, -5.4961e-02],
+        [ 1.2587e-02,  1.1614e-01],
+        [-1.7161e-02, -7.1058e-02],
+        [ 2.9235e-02, -1.1581e-01],
+        [-1.4140e-02, -6.8351e-02],
+        [ 1.7271e-02, -1.7049e-01],
+        [-5.7903e-02,  1.6249e-01],
+        [-2.7371e-01, -1.5921e-01],
+        [ 1.2445e-01, -3.7183e-02],
+        [ 1.4074e-02, -2.4972e-01],
+        [-1.4386e-01,  1.5713e-01],
+        [ 1.6494e-01,  9.7524e-02],
+        [-1.6054e-01,  6.0998e-02],
+        [ 2.8658e-02,  3.1216e-02],
+        [-2.8942e-01,  1.5718e-01],
+        [ 2.3916e-01,  1.0318e-01],
+        [-3.3868e-02, -3.0468e-01],
+        [ 6.7633e-03,  6.7953e-02],
+        [ 3.2195e-01, -9.9608e-02],
+        [ 8.3436e-02,  4.2797e-02],
+        [-1.0098e-01,  7.9213e-02],
+        [-1.1259e-01,  3.0771e-02],
+        [ 6.9695e-02,  5.9238e-02],
+        [ 2.1898e-01, -2.5084e-01],
+        [ 8.4120e-02,  3.9265e-02],
+        [-4.4006e-02, -5.9050e-03],
+        [-1.8446e-01,  1.7159e-01],
+        [ 1.2318e-02, -1.6082e-02],
+        [-1.2422e-01, -1.2124e-01],
+        [ 1.5859e-01, -6.5549e-02],
+        [-6.1395e-02,  1.4970e-01],
+        [-1.4709e-01,  3.1681e-02],
+        [ 3.6000e-02, -1.8523e-02],
+        [ 1.4831e-01, -1.5797e-01],
+        [ 1.8725e-01,  3.8700e-02],
+        [-1.8377e-01, -5.8808e-02],
+        [ 1.0143e-02, -1.4246e-01],
+        [-1.4042e-01, -5.2038e-05],
+        [ 2.3339e-01,  8.5529e-02],
+        [-1.0926e-01,  9.3398e-03],
+        [ 2.6608e-02,  4.7951e-02],
+        [-1.4424e-01, -2.1638e-01],
+        [-2.6549e-02,  2.2673e-01],
+        [ 6.6978e-02,  2.1663e-01],
+        [ 1.6812e-01, -1.4362e-01],
+        [ 1.8123e-01, -1.0973e-02],
+        [-9.9815e-03, -6.4446e-02],
+        [ 1.0362e-02, -1.1157e-01],
+        [ 1.9818e-02,  3.1765e-03],
+        [-4.1822e-02,  2.9222e-02],
+        [ 3.5510e-04, -9.5421e-02],
+        [ 4.0710e-02, -3.6539e-03],
+        [ 8.6873e-02,  2.0872e-01],
+        [-1.2687e-01,  1.7474e-01],
+        [ 1.4681e-01,  3.6409e-02],
+        [ 6.9398e-02,  4.4749e-02],
+        [-3.4701e-01, -3.8960e-02],
+        [ 2.0324e-01,  6.4354e-02],
+        [-2.0250e-01, -7.3486e-02],
+        [ 2.5662e-01, -6.7429e-02],
+        [ 9.0947e-03,  6.0853e-03],
+        [-1.3005e-01, -1.3669e-01],
+        [-1.4868e-01, -4.5554e-03],
+        [ 1.5069e-01,  8.6696e-02],
+        [ 4.6468e-02,  6.9869e-02],
+        [-1.2077e-01, -3.3872e-03],
+        [-5.2897e-03, -1.9553e-01],
+        [ 1.2461e-01, -4.0207e-03],
+        [-1.0743e-01,  1.4018e-01],
+        [ 2.1903e-01, -1.1876e-01],
+        [ 3.3978e-02, -5.6171e-03],
+        [-1.6130e-01, -7.7339e-02],
+        [ 1.7324e-01, -9.7195e-02],
+        [ 4.2971e-02,  1.0253e-01],
+        [-1.0369e-02, -4.1130e-02],
+        [-1.1557e-01, -1.0589e-01],
+        [ 1.8067e-01,  1.6982e-01],
+        [ 4.1407e-02, -2.6240e-02],
+        [ 6.1280e-02,  2.0380e-01],
+        [ 2.0553e-02, -1.8692e-01],
+        [ 5.4052e-02,  7.0528e-03],
+        [ 6.3718e-02,  1.0462e-01],
+        [ 6.9697e-02, -7.6473e-02],
+        [ 7.3403e-02,  7.8244e-02],
+        [-1.3281e-01, -7.3169e-04],
+        [ 1.2163e-01, -1.2142e-01],
+        [-1.1956e-01,  2.6188e-02],
+        [-2.0094e-01, -3.3400e-03]], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc1.bias': tensor([ 1.3937e-01,  9.1031e-02,  1.1908e-01, -5.2545e-02, -9.3397e-02,
+        -2.5996e-03,  5.6113e-02,  8.7695e-02,  9.4380e-02,  5.8306e-02,
+        -5.8491e-02, -9.4788e-02, -1.0383e-01,  1.8825e-01,  6.4387e-02,
+        -6.8692e-02, -5.7511e-02, -1.0626e-01,  1.8366e-01,  9.3314e-02,
+        -1.5770e-01, -1.1771e-01,  1.8512e-02, -1.0166e-01,  1.1778e-01,
+         6.4702e-03,  2.0301e-01, -2.4718e-02,  1.1473e-02, -5.9337e-02,
+         4.5290e-02, -2.7956e-04,  7.4153e-02,  7.4455e-02,  1.1620e-01,
+         9.1790e-02, -2.6550e-01,  4.0917e-02, -4.9924e-02,  3.5913e-01,
+         2.3945e-01, -1.3163e-01,  7.0677e-02,  4.3314e-02,  5.4965e-02,
+        -3.8266e-02,  1.1958e-01,  1.9800e-02, -3.2567e-02, -7.0675e-02,
+         7.4658e-02,  1.3528e-01,  6.7624e-02,  1.3752e-01,  1.4267e-01,
+         8.1409e-02,  1.5277e-01, -9.4721e-02,  9.5535e-03, -2.7910e-02,
+        -6.1356e-02,  9.8481e-02,  1.7242e-01, -2.3863e-02, -8.4674e-02,
+        -5.6868e-03,  1.4529e-01, -1.4019e-01, -2.7921e-02,  2.1329e-01,
+        -4.0568e-02, -1.3940e-01,  3.9279e-02,  3.4861e-02,  1.6734e-01,
+        -2.2712e-02,  1.0885e-01,  1.1623e-01,  1.6150e-01, -1.8630e-02,
+        -7.1212e-02, -1.4402e-01,  1.5908e-01, -2.2806e-01, -4.3496e-02,
+         1.4644e-01, -2.2250e-02, -5.0974e-02, -1.5041e-01, -1.0052e-01,
+        -3.0135e-02,  7.5585e-02, -5.2927e-02, -1.2286e-01,  1.0296e-02,
+         1.0396e-01, -1.3909e-01,  1.1614e-02,  1.0974e-03,  2.1793e-01,
+        -2.5740e-02, -9.2893e-02,  4.9473e-02, -1.8746e-01,  4.2226e-02,
+         1.7077e-01,  1.5371e-01,  1.2752e-01, -7.0501e-02, -1.9778e-03,
+         4.9510e-02,  2.5706e-02, -5.7692e-02,  2.4992e-01, -1.6351e-01,
+         6.7651e-02, -7.1454e-02, -1.0196e-01,  6.8088e-02, -1.8465e-01,
+         5.1298e-03,  1.0726e-02,  6.1477e-03,  2.7650e-01, -1.9581e-02,
+        -1.2533e-01,  1.0733e-01, -3.6380e-02], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc2.weight': tensor([[ 0.1626,  0.1576,  0.0090,  ...,  0.0867, -0.0421, -0.0025],
+        [ 0.1144, -0.0025, -0.1852,  ..., -0.1083, -0.1402, -0.0354],
+        [-0.1914, -0.0494, -0.0735,  ..., -0.0817,  0.0393,  0.0877],
+        ...,
+        [-0.0717, -0.0291,  0.0692,  ..., -0.0523, -0.0864, -0.0602],
+        [ 0.1178, -0.1181,  0.0901,  ...,  0.0402,  0.1107,  0.0868],
+        [ 0.1341,  0.0799,  0.1080,  ...,  0.0148,  0.0278,  0.1365]],
+       device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc2.bias': tensor([ 2.6667e-02, -4.5061e-02, -1.3379e-01, -4.2892e-02, -1.9645e-01,
+        -2.3817e-01,  1.0494e-02,  2.8197e-01,  1.5406e-02, -2.4376e-02,
+         1.7561e-01, -1.4642e-01, -1.0797e-01,  3.6716e-02, -2.2550e-02,
+         1.9913e-02, -3.9965e-02,  7.6919e-02,  1.1498e-01, -6.5787e-02,
+        -8.4971e-02,  1.2668e-01,  2.0365e-01,  1.7946e-01, -1.2953e-01,
+         1.9260e-01, -9.6302e-02, -7.5193e-02,  6.4110e-02, -1.9202e-02,
+         1.5212e-01,  1.6503e-01,  1.4749e-01, -7.5665e-02, -2.3061e-01,
+         1.2124e-01,  8.7380e-02, -6.8148e-02,  1.9631e-02,  4.9709e-02,
+         5.2993e-02,  1.6483e-01,  1.1459e-01, -3.6108e-02,  1.9317e-01,
+        -4.4186e-02, -2.4532e-02, -2.2075e-01,  5.7838e-03,  1.9950e-01,
+         9.2932e-02, -9.3798e-02, -3.0699e-02,  3.2803e-02,  1.3139e-01,
+        -1.0147e-01, -7.2373e-02,  4.8918e-02,  8.4615e-02, -1.0287e-01,
+        -4.7278e-03,  1.2601e-01, -5.6927e-02,  2.2257e-01, -6.5842e-02,
+        -1.2036e-01,  9.9820e-02,  2.4243e-02, -1.0320e-02,  8.8519e-02,
+         1.2967e-02,  4.3215e-02, -1.6222e-01, -4.6659e-02, -5.8839e-02,
+         2.0254e-02,  1.3470e-01,  2.6904e-01,  8.3832e-02,  1.4001e-01,
+        -5.6560e-02, -1.7141e-01,  3.0431e-02,  3.0826e-02,  1.1963e-01,
+        -2.8436e-02, -4.2731e-02,  7.2354e-02,  1.9034e-02, -7.6484e-02,
+         5.2238e-02, -1.0509e-01,  9.1314e-02,  4.5333e-02,  2.1825e-01,
+        -1.6899e-01, -2.5924e-03, -6.3096e-02, -1.6934e-01, -1.1294e-01,
+        -8.2351e-02,  1.5471e-01, -6.3658e-02,  1.9206e-02,  7.1285e-02,
+        -1.9484e-01,  1.1433e-01,  2.1561e-01, -1.2322e-01,  5.6644e-02,
+         7.1328e-02, -1.2183e-01, -8.9327e-02,  1.0203e-02,  8.1200e-04,
+        -7.3808e-02, -2.0901e-01, -4.5195e-02, -1.3261e-04, -5.7953e-02,
+         6.8481e-02, -1.2712e-01, -1.2984e-01,  1.4874e-02,  4.8432e-02,
+         7.5876e-02, -3.8336e-02,  1.6079e-02], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc3.weight': tensor([[ 0.0396, -0.1677,  0.0536,  ...,  0.0329,  0.1299,  0.0670],
+        [-0.2666, -0.1038, -0.2126,  ...,  0.0804, -0.1728,  0.1918],
+        [ 0.1665,  0.0134, -0.0402,  ..., -0.0687,  0.1080,  0.0771],
+        ...,
+        [ 0.1816, -0.0331,  0.0454,  ..., -0.0926,  0.1632,  0.0675],
+        [-0.0477,  0.2884,  0.0700,  ..., -0.0688, -0.2281,  0.1430],
+        [-0.1463,  0.1891, -0.1439,  ...,  0.0600, -0.0703, -0.1880]],
+       device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc3.bias': tensor([-1.6453e-01,  7.5851e-02,  3.7721e-02, -9.4238e-03, -7.1286e-02,
+         2.2447e-01,  3.8425e-02,  1.0008e-01, -1.5634e-01,  8.8691e-02,
+         1.2365e-02,  1.4615e-01, -5.4554e-02, -4.8148e-02, -6.4282e-02,
+         1.0527e-02, -3.6634e-02,  1.5034e-02, -9.3311e-03,  1.7128e-01,
+        -1.8236e-01,  1.3478e-01,  1.7017e-01, -7.1820e-02,  1.4992e-01,
+        -4.0661e-01,  9.0499e-02, -3.6053e-01,  2.5526e-01, -8.1079e-02,
+        -7.7242e-02,  8.8858e-02, -1.4380e-01,  2.5731e-01,  8.9234e-03,
+         5.1684e-02,  4.9633e-02,  1.3959e-01, -1.2853e-01, -7.9164e-02,
+         6.9847e-02,  1.0135e-01, -1.1189e-01, -3.8928e-02, -2.0292e-02,
+         1.1789e-02,  1.4188e-01, -1.8961e-01, -2.3442e-02, -2.2014e-01,
+        -1.2734e-01,  2.7420e-03,  1.3705e-02, -2.0665e-01, -5.5958e-03,
+        -7.3088e-02,  2.3228e-02, -3.1873e-01, -4.0341e-02, -1.1505e-01,
+         3.2668e-02,  8.3553e-02,  8.1658e-03, -1.6962e-01, -1.2170e-01,
+         1.0409e-01, -2.6209e-01, -9.5062e-02,  8.3047e-02,  1.3676e-02,
+        -1.9911e-02, -2.3725e-01, -1.3274e-01, -9.1445e-03,  1.6600e-01,
+        -1.8830e-02,  9.9199e-03,  1.3318e-01,  8.1056e-02, -1.8402e-02,
+        -5.7780e-05,  1.6435e-01,  1.0902e-01,  3.4496e-02, -1.5712e-01,
+        -9.2133e-03,  1.7642e-01,  9.4327e-02, -7.3375e-02, -1.2195e-02,
+         4.0908e-02, -1.3142e-01,  6.7244e-02,  2.5039e-02, -4.3484e-02,
+        -8.8210e-02, -1.8980e-02, -2.9393e-02,  2.2965e-01,  6.2888e-02,
+         1.8778e-01,  2.0747e-01, -2.7634e-01,  8.7129e-02,  1.3946e-01,
+        -2.0265e-01,  2.0881e-01,  1.2091e-01,  3.0196e-02,  2.2240e-02,
+         1.3639e-01,  1.6089e-01, -8.9004e-02, -3.3855e-03,  5.0107e-02,
+         1.5593e-01,  6.7469e-02,  6.8105e-02,  8.7053e-02,  2.0969e-01,
+         1.1700e-01, -1.6770e-02,  4.2229e-02,  4.6535e-02, -9.8295e-02,
+         1.9084e-01, -4.1850e-02, -4.6306e-02], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc4.weight': tensor([[ 0.2830, -0.1100, -0.1323,  ..., -0.3271,  0.0813, -0.0061],
+        [ 0.2710,  0.3222,  0.0848,  ...,  0.2513, -0.0644, -0.2402],
+        [-0.0105,  0.0584,  0.0086,  ...,  0.0149,  0.0471,  0.1521],
+        ...,
+        [ 0.1835,  0.0269, -0.0054,  ..., -0.2250,  0.0190, -0.0436],
+        [ 0.0104, -0.1079,  0.0619,  ..., -0.0457, -0.1928,  0.1140],
+        [ 0.0292,  0.1185,  0.0900,  ...,  0.0677,  0.1507, -0.2381]],
+       device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc4.bias': tensor([-1.6619e-01, -1.1489e-01, -1.0995e-02, -1.8886e-01,  8.1446e-02,
+        -1.7253e-01,  4.6207e-02, -1.2412e-01,  2.5603e-01, -2.4989e-01,
+         1.0106e-01,  1.4181e-01,  1.1908e-01, -1.3170e-01, -1.6666e-02,
+         6.9981e-02, -9.4864e-02,  2.9104e-02,  3.3937e-02,  8.8687e-02,
+        -2.1460e-01,  1.7662e-02, -7.4605e-02, -2.8766e-01,  1.4387e-03,
+         8.8849e-02, -2.6133e-01,  2.3944e-01,  4.2308e-01, -2.2386e-02,
+        -3.5002e-02,  1.5050e-01, -1.8755e-01,  4.0275e-02,  5.0206e-02,
+         2.8535e-02,  1.5281e-01,  1.5107e-01,  1.1838e-02, -1.9254e-01,
+        -1.6728e-01,  1.3601e-01, -9.4265e-02, -3.5805e-02, -1.3126e-01,
+        -7.3716e-02,  4.6302e-02, -5.5326e-02,  8.6940e-02, -2.5061e-01,
+         7.0305e-02,  7.3881e-02, -1.4083e-02,  1.8914e-01,  3.1738e-02,
+        -2.8057e-02,  1.0428e-01, -4.5615e-02,  7.6921e-03, -1.8016e-01,
+         8.4051e-05, -1.8171e-01, -1.7909e-02, -1.4178e-02,  5.4015e-02,
+         2.5439e-01, -2.7733e-01,  2.3340e-01, -1.2361e-01, -2.2032e-01,
+        -8.9306e-02,  6.3847e-02, -7.4009e-02, -4.2775e-02, -1.4546e-01,
+         5.9691e-02, -2.3814e-01, -4.3989e-02, -1.7065e-01,  2.3011e-01,
+        -1.9524e-02, -8.2356e-02,  1.6535e-01,  1.1677e-01, -1.7481e-01,
+        -2.4286e-02, -5.4737e-02, -9.8581e-03,  5.8233e-02, -2.0740e-02,
+         3.7968e-02, -5.8098e-02,  3.2286e-02, -4.9859e-02,  1.3212e-02,
+        -1.4157e-01,  3.6066e-02, -7.8502e-03, -1.1150e-01,  1.7404e-01,
+         2.9603e-02, -6.5617e-02,  5.7098e-02,  4.4060e-02,  1.1591e-01,
+        -1.1777e-01, -2.4960e-01, -2.0873e-01, -5.8239e-02, -1.9206e-01,
+         5.1293e-02, -1.4662e-01, -1.0294e-01, -1.4170e-01,  1.0213e-01,
+        -1.0966e-01,  6.4190e-02, -1.2977e-02,  1.3461e-01,  9.0853e-02,
+         1.3335e-01, -1.0664e-01,  2.0796e-01, -1.0372e-01,  1.2097e-02,
+        -1.0545e-01,  4.7369e-02,  4.7679e-02], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc5.weight': tensor([[ 3.7005e-02,  1.7218e-02, -6.0654e-02,  1.9607e-01,  1.8402e-01,
+          7.0345e-02,  1.0801e-01,  2.0575e-02, -6.2460e-02, -2.6926e-02,
+          3.2469e-02, -5.7114e-02,  2.4663e-02, -8.2723e-02,  1.5335e-01,
+          2.5052e-01,  1.7047e-01,  3.2905e-02,  4.4214e-03,  1.0149e-01,
+          2.4933e-01,  1.0568e-01, -9.2186e-02,  1.0348e-01,  9.7047e-02,
+          2.4081e-02,  4.2537e-02, -1.3451e-01, -9.5488e-02,  2.5056e-02,
+          8.5907e-02, -3.5518e-01, -1.8330e-01, -2.0032e-01,  5.3350e-03,
+          8.3568e-02, -7.8669e-02, -4.0999e-02, -1.6546e-01,  7.6125e-02,
+          4.2919e-02, -1.1224e-01,  6.6079e-02,  7.5957e-02,  1.6435e-01,
+         -6.5331e-02, -1.4222e-01, -2.3253e-02, -2.4421e-02, -4.7380e-02,
+         -3.1845e-02,  1.4371e-01,  1.6564e-02, -9.1425e-02, -2.3566e-01,
+          2.4497e-02, -1.0897e-02, -6.5980e-02, -6.4120e-02, -4.8469e-02,
+          1.9976e-01,  7.1650e-02, -3.1568e-02, -7.8932e-02, -1.0762e-02,
+         -5.2840e-02,  1.5349e-01, -1.6643e-01, -1.1844e-01,  1.0926e-01,
+         -2.5987e-02, -2.4647e-01,  1.2376e-01,  1.1220e-02, -8.4029e-02,
+         -9.8139e-02,  5.3532e-02, -1.4702e-02,  1.4518e-01,  3.3054e-02,
+         -1.3509e-01, -1.8362e-01,  4.7140e-02,  7.5887e-03,  4.8157e-02,
+          1.6827e-01,  1.7298e-01, -1.3073e-01,  2.5464e-01,  8.3428e-02,
+         -1.0881e-01,  1.6493e-01,  2.8744e-03,  7.8934e-03,  8.0214e-02,
+         -4.2423e-02,  1.0871e-01,  6.9979e-02, -8.5941e-02,  1.5277e-01,
+          1.2681e-06, -1.6246e-01, -4.9869e-02, -7.0287e-02, -1.6674e-03,
+         -1.2628e-01,  7.2879e-02, -2.6658e-01, -4.3385e-02, -1.3041e-02,
+          1.3853e-01,  9.2652e-02,  1.3920e-01,  1.6977e-01, -8.1156e-02,
+          3.3611e-02,  1.9832e-02,  3.4340e-02, -1.0543e-02, -5.9265e-02,
+         -1.3928e-01, -1.9022e-02,  1.0770e-01,  6.6137e-02, -1.3821e-01,
+         -8.6274e-02, -1.2282e-01, -4.3384e-02],
+        [ 1.5446e-01, -1.2482e-01, -3.1733e-01, -5.0405e-02, -9.8563e-02,
+          1.4524e-02, -4.7723e-02, -2.1366e-01,  1.2520e-02,  9.3535e-02,
+         -1.7930e-02,  8.1626e-03, -7.2552e-02, -1.7400e-01, -4.8571e-03,
+          3.4715e-02, -1.6996e-01,  2.5612e-02,  1.7753e-02,  1.1491e-01,
+          3.2849e-02,  7.4169e-02,  2.3232e-02,  2.3961e-01, -1.4371e-01,
+          7.5394e-02, -5.6723e-03,  1.4591e-02, -1.0227e-01, -6.3025e-02,
+         -4.8187e-02,  3.7513e-02, -2.2861e-02, -2.5060e-02, -5.2416e-02,
+          3.6575e-02,  4.3657e-02,  3.9590e-02,  6.8889e-02,  7.8860e-02,
+         -6.1261e-02,  6.4804e-03,  6.4698e-02, -1.3405e-01,  4.9579e-02,
+          9.1552e-02,  2.5240e-01, -1.1347e-01,  4.2408e-02,  8.2981e-02,
+          1.1758e-01,  1.4038e-02, -5.8177e-02, -4.6107e-02,  9.8306e-02,
+          5.3295e-02, -1.2327e-02, -3.7325e-02,  2.1046e-01,  1.1949e-01,
+         -8.8206e-03,  9.5156e-02,  8.3061e-03,  8.0187e-02,  4.3940e-02,
+          1.4411e-01, -5.8862e-03,  1.5729e-02, -1.7983e-01,  5.2839e-02,
+          5.6460e-02, -1.3105e-01,  2.7025e-01,  4.4835e-02, -1.3793e-01,
+          4.7627e-02, -3.9222e-02, -6.4474e-02,  1.2132e-01, -5.4602e-02,
+         -4.1981e-02, -1.7641e-01,  1.1443e-01,  1.6024e-01, -4.2657e-02,
+          2.9715e-02, -6.2705e-03,  7.2440e-02, -3.1999e-01, -1.6657e-01,
+         -9.7144e-02,  7.7817e-02, -4.3598e-02,  1.5082e-03,  5.5090e-02,
+         -3.5226e-02,  7.4446e-02, -1.4492e-01,  1.9284e-01, -1.0586e-01,
+          9.7238e-02, -2.9331e-01,  1.6685e-01,  6.7393e-02, -3.8107e-02,
+         -5.1379e-03, -1.8144e-01, -1.0758e-01, -3.5332e-02, -9.5876e-02,
+         -3.3853e-02,  7.4512e-02,  7.1593e-02,  5.6300e-02, -2.2599e-01,
+         -2.6461e-02, -9.8212e-02, -1.3220e-01,  2.4089e-03, -2.6224e-01,
+         -4.1655e-02, -1.2883e-03, -1.4610e-01,  7.1842e-02,  1.6349e-01,
+         -3.0933e-01,  2.8165e-02,  4.9211e-02],
+        [ 1.6185e-02, -4.3435e-02,  2.9302e-01,  6.8762e-02, -1.0513e-01,
+          8.0041e-03,  3.1691e-02,  7.8240e-02, -3.0865e-01, -1.2082e-01,
+         -1.5014e-02, -6.4405e-02,  3.7052e-03,  1.5633e-01, -8.7142e-02,
+          2.7108e-01, -4.8148e-02,  1.9585e-01, -1.0857e-01, -1.6191e-02,
+          1.1271e-01, -4.2816e-02,  1.1897e-01,  2.1357e-01,  6.0726e-03,
+         -1.6058e-01,  1.0014e-01,  7.2932e-03, -3.3023e-02, -1.3890e-02,
+          2.3372e-01, -1.5602e-01, -1.3258e-01,  3.4258e-02,  4.1946e-03,
+         -4.5052e-02,  1.0765e-01,  8.8289e-02,  5.0133e-02,  1.0398e-01,
+          1.7352e-02, -1.1756e-01,  1.2870e-01,  9.9371e-02,  1.0367e-01,
+         -7.6240e-02, -6.7554e-02,  2.2970e-02,  1.8892e-01, -8.2191e-02,
+          1.6877e-01, -7.5892e-03,  4.1152e-02,  6.9047e-02,  1.0306e-01,
+          2.3320e-01,  1.2969e-01, -2.9587e-01,  2.2722e-01, -1.7229e-01,
+         -7.0078e-02,  6.9529e-02,  1.5175e-01,  4.4102e-02, -1.8311e-01,
+          4.8507e-03, -1.8906e-01,  1.3765e-01,  8.4732e-02, -8.0962e-02,
+         -6.6467e-02, -4.6670e-02, -1.5538e-02, -2.2635e-01,  2.1714e-01,
+          2.3420e-01, -1.2549e-01,  1.6654e-02,  7.8636e-02, -5.5591e-02,
+          1.5804e-01, -1.9898e-03, -1.6906e-01, -1.9567e-02,  3.1766e-02,
+          9.4322e-03, -7.3489e-02, -2.7695e-02,  1.2616e-01,  1.7542e-01,
+          1.9282e-01, -1.0990e-01, -2.4401e-01,  7.7423e-02, -1.5268e-01,
+         -3.8916e-03,  6.2967e-02,  1.1859e-01,  8.4724e-02, -1.8199e-01,
+         -7.2396e-02, -6.9568e-02, -7.0842e-02, -9.4516e-02,  2.1872e-01,
+          2.2665e-01, -1.6960e-01, -2.2812e-01,  1.2222e-01,  1.3715e-01,
+         -4.3735e-02, -7.3953e-02, -9.7945e-02, -2.6904e-02,  8.7878e-02,
+         -1.0421e-02,  1.6984e-02,  3.8456e-02,  1.7513e-01, -1.0124e-03,
+          3.8656e-02,  1.4228e-01,  9.2844e-03,  2.9087e-02,  5.2339e-02,
+         -1.9062e-01, -1.0616e-01,  1.0397e-01]], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;), 'fc5.bias': tensor([-0.0278, -0.0784, -0.0022], device='cuda:0',
+       grad_fn=&lt;ReshapeAliasBackward0&gt;)}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>unravel_fn(weights_flattened)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>{'fc1.weight': tensor([[ 8.4120e-02,  3.9265e-02],
+         [-4.4006e-02, -5.9050e-03],
+         [-1.8446e-01,  1.7159e-01],
+         [ 1.2318e-02, -1.6082e-02],
+         [-1.2422e-01, -1.2124e-01],
+         [ 1.5859e-01, -6.5549e-02],
+         [-6.1395e-02,  1.4970e-01],
+         [-1.4709e-01,  3.1681e-02],
+         [ 3.6000e-02, -1.8523e-02],
+         [ 1.4831e-01, -1.5797e-01],
+         [ 1.8725e-01,  3.8700e-02],
+         [-1.8377e-01, -5.8808e-02],
+         [ 1.0143e-02, -1.4246e-01],
+         [-1.4042e-01, -5.2038e-05],
+         [ 2.3339e-01,  8.5529e-02],
+         [-1.0926e-01,  9.3398e-03],
+         [ 2.6608e-02,  4.7951e-02],
+         [-1.4424e-01, -2.1638e-01],
+         [-2.6549e-02,  2.2673e-01],
+         [ 6.6978e-02,  2.1663e-01],
+         [ 1.6812e-01, -1.4362e-01],
+         [ 1.8123e-01, -1.0973e-02],
+         [-9.9815e-03, -6.4446e-02],
+         [ 1.0362e-02, -1.1157e-01],
+         [ 1.9818e-02,  3.1765e-03],
+         [-4.1822e-02,  2.9222e-02],
+         [ 3.5510e-04, -9.5421e-02],
+         [ 4.0710e-02, -3.6539e-03],
+         [ 8.6873e-02,  2.0872e-01],
+         [-1.2687e-01,  1.7474e-01],
+         [ 1.4681e-01,  3.6409e-02],
+         [ 6.9398e-02,  4.4749e-02],
+         [-3.4701e-01, -3.8960e-02],
+         [ 2.0324e-01,  6.4354e-02],
+         [-2.0250e-01, -7.3486e-02],
+         [ 2.5662e-01, -6.7429e-02],
+         [ 9.0947e-03,  6.0853e-03],
+         [-1.3005e-01, -1.3669e-01],
+         [-1.4868e-01, -4.5554e-03],
+         [ 1.5069e-01,  8.6696e-02],
+         [ 4.6468e-02,  6.9869e-02],
+         [-1.2077e-01, -3.3872e-03],
+         [-5.2897e-03, -1.9553e-01],
+         [ 1.2461e-01, -4.0207e-03],
+         [-1.0743e-01,  1.4018e-01],
+         [ 2.1903e-01, -1.1876e-01],
+         [ 3.3978e-02, -5.6171e-03],
+         [-1.6130e-01, -7.7339e-02],
+         [ 1.7324e-01, -9.7195e-02],
+         [ 4.2971e-02,  1.0253e-01],
+         [-1.0369e-02, -4.1130e-02],
+         [-1.1557e-01, -1.0589e-01],
+         [ 1.8067e-01,  1.6982e-01],
+         [ 4.1407e-02, -2.6240e-02],
+         [ 6.1280e-02,  2.0380e-01],
+         [ 2.0553e-02, -1.8692e-01],
+         [ 5.4052e-02,  7.0528e-03],
+         [ 6.3718e-02,  1.0462e-01],
+         [ 6.9697e-02, -7.6473e-02],
+         [ 7.3403e-02,  7.8244e-02],
+         [-1.3281e-01, -7.3169e-04],
+         [ 1.2163e-01, -1.2142e-01],
+         [-1.1956e-01,  2.6188e-02],
+         [-2.0094e-01, -3.3400e-03],
+         [ 1.3937e-01,  9.1031e-02],
+         [ 1.1908e-01, -5.2545e-02],
+         [-9.3397e-02, -2.5996e-03],
+         [ 5.6113e-02,  8.7695e-02],
+         [ 9.4380e-02,  5.8306e-02],
+         [-5.8491e-02, -9.4788e-02],
+         [-1.0383e-01,  1.8825e-01],
+         [ 6.4387e-02, -6.8692e-02],
+         [-5.7511e-02, -1.0626e-01],
+         [ 1.8366e-01,  9.3314e-02],
+         [-1.5770e-01, -1.1771e-01],
+         [ 1.8512e-02, -1.0166e-01],
+         [ 1.1778e-01,  6.4702e-03],
+         [ 2.0301e-01, -2.4718e-02],
+         [ 1.1473e-02, -5.9337e-02],
+         [ 4.5290e-02, -2.7956e-04],
+         [ 7.4153e-02,  7.4455e-02],
+         [ 1.1620e-01,  9.1790e-02],
+         [-2.6550e-01,  4.0917e-02],
+         [-4.9924e-02,  3.5913e-01],
+         [ 2.3945e-01, -1.3163e-01],
+         [ 7.0677e-02,  4.3314e-02],
+         [ 5.4965e-02, -3.8266e-02],
+         [ 1.1958e-01,  1.9800e-02],
+         [-3.2567e-02, -7.0675e-02],
+         [ 7.4658e-02,  1.3528e-01],
+         [ 6.7624e-02,  1.3752e-01],
+         [ 1.4267e-01,  8.1409e-02],
+         [ 1.5277e-01, -9.4721e-02],
+         [ 9.5535e-03, -2.7910e-02],
+         [-6.1356e-02,  9.8481e-02],
+         [ 1.7242e-01, -2.3863e-02],
+         [-8.4674e-02, -5.6868e-03],
+         [ 1.4529e-01, -1.4019e-01],
+         [-2.7921e-02,  2.1329e-01],
+         [-4.0568e-02, -1.3940e-01],
+         [ 3.9279e-02,  3.4861e-02],
+         [ 1.6734e-01, -2.2712e-02],
+         [ 1.0885e-01,  1.1623e-01],
+         [ 1.6150e-01, -1.8630e-02],
+         [-7.1212e-02, -1.4402e-01],
+         [ 1.5908e-01, -2.2806e-01],
+         [-4.3496e-02,  1.4644e-01],
+         [-2.2250e-02, -5.0974e-02],
+         [-1.5041e-01, -1.0052e-01],
+         [-3.0135e-02,  7.5585e-02],
+         [-5.2927e-02, -1.2286e-01],
+         [ 1.0296e-02,  1.0396e-01],
+         [-1.3909e-01,  1.1614e-02],
+         [ 1.0974e-03,  2.1793e-01],
+         [-2.5740e-02, -9.2893e-02],
+         [ 4.9473e-02, -1.8746e-01],
+         [ 4.2226e-02,  1.7077e-01],
+         [ 1.5371e-01,  1.2752e-01],
+         [-7.0501e-02, -1.9778e-03],
+         [ 4.9510e-02,  2.5706e-02],
+         [-5.7692e-02,  2.4992e-01],
+         [-1.6351e-01,  6.7651e-02],
+         [-7.1454e-02, -1.0196e-01],
+         [ 6.8088e-02, -1.8465e-01],
+         [ 5.1298e-03,  1.0726e-02],
+         [ 6.1477e-03,  2.7650e-01],
+         [-1.9581e-02, -1.2533e-01],
+         [ 1.0733e-01, -3.6380e-02]], device='cuda:0',
+        grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc1.bias': tensor([ 0.0723,  0.1847, -0.0069,  0.0122, -0.1943,  0.1156,  0.0374,  0.0360,
+          0.0358,  0.0903,  0.0724,  0.0239,  0.0676, -0.1157, -0.1852, -0.0209,
+          0.2367, -0.0537,  0.1319, -0.0432, -0.1779, -0.3584,  0.1164,  0.1021,
+          0.0361, -0.1298, -0.0899,  0.3074,  0.0901, -0.1302,  0.2014, -0.1362,
+          0.1097,  0.1125,  0.0212,  0.0367, -0.0703,  0.1788, -0.0799, -0.0096,
+         -0.0012, -0.0678, -0.0614,  0.1798,  0.0877,  0.0767,  0.0112, -0.1888,
+         -0.0694,  0.1392,  0.1951,  0.1511,  0.1052,  0.0167, -0.0712, -0.0506,
+         -0.0346, -0.0385, -0.0656,  0.1426, -0.0630,  0.0468,  0.1634, -0.1161,
+          0.0537,  0.0200,  0.0444, -0.1248, -0.0696,  0.0193,  0.2154, -0.1409,
+         -0.0474, -0.1533, -0.0554, -0.0076,  0.1127, -0.0333,  0.2621, -0.0191,
+         -0.0227, -0.0550,  0.0126,  0.1161, -0.0172, -0.0711,  0.0292, -0.1158,
+         -0.0141, -0.0684,  0.0173, -0.1705, -0.0579,  0.1625, -0.2737, -0.1592,
+          0.1245, -0.0372,  0.0141, -0.2497, -0.1439,  0.1571,  0.1649,  0.0975,
+         -0.1605,  0.0610,  0.0287,  0.0312, -0.2894,  0.1572,  0.2392,  0.1032,
+         -0.0339, -0.3047,  0.0068,  0.0680,  0.3220, -0.0996,  0.0834,  0.0428,
+         -0.1010,  0.0792, -0.1126,  0.0308,  0.0697,  0.0592,  0.2190, -0.2508],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc2.weight': tensor([[ 0.1144, -0.0025, -0.1852,  ..., -0.1083, -0.1402, -0.0354],
+         [-0.1914, -0.0494, -0.0735,  ..., -0.0817,  0.0393,  0.0877],
+         [-0.2834,  0.0507,  0.0576,  ...,  0.0827, -0.0266,  0.1160],
+         ...,
+         [ 0.1178, -0.1181,  0.0901,  ...,  0.0402,  0.1107,  0.0868],
+         [ 0.1341,  0.0799,  0.1080,  ...,  0.0148,  0.0278,  0.1365],
+         [ 0.0267, -0.0451, -0.1338,  ...,  0.0759, -0.0383,  0.0161]],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc2.bias': tensor([ 0.1626,  0.1576,  0.0090,  0.2106, -0.2146,  0.0891,  0.0409, -0.0352,
+          0.1271,  0.1234, -0.2810,  0.0872,  0.0070,  0.0727,  0.1334, -0.0895,
+          0.0315, -0.0023, -0.0810, -0.1109, -0.2472, -0.1886, -0.1106, -0.0783,
+          0.0280, -0.0559, -0.1411, -0.1457, -0.1365, -0.1305,  0.0753,  0.2940,
+          0.0084,  0.0858, -0.0895, -0.1531, -0.2004, -0.0533, -0.0228, -0.0384,
+         -0.0674,  0.1116,  0.1309, -0.0194, -0.2964,  0.0495,  0.0392,  0.0084,
+         -0.3178, -0.0079, -0.0193, -0.0915,  0.0934,  0.0513,  0.1537, -0.1062,
+         -0.0009,  0.1223,  0.1528, -0.1958, -0.0226,  0.1976,  0.2536, -0.0666,
+         -0.0249,  0.0364,  0.1468, -0.1163, -0.1548, -0.2458, -0.0641, -0.2811,
+          0.1335, -0.0726, -0.0971,  0.0742,  0.0757,  0.1187, -0.0358,  0.1663,
+         -0.0367, -0.1590, -0.1435,  0.0068, -0.1081, -0.0447,  0.0111,  0.1300,
+          0.0330, -0.1142, -0.0675,  0.0358, -0.0160,  0.1685, -0.1855,  0.0587,
+         -0.0684, -0.0809,  0.2065, -0.0541, -0.0810, -0.2434, -0.0082,  0.1038,
+         -0.1389,  0.0092, -0.0100,  0.1909, -0.0241,  0.2466,  0.2520, -0.0404,
+         -0.0489, -0.0476,  0.0276, -0.1169,  0.0349,  0.1722,  0.1544,  0.1706,
+          0.1735, -0.1790, -0.1286, -0.0445,  0.0327,  0.0867, -0.0421, -0.0025],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc3.weight': tensor([[-0.2666, -0.1038, -0.2126,  ...,  0.0804, -0.1728,  0.1918],
+         [ 0.1665,  0.0134, -0.0402,  ..., -0.0687,  0.1080,  0.0771],
+         [ 0.0048, -0.0303,  0.0350,  ..., -0.0155, -0.0594, -0.0849],
+         ...,
+         [-0.0477,  0.2884,  0.0700,  ..., -0.0688, -0.2281,  0.1430],
+         [-0.1463,  0.1891, -0.1439,  ...,  0.0600, -0.0703, -0.1880],
+         [-0.1645,  0.0759,  0.0377,  ...,  0.1908, -0.0419, -0.0463]],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc3.bias': tensor([ 0.0396, -0.1677,  0.0536, -0.0781,  0.0929,  0.1182, -0.0727, -0.2348,
+         -0.0364,  0.0144, -0.0160, -0.1700, -0.1743,  0.1426,  0.0120,  0.0539,
+         -0.0199,  0.0310,  0.0724,  0.1968, -0.0554, -0.1410,  0.0416,  0.0742,
+          0.0453,  0.0107,  0.0289, -0.0609,  0.1151, -0.0019,  0.1392, -0.1715,
+         -0.1035, -0.1238, -0.2124,  0.1473, -0.1585,  0.0812, -0.0525, -0.1321,
+         -0.0063,  0.1354,  0.1208,  0.1932, -0.0749,  0.0256,  0.3203, -0.1646,
+         -0.1285, -0.0764,  0.0970, -0.0485, -0.0683,  0.1397,  0.0028,  0.0345,
+         -0.0697,  0.0072, -0.0970, -0.1684, -0.1472, -0.0457, -0.0492, -0.0625,
+         -0.0167, -0.1218,  0.1252,  0.0084,  0.0421,  0.0914,  0.0664,  0.1713,
+          0.1204,  0.1472, -0.1081,  0.0435, -0.0677, -0.0565,  0.0609,  0.0308,
+         -0.0063, -0.0176,  0.0553,  0.0903,  0.1117,  0.0311, -0.0477, -0.0769,
+          0.0113,  0.0810,  0.0353,  0.1450,  0.0064, -0.1846, -0.0507, -0.0900,
+         -0.1156,  0.0205,  0.2363, -0.0141, -0.2917, -0.1116, -0.0367,  0.0775,
+         -0.1252,  0.1363, -0.1238, -0.1238,  0.0410,  0.1691,  0.0815, -0.1077,
+          0.0502, -0.1703, -0.1145,  0.0335, -0.0765, -0.1086,  0.0892,  0.2044,
+          0.1037,  0.1099,  0.2079, -0.0267,  0.1770,  0.0329,  0.1299,  0.0670],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc4.weight': tensor([[ 0.2710,  0.3222,  0.0848,  ...,  0.2513, -0.0644, -0.2402],
+         [-0.0105,  0.0584,  0.0086,  ...,  0.0149,  0.0471,  0.1521],
+         [ 0.0950, -0.1262, -0.2527,  ..., -0.0147, -0.0260, -0.0571],
+         ...,
+         [ 0.0104, -0.1079,  0.0619,  ..., -0.0457, -0.1928,  0.1140],
+         [ 0.0292,  0.1185,  0.0900,  ...,  0.0677,  0.1507, -0.2381],
+         [-0.1662, -0.1149, -0.0110,  ..., -0.1055,  0.0474,  0.0477]],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc4.bias': tensor([ 0.2830, -0.1100, -0.1323,  0.0350,  0.0379,  0.1048,  0.0118, -0.0220,
+         -0.1217,  0.0384,  0.0729,  0.0511,  0.0749,  0.0740, -0.2084,  0.1948,
+          0.1429, -0.0998,  0.0815, -0.1628,  0.0771,  0.0368,  0.2225, -0.0697,
+         -0.0751,  0.0843, -0.1492,  0.0615, -0.0533,  0.0109, -0.1530,  0.0756,
+         -0.2430,  0.0396,  0.0362, -0.2492, -0.1522,  0.0886, -0.0118, -0.0884,
+          0.1067,  0.0107,  0.1849,  0.0924,  0.1142, -0.0098,  0.0068, -0.0713,
+         -0.0696,  0.0380, -0.1443, -0.1019, -0.0137, -0.1282,  0.0116,  0.2317,
+         -0.0611,  0.0513, -0.0315,  0.0154,  0.1059,  0.1193,  0.0808, -0.0066,
+         -0.2554, -0.0068,  0.1554, -0.1032, -0.0570, -0.0236,  0.0222,  0.1330,
+         -0.0821, -0.2539, -0.1511, -0.0738, -0.0669, -0.2200,  0.1576, -0.1148,
+         -0.0310, -0.0278,  0.0835, -0.0322, -0.0552, -0.0263,  0.1971,  0.3168,
+         -0.0859,  0.0482, -0.1642,  0.0771, -0.1242, -0.0020,  0.1226, -0.0466,
+          0.0177, -0.1199,  0.0924,  0.0138, -0.0817, -0.0337, -0.0027,  0.0997,
+         -0.0822,  0.0004,  0.0043, -0.0923, -0.0192, -0.0081, -0.1371, -0.0770,
+         -0.1474,  0.0268,  0.0800, -0.0389,  0.0587,  0.0421,  0.1361,  0.0970,
+          0.0347, -0.1867, -0.0402, -0.1091, -0.1063, -0.3271,  0.0813, -0.0061],
+        device='cuda:0', grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc5.weight': tensor([[ 1.9607e-01,  1.8402e-01,  7.0345e-02,  1.0801e-01,  2.0575e-02,
+          -6.2460e-02, -2.6926e-02,  3.2469e-02, -5.7114e-02,  2.4663e-02,
+          -8.2723e-02,  1.5335e-01,  2.5052e-01,  1.7047e-01,  3.2905e-02,
+           4.4214e-03,  1.0149e-01,  2.4933e-01,  1.0568e-01, -9.2186e-02,
+           1.0348e-01,  9.7047e-02,  2.4081e-02,  4.2537e-02, -1.3451e-01,
+          -9.5488e-02,  2.5056e-02,  8.5907e-02, -3.5518e-01, -1.8330e-01,
+          -2.0032e-01,  5.3350e-03,  8.3568e-02, -7.8669e-02, -4.0999e-02,
+          -1.6546e-01,  7.6125e-02,  4.2919e-02, -1.1224e-01,  6.6079e-02,
+           7.5957e-02,  1.6435e-01, -6.5331e-02, -1.4222e-01, -2.3253e-02,
+          -2.4421e-02, -4.7380e-02, -3.1845e-02,  1.4371e-01,  1.6564e-02,
+          -9.1425e-02, -2.3566e-01,  2.4497e-02, -1.0897e-02, -6.5980e-02,
+          -6.4120e-02, -4.8469e-02,  1.9976e-01,  7.1650e-02, -3.1568e-02,
+          -7.8932e-02, -1.0762e-02, -5.2840e-02,  1.5349e-01, -1.6643e-01,
+          -1.1844e-01,  1.0926e-01, -2.5987e-02, -2.4647e-01,  1.2376e-01,
+           1.1220e-02, -8.4029e-02, -9.8139e-02,  5.3532e-02, -1.4702e-02,
+           1.4518e-01,  3.3054e-02, -1.3509e-01, -1.8362e-01,  4.7140e-02,
+           7.5887e-03,  4.8157e-02,  1.6827e-01,  1.7298e-01, -1.3073e-01,
+           2.5464e-01,  8.3428e-02, -1.0881e-01,  1.6493e-01,  2.8744e-03,
+           7.8934e-03,  8.0214e-02, -4.2423e-02,  1.0871e-01,  6.9979e-02,
+          -8.5941e-02,  1.5277e-01,  1.2681e-06, -1.6246e-01, -4.9869e-02,
+          -7.0287e-02, -1.6674e-03, -1.2628e-01,  7.2879e-02, -2.6658e-01,
+          -4.3385e-02, -1.3041e-02,  1.3853e-01,  9.2652e-02,  1.3920e-01,
+           1.6977e-01, -8.1156e-02,  3.3611e-02,  1.9832e-02,  3.4340e-02,
+          -1.0543e-02, -5.9265e-02, -1.3928e-01, -1.9022e-02,  1.0770e-01,
+           6.6137e-02, -1.3821e-01, -8.6274e-02, -1.2282e-01, -4.3384e-02,
+           1.5446e-01, -1.2482e-01, -3.1733e-01],
+         [-5.0405e-02, -9.8563e-02,  1.4524e-02, -4.7723e-02, -2.1366e-01,
+           1.2520e-02,  9.3535e-02, -1.7930e-02,  8.1626e-03, -7.2552e-02,
+          -1.7400e-01, -4.8571e-03,  3.4715e-02, -1.6996e-01,  2.5612e-02,
+           1.7753e-02,  1.1491e-01,  3.2849e-02,  7.4169e-02,  2.3232e-02,
+           2.3961e-01, -1.4371e-01,  7.5394e-02, -5.6723e-03,  1.4591e-02,
+          -1.0227e-01, -6.3025e-02, -4.8187e-02,  3.7513e-02, -2.2861e-02,
+          -2.5060e-02, -5.2416e-02,  3.6575e-02,  4.3657e-02,  3.9590e-02,
+           6.8889e-02,  7.8860e-02, -6.1261e-02,  6.4804e-03,  6.4698e-02,
+          -1.3405e-01,  4.9579e-02,  9.1552e-02,  2.5240e-01, -1.1347e-01,
+           4.2408e-02,  8.2981e-02,  1.1758e-01,  1.4038e-02, -5.8177e-02,
+          -4.6107e-02,  9.8306e-02,  5.3295e-02, -1.2327e-02, -3.7325e-02,
+           2.1046e-01,  1.1949e-01, -8.8206e-03,  9.5156e-02,  8.3061e-03,
+           8.0187e-02,  4.3940e-02,  1.4411e-01, -5.8862e-03,  1.5729e-02,
+          -1.7983e-01,  5.2839e-02,  5.6460e-02, -1.3105e-01,  2.7025e-01,
+           4.4835e-02, -1.3793e-01,  4.7627e-02, -3.9222e-02, -6.4474e-02,
+           1.2132e-01, -5.4602e-02, -4.1981e-02, -1.7641e-01,  1.1443e-01,
+           1.6024e-01, -4.2657e-02,  2.9715e-02, -6.2705e-03,  7.2440e-02,
+          -3.1999e-01, -1.6657e-01, -9.7144e-02,  7.7817e-02, -4.3598e-02,
+           1.5082e-03,  5.5090e-02, -3.5226e-02,  7.4446e-02, -1.4492e-01,
+           1.9284e-01, -1.0586e-01,  9.7238e-02, -2.9331e-01,  1.6685e-01,
+           6.7393e-02, -3.8107e-02, -5.1379e-03, -1.8144e-01, -1.0758e-01,
+          -3.5332e-02, -9.5876e-02, -3.3853e-02,  7.4512e-02,  7.1593e-02,
+           5.6300e-02, -2.2599e-01, -2.6461e-02, -9.8212e-02, -1.3220e-01,
+           2.4089e-03, -2.6224e-01, -4.1655e-02, -1.2883e-03, -1.4610e-01,
+           7.1842e-02,  1.6349e-01, -3.0933e-01,  2.8165e-02,  4.9211e-02,
+           1.6185e-02, -4.3435e-02,  2.9302e-01],
+         [ 6.8762e-02, -1.0513e-01,  8.0041e-03,  3.1691e-02,  7.8240e-02,
+          -3.0865e-01, -1.2082e-01, -1.5014e-02, -6.4405e-02,  3.7052e-03,
+           1.5633e-01, -8.7142e-02,  2.7108e-01, -4.8148e-02,  1.9585e-01,
+          -1.0857e-01, -1.6191e-02,  1.1271e-01, -4.2816e-02,  1.1897e-01,
+           2.1357e-01,  6.0726e-03, -1.6058e-01,  1.0014e-01,  7.2932e-03,
+          -3.3023e-02, -1.3890e-02,  2.3372e-01, -1.5602e-01, -1.3258e-01,
+           3.4258e-02,  4.1946e-03, -4.5052e-02,  1.0765e-01,  8.8289e-02,
+           5.0133e-02,  1.0398e-01,  1.7352e-02, -1.1756e-01,  1.2870e-01,
+           9.9371e-02,  1.0367e-01, -7.6240e-02, -6.7554e-02,  2.2970e-02,
+           1.8892e-01, -8.2191e-02,  1.6877e-01, -7.5892e-03,  4.1152e-02,
+           6.9047e-02,  1.0306e-01,  2.3320e-01,  1.2969e-01, -2.9587e-01,
+           2.2722e-01, -1.7229e-01, -7.0078e-02,  6.9529e-02,  1.5175e-01,
+           4.4102e-02, -1.8311e-01,  4.8507e-03, -1.8906e-01,  1.3765e-01,
+           8.4732e-02, -8.0962e-02, -6.6467e-02, -4.6670e-02, -1.5538e-02,
+          -2.2635e-01,  2.1714e-01,  2.3420e-01, -1.2549e-01,  1.6654e-02,
+           7.8636e-02, -5.5591e-02,  1.5804e-01, -1.9898e-03, -1.6906e-01,
+          -1.9567e-02,  3.1766e-02,  9.4322e-03, -7.3489e-02, -2.7695e-02,
+           1.2616e-01,  1.7542e-01,  1.9282e-01, -1.0990e-01, -2.4401e-01,
+           7.7423e-02, -1.5268e-01, -3.8916e-03,  6.2967e-02,  1.1859e-01,
+           8.4724e-02, -1.8199e-01, -7.2396e-02, -6.9568e-02, -7.0842e-02,
+          -9.4516e-02,  2.1872e-01,  2.2665e-01, -1.6960e-01, -2.2812e-01,
+           1.2222e-01,  1.3715e-01, -4.3735e-02, -7.3953e-02, -9.7945e-02,
+          -2.6904e-02,  8.7878e-02, -1.0421e-02,  1.6984e-02,  3.8456e-02,
+           1.7513e-01, -1.0124e-03,  3.8656e-02,  1.4228e-01,  9.2844e-03,
+           2.9087e-02,  5.2339e-02, -1.9062e-01, -1.0616e-01,  1.0397e-01,
+          -2.7843e-02, -7.8383e-02, -2.1809e-03]], device='cuda:0',
+        grad_fn=&lt;ReshapeAliasBackward0&gt;),
+ 'fc5.bias': tensor([ 0.0370,  0.0172, -0.0607], device='cuda:0',
+        grad_fn=&lt;ReshapeAliasBackward0&gt;)}</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

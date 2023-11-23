@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning - Imports</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html" rel="" target="">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link active" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#train-val-test-split" id="toc-train-val-test-split" class="nav-link" data-scroll-target="#train-val-test-split">Train val test split</a>
+  <ul class="collapse">
+  <li><a href="#ssl" id="toc-ssl" class="nav-link" data-scroll-target="#ssl">SSL</a></li>
+  <li><a href="#summary-of-the-test-set-performance" id="toc-summary-of-the-test-set-performance" class="nav-link" data-scroll-target="#summary-of-the-test-set-performance">Summary of the test set performance</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Imports</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> astra.torch.models <span class="im">import</span> ResNetClassifier</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sustainability<span class="op">-</span>lab<span class="op">/</span>ASTRA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"CUDA_VISIBLE_DEVICES"</span>] <span class="op">=</span> <span class="st">"0"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.models <span class="im">as</span> models</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.transforms <span class="im">as</span> transforms</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Retina display</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'retina'</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion matrix</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchsummary</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ASTRA</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.data <span class="im">import</span> load_cifar_10</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.utils <span class="im">import</span> train_fn</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.models <span class="im">import</span> ResNetClassifier</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Netron, ONNX for model visualization</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> netron</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> onnx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>device</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>device(type='cuda')</code></pre>
+</div>
+</div>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_cifar_10()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Files already downloaded and verified
+Files already downloaded and verified</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>
+CIFAR-10 Dataset
+length of dataset: 60000
+shape of images: torch.Size([3, 32, 32])
+len of classes: 10
+classes: ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+dtype of images: torch.float32
+dtype of labels: torch.int64
+            </code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot some images</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">25</span>):</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">5</span>, <span class="dv">5</span>, i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    plt.imshow(torch.einsum(<span class="st">"chw-&gt;hwc"</span>, dataset.data[i].cpu()))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    plt.title(dataset.classes[dataset.targets[i]])</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="train-val-test-split" class="level2">
+<h2 class="anchored" data-anchor-id="train-val-test-split">Train val test split</h2>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>n_test <span class="op">=</span> <span class="dv">20000</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> dataset.data</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> dataset.targets</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape, X.dtype)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.<span class="bu">min</span>(), X.<span class="bu">max</span>())</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y.shape, y.dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([60000, 3, 32, 32])
+torch.Size([60000, 3, 32, 32]) torch.float32
+tensor(0.) tensor(1.)
+torch.Size([60000]) torch.int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> torch.randperm(<span class="bu">len</span>(X))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>train_idx <span class="op">=</span> idx[:n_train]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>pool_idx <span class="op">=</span> idx[n_train:<span class="op">-</span>n_test]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>test_idx <span class="op">=</span> idx[<span class="op">-</span>n_test:]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(train_idx), <span class="bu">len</span>(pool_idx), <span class="bu">len</span>(test_idx))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1000 39000 20000</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>resnet <span class="op">=</span> ResNetClassifier(models.resnet18, models.ResNet18_Weights.DEFAULT, n_classes<span class="op">=</span><span class="dv">10</span>).to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resnet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>ResNetClassifier(
+  (featurizer): ResNet(
+    (resnet): ResNet(
+      (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      (layer1): Sequential(
+        (0): BasicBlock(
+          (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): BasicBlock(
+          (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (layer2): Sequential(
+        (0): BasicBlock(
+          (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (downsample): Sequential(
+            (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): BasicBlock(
+          (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (layer3): Sequential(
+        (0): BasicBlock(
+          (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (downsample): Sequential(
+            (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): BasicBlock(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (layer4): Sequential(
+        (0): BasicBlock(
+          (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (downsample): Sequential(
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): BasicBlock(
+          (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+      (fc): Identity()
+    )
+    (flatten): Flatten(start_dim=1, end_dim=-1)
+  )
+  (classifier): MLPClassifier(
+    (featurizer): MLP(
+      (activation): ReLU()
+      (dropout): Dropout(p=0.0, inplace=True)
+      (input_layer): Linear(in_features=512, out_features=512, bias=True)
+    )
+    (classifier): Linear(in_features=512, out_features=10, bias=True)
+  )
+)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>torchsummary.summary(resnet, (<span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">32</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1           [-1, 64, 16, 16]           9,408
+       BatchNorm2d-2           [-1, 64, 16, 16]             128
+              ReLU-3           [-1, 64, 16, 16]               0
+         MaxPool2d-4             [-1, 64, 8, 8]               0
+            Conv2d-5             [-1, 64, 8, 8]          36,864
+       BatchNorm2d-6             [-1, 64, 8, 8]             128
+              ReLU-7             [-1, 64, 8, 8]               0
+            Conv2d-8             [-1, 64, 8, 8]          36,864
+       BatchNorm2d-9             [-1, 64, 8, 8]             128
+             ReLU-10             [-1, 64, 8, 8]               0
+       BasicBlock-11             [-1, 64, 8, 8]               0
+           Conv2d-12             [-1, 64, 8, 8]          36,864
+      BatchNorm2d-13             [-1, 64, 8, 8]             128
+             ReLU-14             [-1, 64, 8, 8]               0
+           Conv2d-15             [-1, 64, 8, 8]          36,864
+      BatchNorm2d-16             [-1, 64, 8, 8]             128
+             ReLU-17             [-1, 64, 8, 8]               0
+       BasicBlock-18             [-1, 64, 8, 8]               0
+           Conv2d-19            [-1, 128, 4, 4]          73,728
+      BatchNorm2d-20            [-1, 128, 4, 4]             256
+             ReLU-21            [-1, 128, 4, 4]               0
+           Conv2d-22            [-1, 128, 4, 4]         147,456
+      BatchNorm2d-23            [-1, 128, 4, 4]             256
+           Conv2d-24            [-1, 128, 4, 4]           8,192
+      BatchNorm2d-25            [-1, 128, 4, 4]             256
+             ReLU-26            [-1, 128, 4, 4]               0
+       BasicBlock-27            [-1, 128, 4, 4]               0
+           Conv2d-28            [-1, 128, 4, 4]         147,456
+      BatchNorm2d-29            [-1, 128, 4, 4]             256
+             ReLU-30            [-1, 128, 4, 4]               0
+           Conv2d-31            [-1, 128, 4, 4]         147,456
+      BatchNorm2d-32            [-1, 128, 4, 4]             256
+             ReLU-33            [-1, 128, 4, 4]               0
+       BasicBlock-34            [-1, 128, 4, 4]               0
+           Conv2d-35            [-1, 256, 2, 2]         294,912
+      BatchNorm2d-36            [-1, 256, 2, 2]             512
+             ReLU-37            [-1, 256, 2, 2]               0
+           Conv2d-38            [-1, 256, 2, 2]         589,824
+      BatchNorm2d-39            [-1, 256, 2, 2]             512
+           Conv2d-40            [-1, 256, 2, 2]          32,768
+      BatchNorm2d-41            [-1, 256, 2, 2]             512
+             ReLU-42            [-1, 256, 2, 2]               0
+       BasicBlock-43            [-1, 256, 2, 2]               0
+           Conv2d-44            [-1, 256, 2, 2]         589,824
+      BatchNorm2d-45            [-1, 256, 2, 2]             512
+             ReLU-46            [-1, 256, 2, 2]               0
+           Conv2d-47            [-1, 256, 2, 2]         589,824
+      BatchNorm2d-48            [-1, 256, 2, 2]             512
+             ReLU-49            [-1, 256, 2, 2]               0
+       BasicBlock-50            [-1, 256, 2, 2]               0
+           Conv2d-51            [-1, 512, 1, 1]       1,179,648
+      BatchNorm2d-52            [-1, 512, 1, 1]           1,024
+             ReLU-53            [-1, 512, 1, 1]               0
+           Conv2d-54            [-1, 512, 1, 1]       2,359,296
+      BatchNorm2d-55            [-1, 512, 1, 1]           1,024
+           Conv2d-56            [-1, 512, 1, 1]         131,072
+      BatchNorm2d-57            [-1, 512, 1, 1]           1,024
+             ReLU-58            [-1, 512, 1, 1]               0
+       BasicBlock-59            [-1, 512, 1, 1]               0
+           Conv2d-60            [-1, 512, 1, 1]       2,359,296
+      BatchNorm2d-61            [-1, 512, 1, 1]           1,024
+             ReLU-62            [-1, 512, 1, 1]               0
+           Conv2d-63            [-1, 512, 1, 1]       2,359,296
+      BatchNorm2d-64            [-1, 512, 1, 1]           1,024
+             ReLU-65            [-1, 512, 1, 1]               0
+       BasicBlock-66            [-1, 512, 1, 1]               0
+AdaptiveAvgPool2d-67            [-1, 512, 1, 1]               0
+         Identity-68                  [-1, 512]               0
+           ResNet-69                  [-1, 512]               0
+          Flatten-70                  [-1, 512]               0
+           ResNet-71                  [-1, 512]               0
+           Linear-72                  [-1, 512]         262,656
+             ReLU-73                  [-1, 512]               0
+          Dropout-74                  [-1, 512]               0
+              MLP-75                  [-1, 512]               0
+           Linear-76                   [-1, 10]           5,130
+    MLPClassifier-77                   [-1, 10]               0
+================================================================
+Total params: 11,444,298
+Trainable params: 11,444,298
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.01
+Forward/backward pass size (MB): 1.32
+Params size (MB): 43.66
+Estimated Total Size (MB): 44.98
+----------------------------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export to ONNX and visualize with Netron</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dummy_input <span class="op">=</span> torch.randn(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">32</span>).to(device)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>torch.onnx.export(resnet, dummy_input, <span class="st">"resnet.onnx"</span>, verbose<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>netron.start(<span class="st">"resnet.onnx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Exported graph: graph(%input.1 : Float(1, 3, 32, 32, strides=[3072, 1024, 32, 1], requires_grad=0, device=cuda:0),
+      %classifier.featurizer.input_layer.weight : Float(512, 512, strides=[512, 1], requires_grad=1, device=cuda:0),
+      %classifier.featurizer.input_layer.bias : Float(512, strides=[1], requires_grad=1, device=cuda:0),
+      %classifier.classifier.weight : Float(10, 512, strides=[512, 1], requires_grad=1, device=cuda:0),
+      %classifier.classifier.bias : Float(10, strides=[1], requires_grad=1, device=cuda:0),
+      %onnx::Conv_198 : Float(64, 3, 7, 7, strides=[147, 49, 7, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_199 : Float(64, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_201 : Float(64, 64, 3, 3, strides=[576, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_202 : Float(64, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_204 : Float(64, 64, 3, 3, strides=[576, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_205 : Float(64, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_207 : Float(64, 64, 3, 3, strides=[576, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_208 : Float(64, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_210 : Float(64, 64, 3, 3, strides=[576, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_211 : Float(64, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_213 : Float(128, 64, 3, 3, strides=[576, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_214 : Float(128, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_216 : Float(128, 128, 3, 3, strides=[1152, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_217 : Float(128, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_219 : Float(128, 64, 1, 1, strides=[64, 1, 1, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_220 : Float(128, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_222 : Float(128, 128, 3, 3, strides=[1152, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_223 : Float(128, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_225 : Float(128, 128, 3, 3, strides=[1152, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_226 : Float(128, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_228 : Float(256, 128, 3, 3, strides=[1152, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_229 : Float(256, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_231 : Float(256, 256, 3, 3, strides=[2304, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_232 : Float(256, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_234 : Float(256, 128, 1, 1, strides=[128, 1, 1, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_235 : Float(256, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_237 : Float(256, 256, 3, 3, strides=[2304, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_238 : Float(256, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_240 : Float(256, 256, 3, 3, strides=[2304, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_241 : Float(256, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_243 : Float(512, 256, 3, 3, strides=[2304, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_244 : Float(512, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_246 : Float(512, 512, 3, 3, strides=[4608, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_247 : Float(512, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_249 : Float(512, 256, 1, 1, strides=[256, 1, 1, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_250 : Float(512, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_252 : Float(512, 512, 3, 3, strides=[4608, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_253 : Float(512, strides=[1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_255 : Float(512, 512, 3, 3, strides=[4608, 9, 3, 1], requires_grad=0, device=cuda:0),
+      %onnx::Conv_256 : Float(512, strides=[1], requires_grad=0, device=cuda:0)):
+  %/featurizer/resnet/conv1/Conv_output_0 : Float(1, 64, 16, 16, strides=[16384, 256, 16, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[7, 7], pads=[3, 3, 3, 3], strides=[2, 2], onnx_name="/featurizer/resnet/conv1/Conv"](%input.1, %onnx::Conv_198, %onnx::Conv_199), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/relu/Relu_output_0 : Float(1, 64, 16, 16, strides=[16384, 256, 16, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/relu/Relu"](%/featurizer/resnet/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/maxpool/MaxPool_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::MaxPool[ceil_mode=0, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[2, 2], onnx_name="/featurizer/resnet/maxpool/MaxPool"](%/featurizer/resnet/relu/Relu_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.pooling.MaxPool2d::maxpool # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:782:0
+  %/featurizer/resnet/layer1/layer1.0/conv1/Conv_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer1/layer1.0/conv1/Conv"](%/featurizer/resnet/maxpool/MaxPool_output_0, %onnx::Conv_201, %onnx::Conv_202), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.0/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer1/layer1.0/relu/Relu_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer1/layer1.0/relu/Relu"](%/featurizer/resnet/layer1/layer1.0/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer1/layer1.0/conv2/Conv_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer1/layer1.0/conv2/Conv"](%/featurizer/resnet/layer1/layer1.0/relu/Relu_output_0, %onnx::Conv_204, %onnx::Conv_205), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.0/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer1/layer1.0/Add_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer1/layer1.0/Add"](%/featurizer/resnet/layer1/layer1.0/conv2/Conv_output_0, %/featurizer/resnet/maxpool/MaxPool_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer1/layer1.0/relu_1/Relu_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer1/layer1.0/relu_1/Relu"](%/featurizer/resnet/layer1/layer1.0/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer1/layer1.1/conv1/Conv_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer1/layer1.1/conv1/Conv"](%/featurizer/resnet/layer1/layer1.0/relu_1/Relu_output_0, %onnx::Conv_207, %onnx::Conv_208), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.1/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer1/layer1.1/relu/Relu_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer1/layer1.1/relu/Relu"](%/featurizer/resnet/layer1/layer1.1/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer1/layer1.1/conv2/Conv_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer1/layer1.1/conv2/Conv"](%/featurizer/resnet/layer1/layer1.1/relu/Relu_output_0, %onnx::Conv_210, %onnx::Conv_211), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.1/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer1/layer1.1/Add_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer1/layer1.1/Add"](%/featurizer/resnet/layer1/layer1.1/conv2/Conv_output_0, %/featurizer/resnet/layer1/layer1.0/relu_1/Relu_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer1/layer1.1/relu_1/Relu_output_0 : Float(1, 64, 8, 8, strides=[4096, 64, 8, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer1/layer1.1/relu_1/Relu"](%/featurizer/resnet/layer1/layer1.1/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer1/torchvision.models.resnet.BasicBlock::layer1.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer2/layer2.0/conv1/Conv_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[2, 2], onnx_name="/featurizer/resnet/layer2/layer2.0/conv1/Conv"](%/featurizer/resnet/layer1/layer1.1/relu_1/Relu_output_0, %onnx::Conv_213, %onnx::Conv_214), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.0/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer2/layer2.0/relu/Relu_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer2/layer2.0/relu/Relu"](%/featurizer/resnet/layer2/layer2.0/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer2/layer2.0/conv2/Conv_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer2/layer2.0/conv2/Conv"](%/featurizer/resnet/layer2/layer2.0/relu/Relu_output_0, %onnx::Conv_216, %onnx::Conv_217), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.0/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer2/layer2.0/downsample/downsample.0/Conv_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[1, 1], pads=[0, 0, 0, 0], strides=[2, 2], onnx_name="/featurizer/resnet/layer2/layer2.0/downsample/downsample.0/Conv"](%/featurizer/resnet/layer1/layer1.1/relu_1/Relu_output_0, %onnx::Conv_219, %onnx::Conv_220), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.0/torch.nn.modules.container.Sequential::downsample/torch.nn.modules.conv.Conv2d::downsample.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer2/layer2.0/Add_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer2/layer2.0/Add"](%/featurizer/resnet/layer2/layer2.0/conv2/Conv_output_0, %/featurizer/resnet/layer2/layer2.0/downsample/downsample.0/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer2/layer2.0/relu_1/Relu_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer2/layer2.0/relu_1/Relu"](%/featurizer/resnet/layer2/layer2.0/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer2/layer2.1/conv1/Conv_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer2/layer2.1/conv1/Conv"](%/featurizer/resnet/layer2/layer2.0/relu_1/Relu_output_0, %onnx::Conv_222, %onnx::Conv_223), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.1/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer2/layer2.1/relu/Relu_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer2/layer2.1/relu/Relu"](%/featurizer/resnet/layer2/layer2.1/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer2/layer2.1/conv2/Conv_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer2/layer2.1/conv2/Conv"](%/featurizer/resnet/layer2/layer2.1/relu/Relu_output_0, %onnx::Conv_225, %onnx::Conv_226), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.1/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer2/layer2.1/Add_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer2/layer2.1/Add"](%/featurizer/resnet/layer2/layer2.1/conv2/Conv_output_0, %/featurizer/resnet/layer2/layer2.0/relu_1/Relu_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer2/layer2.1/relu_1/Relu_output_0 : Float(1, 128, 4, 4, strides=[2048, 16, 4, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer2/layer2.1/relu_1/Relu"](%/featurizer/resnet/layer2/layer2.1/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer2/torchvision.models.resnet.BasicBlock::layer2.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer3/layer3.0/conv1/Conv_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[2, 2], onnx_name="/featurizer/resnet/layer3/layer3.0/conv1/Conv"](%/featurizer/resnet/layer2/layer2.1/relu_1/Relu_output_0, %onnx::Conv_228, %onnx::Conv_229), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.0/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer3/layer3.0/relu/Relu_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer3/layer3.0/relu/Relu"](%/featurizer/resnet/layer3/layer3.0/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer3/layer3.0/conv2/Conv_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer3/layer3.0/conv2/Conv"](%/featurizer/resnet/layer3/layer3.0/relu/Relu_output_0, %onnx::Conv_231, %onnx::Conv_232), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.0/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer3/layer3.0/downsample/downsample.0/Conv_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[1, 1], pads=[0, 0, 0, 0], strides=[2, 2], onnx_name="/featurizer/resnet/layer3/layer3.0/downsample/downsample.0/Conv"](%/featurizer/resnet/layer2/layer2.1/relu_1/Relu_output_0, %onnx::Conv_234, %onnx::Conv_235), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.0/torch.nn.modules.container.Sequential::downsample/torch.nn.modules.conv.Conv2d::downsample.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer3/layer3.0/Add_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer3/layer3.0/Add"](%/featurizer/resnet/layer3/layer3.0/conv2/Conv_output_0, %/featurizer/resnet/layer3/layer3.0/downsample/downsample.0/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer3/layer3.0/relu_1/Relu_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer3/layer3.0/relu_1/Relu"](%/featurizer/resnet/layer3/layer3.0/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer3/layer3.1/conv1/Conv_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer3/layer3.1/conv1/Conv"](%/featurizer/resnet/layer3/layer3.0/relu_1/Relu_output_0, %onnx::Conv_237, %onnx::Conv_238), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.1/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer3/layer3.1/relu/Relu_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer3/layer3.1/relu/Relu"](%/featurizer/resnet/layer3/layer3.1/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer3/layer3.1/conv2/Conv_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer3/layer3.1/conv2/Conv"](%/featurizer/resnet/layer3/layer3.1/relu/Relu_output_0, %onnx::Conv_240, %onnx::Conv_241), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.1/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer3/layer3.1/Add_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer3/layer3.1/Add"](%/featurizer/resnet/layer3/layer3.1/conv2/Conv_output_0, %/featurizer/resnet/layer3/layer3.0/relu_1/Relu_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer3/layer3.1/relu_1/Relu_output_0 : Float(1, 256, 2, 2, strides=[1024, 4, 2, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer3/layer3.1/relu_1/Relu"](%/featurizer/resnet/layer3/layer3.1/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer3/torchvision.models.resnet.BasicBlock::layer3.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer4/layer4.0/conv1/Conv_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[2, 2], onnx_name="/featurizer/resnet/layer4/layer4.0/conv1/Conv"](%/featurizer/resnet/layer3/layer3.1/relu_1/Relu_output_0, %onnx::Conv_243, %onnx::Conv_244), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.0/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer4/layer4.0/relu/Relu_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer4/layer4.0/relu/Relu"](%/featurizer/resnet/layer4/layer4.0/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer4/layer4.0/conv2/Conv_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer4/layer4.0/conv2/Conv"](%/featurizer/resnet/layer4/layer4.0/relu/Relu_output_0, %onnx::Conv_246, %onnx::Conv_247), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.0/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer4/layer4.0/downsample/downsample.0/Conv_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[1, 1], pads=[0, 0, 0, 0], strides=[2, 2], onnx_name="/featurizer/resnet/layer4/layer4.0/downsample/downsample.0/Conv"](%/featurizer/resnet/layer3/layer3.1/relu_1/Relu_output_0, %onnx::Conv_249, %onnx::Conv_250), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.0/torch.nn.modules.container.Sequential::downsample/torch.nn.modules.conv.Conv2d::downsample.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer4/layer4.0/Add_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer4/layer4.0/Add"](%/featurizer/resnet/layer4/layer4.0/conv2/Conv_output_0, %/featurizer/resnet/layer4/layer4.0/downsample/downsample.0/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.0 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer4/layer4.0/relu_1/Relu_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer4/layer4.0/relu_1/Relu"](%/featurizer/resnet/layer4/layer4.0/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.0/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer4/layer4.1/conv1/Conv_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer4/layer4.1/conv1/Conv"](%/featurizer/resnet/layer4/layer4.0/relu_1/Relu_output_0, %onnx::Conv_252, %onnx::Conv_253), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.1/torch.nn.modules.conv.Conv2d::conv1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer4/layer4.1/relu/Relu_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer4/layer4.1/relu/Relu"](%/featurizer/resnet/layer4/layer4.1/conv1/Conv_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/layer4/layer4.1/conv2/Conv_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[1, 1, 1, 1], strides=[1, 1], onnx_name="/featurizer/resnet/layer4/layer4.1/conv2/Conv"](%/featurizer/resnet/layer4/layer4.1/relu/Relu_output_0, %onnx::Conv_255, %onnx::Conv_256), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.1/torch.nn.modules.conv.Conv2d::conv2 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/conv.py:459:0
+  %/featurizer/resnet/layer4/layer4.1/Add_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Add[onnx_name="/featurizer/resnet/layer4/layer4.1/Add"](%/featurizer/resnet/layer4/layer4.1/conv2/Conv_output_0, %/featurizer/resnet/layer4/layer4.0/relu_1/Relu_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.1 # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:102:0
+  %/featurizer/resnet/layer4/layer4.1/relu_1/Relu_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/featurizer/resnet/layer4/layer4.1/relu_1/Relu"](%/featurizer/resnet/layer4/layer4.1/Add_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.container.Sequential::layer4/torchvision.models.resnet.BasicBlock::layer4.1/torch.nn.modules.activation.ReLU::relu # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1455:0
+  %/featurizer/resnet/avgpool/GlobalAveragePool_output_0 : Float(1, 512, 1, 1, strides=[512, 1, 1, 1], requires_grad=1, device=cuda:0) = onnx::GlobalAveragePool[onnx_name="/featurizer/resnet/avgpool/GlobalAveragePool"](%/featurizer/resnet/layer4/layer4.1/relu_1/Relu_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet/torch.nn.modules.pooling.AdaptiveAvgPool2d::avgpool # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1214:0
+  %/featurizer/resnet/Flatten_output_0 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cuda:0) = onnx::Flatten[axis=1, onnx_name="/featurizer/resnet/Flatten"](%/featurizer/resnet/avgpool/GlobalAveragePool_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torchvision.models.resnet.ResNet::resnet # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torchvision/models/resnet.py:279:0
+  %/featurizer/flatten/Flatten_output_0 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cuda:0) = onnx::Flatten[axis=1, onnx_name="/featurizer/flatten/Flatten"](%/featurizer/resnet/Flatten_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.ResNet::featurizer/torch.nn.modules.flatten.Flatten::flatten # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/flatten.py:46:0
+  %/classifier/featurizer/input_layer/Gemm_output_0 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cuda:0) = onnx::Gemm[alpha=1., beta=1., transB=1, onnx_name="/classifier/featurizer/input_layer/Gemm"](%/featurizer/flatten/Flatten_output_0, %classifier.featurizer.input_layer.weight, %classifier.featurizer.input_layer.bias), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.MLPClassifier::classifier/astra.torch.models.MLP::featurizer/torch.nn.modules.linear.Linear::input_layer # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/linear.py:114:0
+  %/classifier/featurizer/activation/Relu_output_0 : Float(1, 512, strides=[512, 1], requires_grad=1, device=cuda:0) = onnx::Relu[onnx_name="/classifier/featurizer/activation/Relu"](%/classifier/featurizer/input_layer/Gemm_output_0), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.MLPClassifier::classifier/astra.torch.models.MLP::featurizer/torch.nn.modules.activation.ReLU::activation # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/functional.py:1457:0
+  %196 : Float(1, 10, strides=[10, 1], requires_grad=1, device=cuda:0) = onnx::Gemm[alpha=1., beta=1., transB=1, onnx_name="/classifier/classifier/Gemm"](%/classifier/featurizer/activation/Relu_output_0, %classifier.classifier.weight, %classifier.classifier.bias), scope: astra.torch.models.ResNetClassifier::/astra.torch.models.MLPClassifier::classifier/torch.nn.modules.linear.Linear::classifier # /home/nipun.batra/miniforge3/lib/python3.9/site-packages/torch/nn/modules/linear.py:114:0
+  return (%196)
+
+============= Diagnostic Run torch.onnx.export version 2.0.0+cu118 =============
+verbose: False, log level: Level.ERROR
+======================= 0 NONE 0 NOTE 0 WARNING 0 ERROR ========================
+
+Serving 'resnet.onnx' at http://localhost:8081</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>('localhost', 8081)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_accuracy(net, X, y):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        logits_pred <span class="op">=</span> net(X)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        y_pred <span class="op">=</span> logits_pred.argmax(dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        acc <span class="op">=</span> (y_pred <span class="op">==</span> y).<span class="bu">float</span>().mean()</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> y_pred, acc</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(net, classes, plot_confusion_matrix<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (name, idx) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>((<span class="st">"train"</span>, <span class="st">"pool"</span>, <span class="st">"test"</span>), [train_idx, pool_idx, test_idx])):</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        X_dataset <span class="op">=</span> X[idx].to(device)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        y_dataset <span class="op">=</span> y[idx].to(device)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        y_pred, acc <span class="op">=</span> get_accuracy(net, X_dataset, y_dataset)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> set accuracy: </span><span class="sc">{</span>acc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> plot_confusion_matrix:</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>            cm <span class="op">=</span> confusion_matrix(y_dataset.cpu(), y_pred.cpu())</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>            cm_display <span class="op">=</span> ConfusionMatrixDisplay(cm, display_labels<span class="op">=</span>classes).plot(values_format<span class="op">=</span><span class="st">'d'</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>                                                                                , cmap<span class="op">=</span><span class="st">'Blues'</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Rotate the labels on x-axis to make them readable</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>            _ <span class="op">=</span> plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>            plt.show()</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>predict(resnet, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 7.70%
+pool set accuracy: 8.37%
+test set accuracy: 8.58%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-13-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-13-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-13-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> viz_embeddings(net, X, y, device):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    reducer <span class="op">=</span> umap.UMAP()</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>        emb <span class="op">=</span> net.featurizer(X.to(device))</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    emb <span class="op">=</span> emb.cpu().numpy()</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    emb <span class="op">=</span> reducer.fit_transform(emb)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>))</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    plt.scatter(emb[:, <span class="dv">0</span>], emb[:, <span class="dv">1</span>], c<span class="op">=</span>y.cpu().numpy(), cmap<span class="op">=</span><span class="st">'tab10'</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a colorbar legend to mark color to class mapping</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    cb <span class="op">=</span> plt.colorbar(boundaries<span class="op">=</span>np.arange(<span class="dv">11</span>)<span class="op">-</span><span class="fl">0.5</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    cb.set_ticks(np.arange(<span class="dv">10</span>))</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    cb.set_ticklabels(dataset.classes)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"UMAP embeddings"</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>viz_embeddings(resnet, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="train-the-model-on-train-set" class="level4">
+<h4 class="anchored" data-anchor-id="train-the-model-on-train-set">Train the model on train set</h4>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>resnet <span class="op">=</span> ResNetClassifier(models.resnet18, <span class="va">None</span>, n_classes<span class="op">=</span><span class="dv">10</span>, activation<span class="op">=</span>nn.GELU(), dropout<span class="op">=</span><span class="fl">0.1</span>).to(device)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>iter_losses, epoch_losses <span class="op">=</span> train_fn(resnet, X[train_idx], y[train_idx], nn.CrossEntropyLoss(), lr<span class="op">=</span><span class="fl">3e-4</span>, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                                     batch_size<span class="op">=</span><span class="dv">128</span>, epochs<span class="op">=</span><span class="dv">30</span>, verbose<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>plt.plot(iter_losses)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>Text(0, 0.5, 'Training loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>predict(resnet, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 100.00%
+pool set accuracy: 35.95%
+test set accuracy: 36.27%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-17-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-17-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(resnet, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/nipun.batra/miniforge3/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:273: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-18-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(resnet, X[test_idx[:<span class="dv">1000</span>]], y[test_idx[:<span class="dv">1000</span>]], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Train on train + pool</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>train_plus_pool_idx <span class="op">=</span> torch.cat([train_idx, pool_idx])</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>resnet <span class="op">=</span> ResNetClassifier(models.resnet18, <span class="va">None</span>, n_classes<span class="op">=</span><span class="dv">10</span>, activation<span class="op">=</span>nn.GELU(), dropout<span class="op">=</span><span class="fl">0.1</span>).to(device)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>iter_losses, epoch_losses <span class="op">=</span> train_fn(resnet, X[train_plus_pool_idx], y[train_plus_pool_idx], loss_fn<span class="op">=</span>nn.CrossEntropyLoss(),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>                                     lr<span class="op">=</span><span class="fl">3e-4</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                                        batch_size<span class="op">=</span><span class="dv">1024</span>, epochs<span class="op">=</span><span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loss: 1.311430: 100%|██████████| 40/40 [00:01&lt;00:00, 34.22it/s]
+Loss: 1.074545: 100%|██████████| 40/40 [00:01&lt;00:00, 36.99it/s]
+Loss: 1.028258: 100%|██████████| 40/40 [00:01&lt;00:00, 36.88it/s]
+Loss: 0.679134: 100%|██████████| 40/40 [00:01&lt;00:00, 37.03it/s]
+Loss: 0.573962: 100%|██████████| 40/40 [00:01&lt;00:00, 36.61it/s]
+Loss: 0.470612: 100%|██████████| 40/40 [00:01&lt;00:00, 37.01it/s]
+Loss: 0.579732: 100%|██████████| 40/40 [00:01&lt;00:00, 36.57it/s]
+Loss: 0.262016: 100%|██████████| 40/40 [00:01&lt;00:00, 37.01it/s]
+Loss: 0.147717: 100%|██████████| 40/40 [00:01&lt;00:00, 36.54it/s]
+Loss: 0.108952: 100%|██████████| 40/40 [00:01&lt;00:00, 36.02it/s]
+Loss: 0.271355: 100%|██████████| 40/40 [00:01&lt;00:00, 36.75it/s]
+Loss: 0.370208: 100%|██████████| 40/40 [00:01&lt;00:00, 35.67it/s]
+Loss: 0.304398: 100%|██████████| 40/40 [00:01&lt;00:00, 36.01it/s]
+Loss: 0.184816: 100%|██████████| 40/40 [00:01&lt;00:00, 36.37it/s]
+Loss: 0.196016: 100%|██████████| 40/40 [00:01&lt;00:00, 35.36it/s]
+Loss: 0.181180: 100%|██████████| 40/40 [00:01&lt;00:00, 34.56it/s]
+Loss: 0.196182: 100%|██████████| 40/40 [00:01&lt;00:00, 35.60it/s]
+Loss: 0.144379: 100%|██████████| 40/40 [00:01&lt;00:00, 35.92it/s]
+Loss: 0.047389: 100%|██████████| 40/40 [00:01&lt;00:00, 35.78it/s]
+Loss: 0.031721: 100%|██████████| 40/40 [00:01&lt;00:00, 35.50it/s]
+Loss: 0.071309: 100%|██████████| 40/40 [00:01&lt;00:00, 35.90it/s]
+Loss: 0.132249: 100%|██████████| 40/40 [00:01&lt;00:00, 35.88it/s]
+Loss: 0.064951: 100%|██████████| 40/40 [00:01&lt;00:00, 35.89it/s]
+Loss: 0.087784: 100%|██████████| 40/40 [00:01&lt;00:00, 35.95it/s]
+Loss: 0.022345: 100%|██████████| 40/40 [00:01&lt;00:00, 35.38it/s]
+Loss: 0.220102: 100%|██████████| 40/40 [00:01&lt;00:00, 34.77it/s]
+Loss: 0.058476: 100%|██████████| 40/40 [00:01&lt;00:00, 35.88it/s]
+Loss: 0.083048: 100%|██████████| 40/40 [00:01&lt;00:00, 36.26it/s]
+Loss: 0.047481: 100%|██████████| 40/40 [00:01&lt;00:00, 35.44it/s]
+Loss: 0.047544: 100%|██████████| 40/40 [00:01&lt;00:00, 35.65it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 1: 1.6589520935058595
+Epoch 2: 1.2343804992675782
+Epoch 3: 1.0032470321655274
+Epoch 4: 0.8050672988891602
+Epoch 5: 0.6229847793579102
+Epoch 6: 0.48343274230957034
+Epoch 7: 0.3824925224304199
+Epoch 8: 0.3308661190032959
+Epoch 9: 0.19066958694458008
+Epoch 10: 0.1531820728302002
+Epoch 11: 0.13519002685546874
+Epoch 12: 0.1659882785797119
+Epoch 13: 0.23326843185424806
+Epoch 14: 0.16760483856201172
+Epoch 15: 0.09269110498428344
+Epoch 16: 0.08953567190170288
+Epoch 17: 0.10240967988967896
+Epoch 18: 0.1157124849319458
+Epoch 19: 0.08735885505676269
+Epoch 20: 0.032301900148391724
+Epoch 21: 0.02235677945613861
+Epoch 22: 0.05257979347705841
+Epoch 23: 0.06249353976249695
+Epoch 24: 0.05699077892303467
+Epoch 25: 0.0789616925239563
+Epoch 26: 0.03884266901016235
+Epoch 27: 0.10908802990913391
+Epoch 28: 0.06660935344696045
+Epoch 29: 0.042903441429138184
+Epoch 30: 0.03823600392341614</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>plt.plot(iter_losses)   </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>Text(0, 0.5, 'Training loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-21-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(resnet, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(resnet, X[test_idx[:<span class="dv">1000</span>]], y[test_idx[:<span class="dv">1000</span>]], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>predict(resnet, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 99.10%
+pool set accuracy: 99.58%
+test set accuracy: 61.65%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-24-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-24-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="ssl" class="level3">
+<h3 class="anchored" data-anchor-id="ssl">SSL</h3>
+<section id="task-1-predict-angle-of-rotation-0-90-180-270-as-a-classification-task" class="level4">
+<h4 class="anchored" data-anchor-id="task-1-predict-angle-of-rotation-0-90-180-270-as-a-classification-task">Task 1: Predict angle of rotation (0, 90, 180, 270) as a classification task</h4>
+<p>Create a dataset with rotated images and corresponding labels. We can now use a much larger dataset</p>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>X_train_plus_pool <span class="op">=</span> torch.cat([X[train_idx], X[pool_idx]])</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>y_train_plus_pool <span class="op">=</span> torch.cat([y[train_idx], y[pool_idx]])</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>X_train_plus_pool.shape, y_train_plus_pool.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>(torch.Size([40000, 3, 32, 32]), torch.Size([40000]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>X_ssl <span class="op">=</span> []</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>y_ssl <span class="op">=</span> []</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>angles_map <span class="op">=</span> {<span class="dv">0</span>:<span class="dv">0</span>, <span class="dv">90</span>:<span class="dv">1</span>, <span class="dv">180</span>:<span class="dv">2</span>, <span class="dv">270</span>:<span class="dv">3</span>}</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> angle_rot <span class="kw">in</span> angles_map.keys():</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Angle: </span><span class="sc">{</span>angle_rot<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    X_rot <span class="op">=</span> transforms.functional.rotate(X_train_plus_pool, angle_rot)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    X_ssl.append(X_rot)</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    y_ssl.append(torch.tensor([angles_map[angle_rot]]<span class="op">*</span><span class="bu">len</span>(X_rot)))</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>X_ssl <span class="op">=</span> torch.cat(X_ssl)</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>y_ssl <span class="op">=</span> torch.cat(y_ssl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Angle: 0
+Angle: 90
+Angle: 180
+Angle: 270</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>X_ssl.shape, y_ssl.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>(torch.Size([160000, 3, 32, 32]), torch.Size([160000]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot same image rotated at different angles</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_ssl(img_id):</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    offset <span class="op">=</span> <span class="bu">len</span>(X_train_plus_pool)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>        plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        plt.imshow(torch.einsum(<span class="st">"chw-&gt;hwc"</span>, X_ssl[offset<span class="op">*</span>i <span class="op">+</span> img_id]))</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>        plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="ss">f"Class: </span><span class="sc">{</span>angles_map[i<span class="op">*</span><span class="dv">90</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss"> Angle: </span><span class="sc">{</span>i<span class="op">*</span><span class="dv">90</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>plot_ssl(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>ssl_angle <span class="op">=</span> ResNetClassifier(models.resnet18, <span class="va">None</span>, n_classes<span class="op">=</span><span class="dv">4</span>, activation<span class="op">=</span>nn.GELU(), dropout<span class="op">=</span><span class="fl">0.1</span>).to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>iter_losses, epoch_losses <span class="op">=</span> train_fn(ssl_angle, X_ssl, y_ssl, lr<span class="op">=</span><span class="fl">3e-4</span>, loss_fn<span class="op">=</span>nn.CrossEntropyLoss(),</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                                        batch_size<span class="op">=</span><span class="dv">1024</span>, epochs<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loss: 0.945101: 100%|██████████| 157/157 [00:04&lt;00:00, 35.35it/s]
+Loss: 0.785275: 100%|██████████| 157/157 [00:04&lt;00:00, 35.88it/s]
+Loss: 0.644941: 100%|██████████| 157/157 [00:04&lt;00:00, 35.64it/s]
+Loss: 0.697314: 100%|██████████| 157/157 [00:04&lt;00:00, 36.29it/s]
+Loss: 0.578679: 100%|██████████| 157/157 [00:04&lt;00:00, 35.66it/s]
+Loss: 0.478466: 100%|██████████| 157/157 [00:04&lt;00:00, 36.11it/s]
+Loss: 0.466891: 100%|██████████| 157/157 [00:04&lt;00:00, 35.93it/s]
+Loss: 0.436392: 100%|██████████| 157/157 [00:04&lt;00:00, 35.65it/s]
+Loss: 0.302828: 100%|██████████| 157/157 [00:04&lt;00:00, 36.11it/s]
+Loss: 0.226936: 100%|██████████| 157/157 [00:04&lt;00:00, 35.73it/s]
+Loss: 0.260345: 100%|██████████| 157/157 [00:04&lt;00:00, 35.70it/s]
+Loss: 0.136557: 100%|██████████| 157/157 [00:04&lt;00:00, 36.13it/s]
+Loss: 0.214188: 100%|██████████| 157/157 [00:04&lt;00:00, 35.74it/s]
+Loss: 0.114707: 100%|██████████| 157/157 [00:04&lt;00:00, 35.61it/s]
+Loss: 0.100094: 100%|██████████| 157/157 [00:04&lt;00:00, 35.93it/s]
+Loss: 0.114667: 100%|██████████| 157/157 [00:04&lt;00:00, 36.11it/s]
+Loss: 0.088765: 100%|██████████| 157/157 [00:04&lt;00:00, 36.15it/s]
+Loss: 0.094059: 100%|██████████| 157/157 [00:04&lt;00:00, 36.16it/s]
+Loss: 0.135386: 100%|██████████| 157/157 [00:04&lt;00:00, 34.21it/s]
+Loss: 0.073386: 100%|██████████| 157/157 [00:04&lt;00:00, 35.75it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 1: 0.9923952384948731
+Epoch 2: 0.8178635284423829
+Epoch 3: 0.7248399837493896
+Epoch 4: 0.644944263458252
+Epoch 5: 0.5666926818847656
+Epoch 6: 0.4871123765945435
+Epoch 7: 0.4118640880584717
+Epoch 8: 0.3425796222686768
+Epoch 9: 0.2795945789337158
+Epoch 10: 0.2271963834762573
+Epoch 11: 0.18415976438522338
+Epoch 12: 0.15323887557983398
+Epoch 13: 0.13012397813796997
+Epoch 14: 0.10969336915016174
+Epoch 15: 0.09902867212295532
+Epoch 16: 0.08491913187503815
+Epoch 17: 0.07862492105960846
+Epoch 18: 0.0721992644071579
+Epoch 19: 0.068406194627285
+Epoch 20: 0.061716662764549256</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>plt.plot(iter_losses)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="50">
+<pre><code>Text(0, 0.5, 'Training loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-31-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise the embeddings of the SSL model trained on angles dataset </span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (but wrt original 10 classes)</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>viz_embeddings(ssl_angle, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-32-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now, we can use the features from SSLAngle model to train the classifier on the original data</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>net_pretrained <span class="op">=</span> ResNetClassifier(models.resnet18, <span class="va">None</span>, n_classes<span class="op">=</span><span class="dv">10</span>, activation<span class="op">=</span>nn.GELU(), dropout<span class="op">=</span><span class="fl">0.1</span>).to(device)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>net_pretrained.featurizer.load_state_dict(ssl_angle.featurizer.state_dict())</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>iter_losses, epoch_losses <span class="op">=</span> train_fn(net_pretrained, X[train_idx], y[train_idx], nn.CrossEntropyLoss(), lr<span class="op">=</span><span class="fl">3e-4</span>, epochs<span class="op">=</span><span class="dv">50</span>, batch_size<span class="op">=</span><span class="dv">128</span>, verbose<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>plt.plot(iter_losses)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="53">
+<pre><code>Text(0, 0.5, 'Training loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-34-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(net_pretrained, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/nipun.batra/miniforge3/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:273: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-35-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(net_pretrained, X[test_idx[:<span class="dv">1000</span>]], y[test_idx[:<span class="dv">1000</span>]], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-36-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="56">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>predict(net_pretrained, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 100.00%
+pool set accuracy: 47.94%
+test set accuracy: 47.57%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-37-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-37-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ssl_files/figure-html/cell-37-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="summary-of-the-test-set-performance" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-the-test-set-performance">Summary of the test set performance</h3>
+<ul>
+<li>Untrained model: 9%</li>
+<li>Train on 1000 labeled samples (train set): 36%</li>
+<li>Train on 1000 labeled samples + 39000 label samples (pool set): 62%</li>
+<li>Train on SSL task + Finetune on 1000 labeled samples: 47%</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

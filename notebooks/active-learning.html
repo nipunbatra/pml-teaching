@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Probabilistic Machine Learning - Active Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Probabilistic Machine Learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../notebooks.html" rel="" target="">
+ <span class="menu-text">Notebooks</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#imports" id="toc-imports" class="nav-link active" data-scroll-target="#imports">Imports</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a>
+  <ul class="collapse">
+  <li><a href="#data-splitting" id="toc-data-splitting" class="nav-link" data-scroll-target="#data-splitting">Data splitting</a></li>
+  <li><a href="#train-on-train-pool" id="toc-train-on-train-pool" class="nav-link" data-scroll-target="#train-on-train-pool">Train on train + pool</a></li>
+  <li><a href="#active-learning-loop" id="toc-active-learning-loop" class="nav-link" data-scroll-target="#active-learning-loop">Active learning loop</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Active Learning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="imports" class="level2">
+<h2 class="anchored" data-anchor-id="imports">Imports</h2>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> astra.torch.models <span class="im">import</span> ResNetClassifier</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sustainability<span class="op">-</span>lab<span class="op">/</span>ASTRA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"CUDA_VISIBLE_DEVICES"</span>] <span class="op">=</span> <span class="st">"2"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.models <span class="im">as</span> models</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.transforms <span class="im">as</span> transforms</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Retina display</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'retina'</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion matrix</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchsummary</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ASTRA</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.data <span class="im">import</span> load_cifar_10</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.utils <span class="im">import</span> train_fn</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astra.torch.models <span class="im">import</span> ResNetClassifier</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Netron, ONNX for model visualization</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> netron</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install netron</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> netron</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> onnx</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install onnx</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> onnx</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/patel_zeel/ASTRA/astra/torch/data.py:12: UserWarning: TORCH_HOME not set, setting it to /home/patel_zeel/.cache/torch
+  warnings.warn(f"TORCH_HOME not set, setting it to {os.environ['TORCH_HOME']}")</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>device</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>device(type='cuda')</code></pre>
+</div>
+</div>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_cifar_10()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Files already downloaded and verified
+Files already downloaded and verified</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>
+CIFAR-10 Dataset
+length of dataset: 60000
+shape of images: torch.Size([3, 32, 32])
+len of classes: 10
+classes: ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+dtype of images: torch.float32
+dtype of labels: torch.int64
+            </code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot some images</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">25</span>):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">5</span>, <span class="dv">5</span>, i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    plt.imshow(torch.einsum(<span class="st">"chw-&gt;hwc"</span>, dataset.data[i].cpu()))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    plt.title(dataset.classes[dataset.targets[i]])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="data-splitting" class="level3">
+<h3 class="anchored" data-anchor-id="data-splitting">Data splitting</h3>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n_test <span class="op">=</span> <span class="dv">20000</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> dataset.data</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> dataset.targets</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape, X.dtype)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.<span class="bu">min</span>(), X.<span class="bu">max</span>())</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y.shape, y.dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([60000, 3, 32, 32])
+torch.Size([60000, 3, 32, 32]) torch.float32
+tensor(0.) tensor(1.)
+torch.Size([60000]) torch.int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> torch.randperm(<span class="bu">len</span>(X))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>train_idx <span class="op">=</span> idx[:n_train]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>pool_idx <span class="op">=</span> idx[n_train:<span class="op">-</span>n_test]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>test_idx <span class="op">=</span> idx[<span class="op">-</span>n_test:]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of train set: </span><span class="sc">{</span><span class="bu">len</span>(train_idx)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of pool set: </span><span class="sc">{</span><span class="bu">len</span>(pool_idx)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of test set: </span><span class="sc">{</span><span class="bu">len</span>(test_idx)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Length of train set: 1000
+Length of pool set: 39000
+Length of test set: 20000</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resnet <span class="op">=</span> ResNetClassifier(models.resnet18, models.ResNet18_Weights.DEFAULT, n_classes<span class="op">=</span><span class="dv">10</span>).to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/patel_zeel/miniconda3/envs/torch_gpu_py311/lib/python3.11/site-packages/torch/cuda/__init__.py:611: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>torchsummary.summary(resnet, (<span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">32</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1           [-1, 64, 16, 16]           9,408
+       BatchNorm2d-2           [-1, 64, 16, 16]             128
+              ReLU-3           [-1, 64, 16, 16]               0
+         MaxPool2d-4             [-1, 64, 8, 8]               0
+            Conv2d-5             [-1, 64, 8, 8]          36,864
+       BatchNorm2d-6             [-1, 64, 8, 8]             128
+              ReLU-7             [-1, 64, 8, 8]               0
+            Conv2d-8             [-1, 64, 8, 8]          36,864
+       BatchNorm2d-9             [-1, 64, 8, 8]             128
+             ReLU-10             [-1, 64, 8, 8]               0
+       BasicBlock-11             [-1, 64, 8, 8]               0
+           Conv2d-12             [-1, 64, 8, 8]          36,864
+      BatchNorm2d-13             [-1, 64, 8, 8]             128
+             ReLU-14             [-1, 64, 8, 8]               0
+           Conv2d-15             [-1, 64, 8, 8]          36,864
+      BatchNorm2d-16             [-1, 64, 8, 8]             128
+             ReLU-17             [-1, 64, 8, 8]               0
+       BasicBlock-18             [-1, 64, 8, 8]               0
+           Conv2d-19            [-1, 128, 4, 4]          73,728
+      BatchNorm2d-20            [-1, 128, 4, 4]             256
+             ReLU-21            [-1, 128, 4, 4]               0
+           Conv2d-22            [-1, 128, 4, 4]         147,456
+      BatchNorm2d-23            [-1, 128, 4, 4]             256
+           Conv2d-24            [-1, 128, 4, 4]           8,192
+      BatchNorm2d-25            [-1, 128, 4, 4]             256
+             ReLU-26            [-1, 128, 4, 4]               0
+       BasicBlock-27            [-1, 128, 4, 4]               0
+           Conv2d-28            [-1, 128, 4, 4]         147,456
+      BatchNorm2d-29            [-1, 128, 4, 4]             256
+             ReLU-30            [-1, 128, 4, 4]               0
+           Conv2d-31            [-1, 128, 4, 4]         147,456
+      BatchNorm2d-32            [-1, 128, 4, 4]             256
+             ReLU-33            [-1, 128, 4, 4]               0
+       BasicBlock-34            [-1, 128, 4, 4]               0
+           Conv2d-35            [-1, 256, 2, 2]         294,912
+      BatchNorm2d-36            [-1, 256, 2, 2]             512
+             ReLU-37            [-1, 256, 2, 2]               0
+           Conv2d-38            [-1, 256, 2, 2]         589,824
+      BatchNorm2d-39            [-1, 256, 2, 2]             512
+           Conv2d-40            [-1, 256, 2, 2]          32,768
+      BatchNorm2d-41            [-1, 256, 2, 2]             512
+             ReLU-42            [-1, 256, 2, 2]               0
+       BasicBlock-43            [-1, 256, 2, 2]               0
+           Conv2d-44            [-1, 256, 2, 2]         589,824
+      BatchNorm2d-45            [-1, 256, 2, 2]             512
+             ReLU-46            [-1, 256, 2, 2]               0
+           Conv2d-47            [-1, 256, 2, 2]         589,824
+      BatchNorm2d-48            [-1, 256, 2, 2]             512
+             ReLU-49            [-1, 256, 2, 2]               0
+       BasicBlock-50            [-1, 256, 2, 2]               0
+           Conv2d-51            [-1, 512, 1, 1]       1,179,648
+      BatchNorm2d-52            [-1, 512, 1, 1]           1,024
+             ReLU-53            [-1, 512, 1, 1]               0
+           Conv2d-54            [-1, 512, 1, 1]       2,359,296
+      BatchNorm2d-55            [-1, 512, 1, 1]           1,024
+           Conv2d-56            [-1, 512, 1, 1]         131,072
+      BatchNorm2d-57            [-1, 512, 1, 1]           1,024
+             ReLU-58            [-1, 512, 1, 1]               0
+       BasicBlock-59            [-1, 512, 1, 1]               0
+           Conv2d-60            [-1, 512, 1, 1]       2,359,296
+      BatchNorm2d-61            [-1, 512, 1, 1]           1,024
+             ReLU-62            [-1, 512, 1, 1]               0
+           Conv2d-63            [-1, 512, 1, 1]       2,359,296
+      BatchNorm2d-64            [-1, 512, 1, 1]           1,024
+             ReLU-65            [-1, 512, 1, 1]               0
+       BasicBlock-66            [-1, 512, 1, 1]               0
+AdaptiveAvgPool2d-67            [-1, 512, 1, 1]               0
+         Identity-68                  [-1, 512]               0
+           ResNet-69                  [-1, 512]               0
+          Flatten-70                  [-1, 512]               0
+           ResNet-71                  [-1, 512]               0
+           Linear-72                  [-1, 512]         262,656
+             ReLU-73                  [-1, 512]               0
+          Dropout-74                  [-1, 512]               0
+              MLP-75                  [-1, 512]               0
+           Linear-76                   [-1, 10]           5,130
+    MLPClassifier-77                   [-1, 10]               0
+================================================================
+Total params: 11,444,298
+Trainable params: 11,444,298
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.01
+Forward/backward pass size (MB): 1.32
+Params size (MB): 43.66
+Estimated Total Size (MB): 44.98
+----------------------------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_accuracy(net, X, y):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the net to evaluation mode</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    net.<span class="bu">eval</span>()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        logits_pred <span class="op">=</span> net(X)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        y_pred <span class="op">=</span> logits_pred.argmax(dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        acc <span class="op">=</span> (y_pred <span class="op">==</span> y).<span class="bu">float</span>().mean()</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_pred, acc</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(net, classes, plot_confusion_matrix<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (name, idx) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>((<span class="st">"train"</span>, <span class="st">"pool"</span>, <span class="st">"test"</span>), [train_idx, pool_idx, test_idx])):</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        X_dataset <span class="op">=</span> X[idx].to(device)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        y_dataset <span class="op">=</span> y[idx].to(device)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        y_pred, acc <span class="op">=</span> get_accuracy(net, X_dataset, y_dataset)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> set accuracy: </span><span class="sc">{</span>acc<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> plot_confusion_matrix:</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>            cm <span class="op">=</span> confusion_matrix(y_dataset.cpu(), y_pred.cpu())</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>            cm_display <span class="op">=</span> ConfusionMatrixDisplay(cm, display_labels<span class="op">=</span>classes).plot(values_format<span class="op">=</span><span class="st">'d'</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>                                                                                , cmap<span class="op">=</span><span class="st">'Blues'</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Rotate the labels on x-axis to make them readable</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>            _ <span class="op">=</span> plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>            plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>predict(resnet, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 7.70%
+pool set accuracy: 7.57%
+test set accuracy: 7.58%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-12-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-12-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-12-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> viz_embeddings(net, X, y, device):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    reducer <span class="op">=</span> umap.UMAP()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        emb <span class="op">=</span> net.featurizer(X.to(device))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    emb <span class="op">=</span> emb.cpu().numpy()</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    emb <span class="op">=</span> reducer.fit_transform(emb)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>))</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    plt.scatter(emb[:, <span class="dv">0</span>], emb[:, <span class="dv">1</span>], c<span class="op">=</span>y.cpu().numpy(), cmap<span class="op">=</span><span class="st">'tab10'</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add a colorbar legend to mark color to class mapping</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    cb <span class="op">=</span> plt.colorbar(boundaries<span class="op">=</span>np.arange(<span class="dv">11</span>)<span class="op">-</span><span class="fl">0.5</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    cb.set_ticks(np.arange(<span class="dv">10</span>))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    cb.set_ticklabels(dataset.classes)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"UMAP embeddings"</span>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>viz_embeddings(resnet, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="train-the-model-on-train-set" class="level4">
+<h4 class="anchored" data-anchor-id="train-the-model-on-train-set">Train the model on train set</h4>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_only_train <span class="op">=</span> ResNetClassifier(models.resnet18, <span class="va">None</span>, n_classes<span class="op">=</span><span class="dv">10</span>, activation<span class="op">=</span>nn.GELU(), dropout<span class="op">=</span><span class="fl">0.1</span>).to(device)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>iter_losses, epoch_losses <span class="op">=</span> train_fn(model_only_train, X[train_idx], y[train_idx], nn.CrossEntropyLoss(), lr<span class="op">=</span><span class="fl">3e-4</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                                     batch_size<span class="op">=</span><span class="dv">128</span>, epochs<span class="op">=</span><span class="dv">30</span>, verbose<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.plot(iter_losses)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>Text(0, 0.5, 'Training loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-15-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>predict(model_only_train, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 100.00%
+pool set accuracy: 35.53%
+test set accuracy: 35.33%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-16-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-16-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(model_only_train, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(model_only_train, X[test_idx[:<span class="dv">1000</span>]], y[test_idx[:<span class="dv">1000</span>]], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="train-on-train-pool" class="level3">
+<h3 class="anchored" data-anchor-id="train-on-train-pool">Train on train + pool</h3>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>train_plus_pool_idx <span class="op">=</span> torch.cat([train_idx, pool_idx])</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>model_train_plus_pool <span class="op">=</span> ResNetClassifier(models.resnet18, <span class="va">None</span>, n_classes<span class="op">=</span><span class="dv">10</span>, activation<span class="op">=</span>nn.GELU(), dropout<span class="op">=</span><span class="fl">0.1</span>).to(device)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>iter_losses, epoch_losses <span class="op">=</span> train_fn(model_train_plus_pool, X[train_plus_pool_idx], y[train_plus_pool_idx], loss_fn<span class="op">=</span>nn.CrossEntropyLoss(),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                                     lr<span class="op">=</span><span class="fl">3e-4</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                                        batch_size<span class="op">=</span><span class="dv">1024</span>, epochs<span class="op">=</span><span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loss: 1.318003: 100%|██████████| 40/40 [00:01&lt;00:00, 33.50it/s]
+Loss: 1.130332: 100%|██████████| 40/40 [00:01&lt;00:00, 35.81it/s]
+Loss: 0.821397: 100%|██████████| 40/40 [00:01&lt;00:00, 36.25it/s]
+Loss: 0.779279: 100%|██████████| 40/40 [00:01&lt;00:00, 35.97it/s]
+Loss: 0.862528: 100%|██████████| 40/40 [00:01&lt;00:00, 35.12it/s]
+Loss: 0.524238: 100%|██████████| 40/40 [00:01&lt;00:00, 36.35it/s]
+Loss: 0.510165: 100%|██████████| 40/40 [00:01&lt;00:00, 36.51it/s]
+Loss: 0.423117: 100%|██████████| 40/40 [00:01&lt;00:00, 36.69it/s]
+Loss: 0.458616: 100%|██████████| 40/40 [00:01&lt;00:00, 36.86it/s]
+Loss: 0.165772: 100%|██████████| 40/40 [00:01&lt;00:00, 35.59it/s]
+Loss: 0.087809: 100%|██████████| 40/40 [00:01&lt;00:00, 35.90it/s]
+Loss: 0.296134: 100%|██████████| 40/40 [00:01&lt;00:00, 35.39it/s]
+Loss: 0.319740: 100%|██████████| 40/40 [00:01&lt;00:00, 36.15it/s]
+Loss: 0.301341: 100%|██████████| 40/40 [00:01&lt;00:00, 37.49it/s]
+Loss: 0.072943: 100%|██████████| 40/40 [00:01&lt;00:00, 36.23it/s]
+Loss: 0.047622: 100%|██████████| 40/40 [00:01&lt;00:00, 36.49it/s]
+Loss: 0.031719: 100%|██████████| 40/40 [00:01&lt;00:00, 37.51it/s]
+Loss: 0.031865: 100%|██████████| 40/40 [00:01&lt;00:00, 35.63it/s]
+Loss: 0.046578: 100%|██████████| 40/40 [00:01&lt;00:00, 37.41it/s]
+Loss: 0.066532: 100%|██████████| 40/40 [00:01&lt;00:00, 37.07it/s]
+Loss: 0.128377: 100%|██████████| 40/40 [00:01&lt;00:00, 35.39it/s]
+Loss: 0.075391: 100%|██████████| 40/40 [00:01&lt;00:00, 35.56it/s]
+Loss: 0.180659: 100%|██████████| 40/40 [00:01&lt;00:00, 33.25it/s]
+Loss: 0.122659: 100%|██████████| 40/40 [00:01&lt;00:00, 36.06it/s]
+Loss: 0.116485: 100%|██████████| 40/40 [00:01&lt;00:00, 36.39it/s]
+Loss: 0.216088: 100%|██████████| 40/40 [00:01&lt;00:00, 36.43it/s]
+Loss: 0.063434: 100%|██████████| 40/40 [00:01&lt;00:00, 36.54it/s]
+Loss: 0.111266: 100%|██████████| 40/40 [00:01&lt;00:00, 35.95it/s]
+Loss: 0.039604: 100%|██████████| 40/40 [00:01&lt;00:00, 35.99it/s]
+Loss: 0.111527: 100%|██████████| 40/40 [00:01&lt;00:00, 36.67it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 1: 1.636701644897461
+Epoch 2: 1.2044568725585938
+Epoch 3: 0.9858628723144531
+Epoch 4: 0.787159913635254
+Epoch 5: 0.6295903686523437
+Epoch 6: 0.5099980773925781
+Epoch 7: 0.3717664451599121
+Epoch 8: 0.3031633331298828
+Epoch 9: 0.29022122650146487
+Epoch 10: 0.26079437942504885
+Epoch 11: 0.13630542945861818
+Epoch 12: 0.1002807499885559
+Epoch 13: 0.18608614768981935
+Epoch 14: 0.16239934244155885
+Epoch 15: 0.14895454578399658
+Epoch 16: 0.06240539264678955
+Epoch 17: 0.02642523465156555
+Epoch 18: 0.026696961951255798
+Epoch 19: 0.03432212963104248
+Epoch 20: 0.03469213643074036
+Epoch 21: 0.07525548481941223
+Epoch 22: 0.13279609174728393
+Epoch 23: 0.07557179298400879
+Epoch 24: 0.08241450214385987
+Epoch 25: 0.07914679989814759
+Epoch 26: 0.08806239323616027
+Epoch 27: 0.11902619647979737
+Epoch 28: 0.05027928895950318
+Epoch 29: 0.05692305927276611
+Epoch 30: 0.03280420844554901</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>plt.plot(iter_losses)   </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Iteration"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training loss"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>Text(0, 0.5, 'Training loss')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-20-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(model_train_plus_pool, X[train_idx], y[train_idx], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>viz_embeddings(model_train_plus_pool, X[test_idx[:<span class="dv">1000</span>]], y[test_idx[:<span class="dv">1000</span>]], device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>predict(model_train_plus_pool, dataset.classes, plot_confusion_matrix<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>train set accuracy: 97.80%
+pool set accuracy: 98.03%
+test set accuracy: 61.14%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-23-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-23-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-23-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>accuracy_only_train <span class="op">=</span> get_accuracy(model_only_train, X[test_idx].to(device), y[test_idx].to(device))[<span class="dv">1</span>]</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>accuracy_train_plus_pool <span class="op">=</span> get_accuracy(model_train_plus_pool, X[test_idx].to(device), y[test_idx].to(device))[<span class="dv">1</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>plt.axhline(accuracy_only_train.cpu(), color<span class="op">=</span><span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Only train'</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>plt.axhline(accuracy_train_plus_pool.cpu(), color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Train + pool'</span>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>Text(0, 0.5, 'Accuracy')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="active-learning-loop" class="level3">
+<h3 class="anchored" data-anchor-id="active-learning-loop">Active learning loop</h3>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> setdiff1d(a, b):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> <span class="op">~</span>a.unsqueeze(<span class="dv">1</span>).eq(b).<span class="bu">any</span>(dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.masked_select(a, mask)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> torch.tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> torch.tensor([<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>])</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(setdiff1d(a, b))</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> torch.tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> torch.tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(setdiff1d(a, b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tensor([2, 4])
+tensor([], dtype=torch.int64)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> al_loop(model, query_strategy, num_al_iterations, num_epochs_finetune,</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>            train_idx, pool_idx, test_idx, query_size, </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>            X, y, device, random_seed<span class="op">=</span><span class="dv">0</span>, verbose<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co">    model: PyTorch model trained on train_idx</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">    query_strategy: function that takes in model and pool_idx, </span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co">                train_idx and returns indices to query</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co">    num_al_iterations: number of active learning iterations</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="co">    num_epochs_finetune: number of epochs to train on queried data + train_idx</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co">    train_idx: indices of data used for training</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="co">    pool_idx: indices of data used for querying</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="co">    test_idx: indices of data used for testing</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="co">    query_size: number of data points to query at each iteration</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="co">    X: data</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co">    y: labels</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="co">    device: torch device</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="co">    random_seed: random seed</span></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="co">    verbose: print statements</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>    tr_idx <span class="op">=</span> train_idx.clone()</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>    p_idx <span class="op">=</span> pool_idx.clone()</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(random_seed)</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Initial train size: </span><span class="sc">{</span>train_idx<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Initial pool size: </span><span class="sc">{</span>pool_idx<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initial model test accuracy</span></span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>    init_accuracy <span class="op">=</span> get_accuracy(model, X[test_idx].to(device), y[test_idx].to(device))[<span class="dv">1</span>].item()</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Test accuracy before AL: </span><span class="sc">{</span>init_accuracy<span class="sc">:0.4f}</span><span class="ss">"</span>)</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Test accuracies</span></span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>    test_accuracies <span class="op">=</span> {<span class="dv">0</span>: init_accuracy}</span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> iteration <span class="kw">in</span> <span class="bu">range</span>(num_al_iterations):</span>
+<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Query</span></span>
+<span id="cb42-37"><a href="#cb42-37" aria-hidden="true" tabindex="-1"></a>        model.<span class="bu">eval</span>()</span>
+<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>        query_idx <span class="op">=</span> query_strategy(model, p_idx, tr_idx, random_seed, query_size, X, y, device)</span>
+<span id="cb42-39"><a href="#cb42-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Add queried data to train_idx</span></span>
+<span id="cb42-40"><a href="#cb42-40" aria-hidden="true" tabindex="-1"></a>        tr_idx <span class="op">=</span> torch.cat([tr_idx, query_idx])</span>
+<span id="cb42-41"><a href="#cb42-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove queried data from pool_idx</span></span>
+<span id="cb42-42"><a href="#cb42-42" aria-hidden="true" tabindex="-1"></a>        p_idx <span class="op">=</span> setdiff1d(p_idx, query_idx)</span>
+<span id="cb42-43"><a href="#cb42-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Retrain model on pooled data</span></span>
+<span id="cb42-44"><a href="#cb42-44" aria-hidden="true" tabindex="-1"></a>        iter_losses, epoch_losses <span class="op">=</span> train_fn(model, X[tr_idx], y[tr_idx], loss_fn<span class="op">=</span>nn.CrossEntropyLoss(),</span>
+<span id="cb42-45"><a href="#cb42-45" aria-hidden="true" tabindex="-1"></a>                                             lr<span class="op">=</span><span class="fl">3e-4</span>, batch_size<span class="op">=</span><span class="dv">1024</span>,</span>
+<span id="cb42-46"><a href="#cb42-46" aria-hidden="true" tabindex="-1"></a>                                             epochs<span class="op">=</span>num_epochs_finetune, </span>
+<span id="cb42-47"><a href="#cb42-47" aria-hidden="true" tabindex="-1"></a>                                             verbose<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb42-48"><a href="#cb42-48" aria-hidden="true" tabindex="-1"></a>        test_accuracies[iteration<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> get_accuracy(model, X[test_idx].to(device), y[test_idx].to(device))[<span class="dv">1</span>].item()</span>
+<span id="cb42-49"><a href="#cb42-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> verbose:</span>
+<span id="cb42-50"><a href="#cb42-50" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Active learning iteration </span><span class="sc">{</span>iteration<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>num_al_iterations<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb42-51"><a href="#cb42-51" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Train set size: </span><span class="sc">{</span><span class="bu">len</span>(tr_idx)<span class="sc">}</span><span class="ss">, Pool set size: </span><span class="sc">{</span><span class="bu">len</span>(p_idx)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb42-52"><a href="#cb42-52" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Test accuracy: </span><span class="sc">{</span>test_accuracies[iteration]<span class="sc">:0.4f}</span><span class="ss">"</span>)</span>
+<span id="cb42-53"><a href="#cb42-53" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>()</span>
+<span id="cb42-54"><a href="#cb42-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model, tr_idx, p_idx, test_accuracies      </span>
+<span id="cb42-55"><a href="#cb42-55" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_sampling(model, pool_idx, train_idx, random_seed, query_size, X, y, device):</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(random_seed)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    query_idx <span class="op">=</span> pool_idx[torch.randperm(<span class="bu">len</span>(pool_idx))[:query_size]]</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> query_idx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>query_size <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>num_al_iterations <span class="op">=</span> <span class="dv">50</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>model_r <span class="op">=</span> copy.deepcopy(model_only_train)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>model, t_idx, p_idx, test_acc_random <span class="op">=</span> al_loop(model_r, random_sampling, num_al_iterations, <span class="dv">20</span>, train_idx, pool_idx, test_idx, query_size, X, y,device<span class="op">=</span>device,verbose<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532
+Active learning iteration 1/50
+Train set size: 1020, Pool set size: 38980
+Test accuracy: 0.3532
+
+Active learning iteration 2/50
+Train set size: 1040, Pool set size: 38960
+Test accuracy: 0.3646
+
+Active learning iteration 3/50
+Train set size: 1060, Pool set size: 38940
+Test accuracy: 0.2930
+
+Active learning iteration 4/50
+Train set size: 1080, Pool set size: 38920
+Test accuracy: 0.3288
+
+Active learning iteration 5/50
+Train set size: 1100, Pool set size: 38900
+Test accuracy: 0.3429
+
+Active learning iteration 6/50
+Train set size: 1120, Pool set size: 38880
+Test accuracy: 0.3391
+
+Active learning iteration 7/50
+Train set size: 1140, Pool set size: 38860
+Test accuracy: 0.3533
+
+Active learning iteration 8/50
+Train set size: 1160, Pool set size: 38840
+Test accuracy: 0.3580
+
+Active learning iteration 9/50
+Train set size: 1180, Pool set size: 38820
+Test accuracy: 0.3529
+
+Active learning iteration 10/50
+Train set size: 1200, Pool set size: 38800
+Test accuracy: 0.3370
+
+Active learning iteration 11/50
+Train set size: 1220, Pool set size: 38780
+Test accuracy: 0.3599
+
+Active learning iteration 12/50
+Train set size: 1240, Pool set size: 38760
+Test accuracy: 0.3711
+
+Active learning iteration 13/50
+Train set size: 1260, Pool set size: 38740
+Test accuracy: 0.3647
+
+Active learning iteration 14/50
+Train set size: 1280, Pool set size: 38720
+Test accuracy: 0.3762
+
+Active learning iteration 15/50
+Train set size: 1300, Pool set size: 38700
+Test accuracy: 0.3592
+
+Active learning iteration 16/50
+Train set size: 1320, Pool set size: 38680
+Test accuracy: 0.3703
+
+Active learning iteration 17/50
+Train set size: 1340, Pool set size: 38660
+Test accuracy: 0.3832
+
+Active learning iteration 18/50
+Train set size: 1360, Pool set size: 38640
+Test accuracy: 0.3783
+
+Active learning iteration 19/50
+Train set size: 1380, Pool set size: 38620
+Test accuracy: 0.3989
+
+Active learning iteration 20/50
+Train set size: 1400, Pool set size: 38600
+Test accuracy: 0.3907
+
+Active learning iteration 21/50
+Train set size: 1420, Pool set size: 38580
+Test accuracy: 0.3886
+
+Active learning iteration 22/50
+Train set size: 1440, Pool set size: 38560
+Test accuracy: 0.3909
+
+Active learning iteration 23/50
+Train set size: 1460, Pool set size: 38540
+Test accuracy: 0.3914
+
+Active learning iteration 24/50
+Train set size: 1480, Pool set size: 38520
+Test accuracy: 0.3984
+
+Active learning iteration 25/50
+Train set size: 1500, Pool set size: 38500
+Test accuracy: 0.4037
+
+Active learning iteration 26/50
+Train set size: 1520, Pool set size: 38480
+Test accuracy: 0.4018
+
+Active learning iteration 27/50
+Train set size: 1540, Pool set size: 38460
+Test accuracy: 0.4005
+
+Active learning iteration 28/50
+Train set size: 1560, Pool set size: 38440
+Test accuracy: 0.3951
+
+Active learning iteration 29/50
+Train set size: 1580, Pool set size: 38420
+Test accuracy: 0.4089
+
+Active learning iteration 30/50
+Train set size: 1600, Pool set size: 38400
+Test accuracy: 0.4150
+
+Active learning iteration 31/50
+Train set size: 1620, Pool set size: 38380
+Test accuracy: 0.3971
+
+Active learning iteration 32/50
+Train set size: 1640, Pool set size: 38360
+Test accuracy: 0.4115
+
+Active learning iteration 33/50
+Train set size: 1660, Pool set size: 38340
+Test accuracy: 0.4040
+
+Active learning iteration 34/50
+Train set size: 1680, Pool set size: 38320
+Test accuracy: 0.4166
+
+Active learning iteration 35/50
+Train set size: 1700, Pool set size: 38300
+Test accuracy: 0.4111
+
+Active learning iteration 36/50
+Train set size: 1720, Pool set size: 38280
+Test accuracy: 0.4158
+
+Active learning iteration 37/50
+Train set size: 1740, Pool set size: 38260
+Test accuracy: 0.4119
+
+Active learning iteration 38/50
+Train set size: 1760, Pool set size: 38240
+Test accuracy: 0.4155
+
+Active learning iteration 39/50
+Train set size: 1780, Pool set size: 38220
+Test accuracy: 0.4022
+
+Active learning iteration 40/50
+Train set size: 1800, Pool set size: 38200
+Test accuracy: 0.4122
+
+Active learning iteration 41/50
+Train set size: 1820, Pool set size: 38180
+Test accuracy: 0.4129
+
+Active learning iteration 42/50
+Train set size: 1840, Pool set size: 38160
+Test accuracy: 0.4187
+
+Active learning iteration 43/50
+Train set size: 1860, Pool set size: 38140
+Test accuracy: 0.4152
+
+Active learning iteration 44/50
+Train set size: 1880, Pool set size: 38120
+Test accuracy: 0.4195
+
+Active learning iteration 45/50
+Train set size: 1900, Pool set size: 38100
+Test accuracy: 0.4227
+
+Active learning iteration 46/50
+Train set size: 1920, Pool set size: 38080
+Test accuracy: 0.4348
+
+Active learning iteration 47/50
+Train set size: 1940, Pool set size: 38060
+Test accuracy: 0.4250
+
+Active learning iteration 48/50
+Train set size: 1960, Pool set size: 38040
+Test accuracy: 0.4243
+
+Active learning iteration 49/50
+Train set size: 1980, Pool set size: 38020
+Test accuracy: 0.4245
+
+Active learning iteration 50/50
+Train set size: 2000, Pool set size: 38000
+Test accuracy: 0.4189
+</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_random).plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>&lt;Axes: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-30-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Now, running across multiple random seeds</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>query_size <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>num_al_iterations <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>ms <span class="op">=</span> {}</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>t_idxs <span class="op">=</span> {}</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>p_idxs <span class="op">=</span> {}</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>test_acc_random <span class="op">=</span> {}</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> rs <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Random seed: </span><span class="sc">{</span>rs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> copy.deepcopy(model_only_train)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    ms[rs], t_idxs[rs], p_idxs[rs], test_acc_random[rs] <span class="op">=</span> al_loop(model, random_sampling, num_al_iterations, <span class="dv">20</span>, train_idx, pool_idx, test_idx, query_size, X, y,device<span class="op">=</span>device,verbose<span class="op">=</span><span class="va">False</span>, random_seed<span class="op">=</span>rs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Random seed: 0
+Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532
+Random seed: 1
+Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532
+Random seed: 2
+Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532
+Random seed: 3
+Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532
+Random seed: 4
+Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>test_acc_random_df <span class="op">=</span> pd.DataFrame(test_acc_random)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>mean_acc <span class="op">=</span> test_acc_random_df.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>std_acc <span class="op">=</span> test_acc_random_df.std(axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>plt.plot(mean_acc, label<span class="op">=</span><span class="st">"Random sampling (mean)"</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>plt.fill_between(mean_acc.index, mean_acc<span class="op">-</span>std_acc,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                 mean_acc<span class="op">+</span>std_acc, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Random sampling (std)"</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy of model trained on train_idx</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>plt.axhline(accuracy_only_train.cpu(), color<span class="op">=</span><span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Only train'</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy of model trained on train_idx + pool_idx</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>plt.axhline(accuracy_train_plus_pool.cpu(), color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Train + pool'</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Active learning iteration"</span>)</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Test accuracy"</span>)</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fe75c755150&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-33-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> entropy_sampling(model, pool_idx, train_idx, random_seed, query_size, X, y, device):</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(random_seed)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> model(X[pool_idx].to(device)) <span class="co"># (len(pool_idx), n_classes)</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>        probs <span class="op">=</span> F.softmax(logits, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>        entropy <span class="op">=</span> torch.<span class="bu">sum</span>(<span class="op">-</span>probs <span class="op">*</span> torch.log(probs), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>        entropy_sorted <span class="op">=</span> entropy.sort(descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>        query_idx <span class="op">=</span> pool_idx.to(device)[entropy_sorted.indices[:query_size]]</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> query_idx.cpu()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>entropy_sampling(model_only_train, pool_idx, train_idx, <span class="dv">0</span>, <span class="dv">5</span>, X, y, device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>tensor([ 2946, 45792, 47575, 31607, 56040])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>model_e <span class="op">=</span> copy.deepcopy(model_only_train)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="co"># AL loop</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>m, p_idx, t_idx, test_acc_entropy  <span class="op">=</span> al_loop(model_e, entropy_sampling, num_al_iterations, <span class="dv">20</span>, train_idx, pool_idx, test_idx, query_size, </span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>                                             X, y,device<span class="op">=</span>device,verbose<span class="op">=</span><span class="va">True</span>, random_seed<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3532
+Active learning iteration 1/50
+Train set size: 1020, Pool set size: 38980
+Test accuracy: 0.3532
+
+Active learning iteration 2/50
+Train set size: 1040, Pool set size: 38960
+Test accuracy: 0.3591
+
+Active learning iteration 3/50
+Train set size: 1060, Pool set size: 38940
+Test accuracy: 0.3174
+
+Active learning iteration 4/50
+Train set size: 1080, Pool set size: 38920
+Test accuracy: 0.3345
+
+Active learning iteration 5/50
+Train set size: 1100, Pool set size: 38900
+Test accuracy: 0.3158
+
+Active learning iteration 6/50
+Train set size: 1120, Pool set size: 38880
+Test accuracy: 0.3662
+
+Active learning iteration 7/50
+Train set size: 1140, Pool set size: 38860
+Test accuracy: 0.3424
+
+Active learning iteration 8/50
+Train set size: 1160, Pool set size: 38840
+Test accuracy: 0.3477
+
+Active learning iteration 9/50
+Train set size: 1180, Pool set size: 38820
+Test accuracy: 0.3511
+
+Active learning iteration 10/50
+Train set size: 1200, Pool set size: 38800
+Test accuracy: 0.3558
+
+Active learning iteration 11/50
+Train set size: 1220, Pool set size: 38780
+Test accuracy: 0.3467
+
+Active learning iteration 12/50
+Train set size: 1240, Pool set size: 38760
+Test accuracy: 0.3605
+
+Active learning iteration 13/50
+Train set size: 1260, Pool set size: 38740
+Test accuracy: 0.3667
+
+Active learning iteration 14/50
+Train set size: 1280, Pool set size: 38720
+Test accuracy: 0.3646
+
+Active learning iteration 15/50
+Train set size: 1300, Pool set size: 38700
+Test accuracy: 0.3633
+
+Active learning iteration 16/50
+Train set size: 1320, Pool set size: 38680
+Test accuracy: 0.3802
+
+Active learning iteration 17/50
+Train set size: 1340, Pool set size: 38660
+Test accuracy: 0.3669
+
+Active learning iteration 18/50
+Train set size: 1360, Pool set size: 38640
+Test accuracy: 0.3780
+
+Active learning iteration 19/50
+Train set size: 1380, Pool set size: 38620
+Test accuracy: 0.3739
+
+Active learning iteration 20/50
+Train set size: 1400, Pool set size: 38600
+Test accuracy: 0.3843
+
+Active learning iteration 21/50
+Train set size: 1420, Pool set size: 38580
+Test accuracy: 0.3860
+
+Active learning iteration 22/50
+Train set size: 1440, Pool set size: 38560
+Test accuracy: 0.3837
+
+Active learning iteration 23/50
+Train set size: 1460, Pool set size: 38540
+Test accuracy: 0.3799
+
+Active learning iteration 24/50
+Train set size: 1480, Pool set size: 38520
+Test accuracy: 0.3591
+
+Active learning iteration 25/50
+Train set size: 1500, Pool set size: 38500
+Test accuracy: 0.3926
+
+Active learning iteration 26/50
+Train set size: 1520, Pool set size: 38480
+Test accuracy: 0.3903
+
+Active learning iteration 27/50
+Train set size: 1540, Pool set size: 38460
+Test accuracy: 0.3960
+
+Active learning iteration 28/50
+Train set size: 1560, Pool set size: 38440
+Test accuracy: 0.3824
+
+Active learning iteration 29/50
+Train set size: 1580, Pool set size: 38420
+Test accuracy: 0.3941
+
+Active learning iteration 30/50
+Train set size: 1600, Pool set size: 38400
+Test accuracy: 0.3977
+
+Active learning iteration 31/50
+Train set size: 1620, Pool set size: 38380
+Test accuracy: 0.3928
+
+Active learning iteration 32/50
+Train set size: 1640, Pool set size: 38360
+Test accuracy: 0.3870
+
+Active learning iteration 33/50
+Train set size: 1660, Pool set size: 38340
+Test accuracy: 0.3995
+
+Active learning iteration 34/50
+Train set size: 1680, Pool set size: 38320
+Test accuracy: 0.4075
+
+Active learning iteration 35/50
+Train set size: 1700, Pool set size: 38300
+Test accuracy: 0.4020
+
+Active learning iteration 36/50
+Train set size: 1720, Pool set size: 38280
+Test accuracy: 0.3941
+
+Active learning iteration 37/50
+Train set size: 1740, Pool set size: 38260
+Test accuracy: 0.4062
+
+Active learning iteration 38/50
+Train set size: 1760, Pool set size: 38240
+Test accuracy: 0.4101
+
+Active learning iteration 39/50
+Train set size: 1780, Pool set size: 38220
+Test accuracy: 0.3931
+
+Active learning iteration 40/50
+Train set size: 1800, Pool set size: 38200
+Test accuracy: 0.3932
+
+Active learning iteration 41/50
+Train set size: 1820, Pool set size: 38180
+Test accuracy: 0.4135
+
+Active learning iteration 42/50
+Train set size: 1840, Pool set size: 38160
+Test accuracy: 0.4065
+
+Active learning iteration 43/50
+Train set size: 1860, Pool set size: 38140
+Test accuracy: 0.4134
+
+Active learning iteration 44/50
+Train set size: 1880, Pool set size: 38120
+Test accuracy: 0.4129
+
+Active learning iteration 45/50
+Train set size: 1900, Pool set size: 38100
+Test accuracy: 0.4169
+
+Active learning iteration 46/50
+Train set size: 1920, Pool set size: 38080
+Test accuracy: 0.4140
+
+Active learning iteration 47/50
+Train set size: 1940, Pool set size: 38060
+Test accuracy: 0.4044
+
+Active learning iteration 48/50
+Train set size: 1960, Pool set size: 38040
+Test accuracy: 0.4225
+
+Active learning iteration 49/50
+Train set size: 1980, Pool set size: 38020
+Test accuracy: 0.4159
+
+Active learning iteration 50/50
+Train set size: 2000, Pool set size: 38000
+Test accuracy: 0.4221
+</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="102">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>ax.plot(mean_acc, label<span class="op">=</span><span class="st">"Random sampling (mean)"</span>)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mean_acc.index, mean_acc<span class="op">-</span>std_acc,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>                 mean_acc<span class="op">+</span>std_acc, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Random sampling (std)"</span>)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_only_train.cpu(), color<span class="op">=</span><span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Only train'</span>)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_train_plus_pool.cpu(), color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Train + pool'</span>)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_entropy).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Entropy sampling"</span>, color<span class="op">=</span><span class="st">'C2'</span>)</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Active learning iteration"</span>)</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Test accuracy"</span>)</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="102">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fe70c114990&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-37-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> margin_sampling(model, pool_idx, train_idx, random_seed, query_size, X, y, device):</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(random_seed)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> model(X[pool_idx].to(device))    </span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>        probs <span class="op">=</span> F.softmax(logits, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>        margin <span class="op">=</span> torch.topk(probs, <span class="dv">2</span>, dim<span class="op">=</span><span class="dv">1</span>).values</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>        margin <span class="op">=</span> margin[:, <span class="dv">0</span>] <span class="op">-</span> margin[:, <span class="dv">1</span>]</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>        margin_sorted <span class="op">=</span> margin.sort(descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>        query_idx <span class="op">=</span> pool_idx.to(device)[margin_sorted.indices[:query_size]]</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> query_idx.cpu()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>margin_sampling(model_only_train, pool_idx, train_idx, <span class="dv">0</span>, <span class="dv">5</span>, X, y, device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="46">
+<pre><code>tensor([36785, 51553,  1668, 53790, 28164])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> diversity_sampling(model, pool_idx, train_idx, random_seed, query_size, X, y, device):</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(random_seed)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>        emb_pool <span class="op">=</span> model.featurizer(X[pool_idx].to(device))</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>        emb_train <span class="op">=</span> model.featurizer(X[train_idx].to(device))</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Find the distance between each pool point and each train point</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>        dist <span class="op">=</span> torch.cdist(emb_pool, emb_train)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(dist.shape)</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Find the minimum distance for each pool point</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>        min_dist <span class="op">=</span> dist.<span class="bu">min</span>(dim<span class="op">=</span><span class="dv">1</span>).values</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(min_dist)</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Sort the pool points by minimum distance</span></span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>        min_dist_sorted <span class="op">=</span> min_dist.sort(descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>        query_idx <span class="op">=</span> pool_idx.to(device)[min_dist_sorted.indices[:query_size]]</span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> query_idx.cpu()</span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>diversity_sampling(model_only_train, pool_idx, train_idx, <span class="dv">0</span>, <span class="dv">5</span>, X, y, device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([39000, 1000])
+tensor([20.9841, 14.6172, 21.3995,  ..., 22.9982, 18.0180, 20.0437],
+       device='cuda:0')</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<pre><code>tensor([40154, 26018, 15418, 18260, 43270])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="85">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BALD sample dataset to illustrate the idea</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>pred_A <span class="op">=</span> torch.tensor([<span class="fl">0.5</span>]<span class="op">*</span><span class="dv">10</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>).repeat(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred_A.shape)</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred_A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([10, 1, 2])
+tensor([[[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]],
+
+        [[0.5000, 0.5000]]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>pred_B <span class="op">=</span> torch.tensor([[<span class="fl">0.0</span>, <span class="fl">1.0</span>], [<span class="fl">1.0</span>, <span class="fl">0.0</span>]]).repeat(<span class="dv">5</span>, <span class="dv">1</span>).reshape(<span class="dv">10</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred_B.shape)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred_B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([10, 1, 2])
+tensor([[[0., 1.]],
+
+        [[1., 0.]],
+
+        [[0., 1.]],
+
+        [[1., 0.]],
+
+        [[0., 1.]],
+
+        [[1., 0.]],
+
+        [[0., 1.]],
+
+        [[1., 0.]],
+
+        [[0., 1.]],
+
+        [[1., 0.]]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="94">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> BALD_score(logits):</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="co">    logits: (n_MC_passes, n_samples, n_classes)</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> F.softmax(logits, dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>    expected_probs <span class="op">=</span> probs.mean(dim<span class="op">=</span><span class="dv">0</span>) <span class="co"># Expectation over MC passes</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bald_verbose:</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(probs.shape)</span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(expected_probs.shape)</span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>    entropy_expected_probs <span class="op">=</span> torch.<span class="bu">sum</span>(<span class="op">-</span>expected_probs <span class="op">*</span> torch.log(expected_probs), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bald_verbose:</span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(entropy_expected_probs.shape)</span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>    entropy_probs <span class="op">=</span> torch.<span class="bu">sum</span>(<span class="op">-</span>probs <span class="op">*</span> torch.log(probs), dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bald_verbose:</span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(entropy_probs.shape)</span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>    expected_entropy_probs <span class="op">=</span> entropy_probs.mean(dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bald_verbose:</span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(expected_entropy_probs.shape)</span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a>    bald_score <span class="op">=</span> entropy_expected_probs <span class="op">-</span> expected_entropy_probs</span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bald_verbose:</span>
+<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(bald_score.shape)</span>
+<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bald_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="95">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>bald_verbose <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> BALD_score(torch.rand(<span class="dv">100</span>, <span class="dv">5</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([100, 5, 3])
+torch.Size([5, 3])
+torch.Size([5])
+torch.Size([100, 5])
+torch.Size([5])
+torch.Size([5])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="98">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>bald_verbose <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Entropy</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>entropy_A <span class="op">=</span> torch.<span class="bu">sum</span>(<span class="op">-</span>pred_A.mean(dim<span class="op">=</span><span class="dv">0</span>) <span class="op">*</span> torch.log(pred_A.mean(dim<span class="op">=</span><span class="dv">0</span>)), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>entropy_B <span class="op">=</span> torch.<span class="bu">sum</span>(<span class="op">-</span>pred_B.mean(dim<span class="op">=</span><span class="dv">0</span>) <span class="op">*</span> torch.log(pred_B.mean(dim<span class="op">=</span><span class="dv">0</span>)), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(entropy_A)</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(entropy_B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tensor([0.6931])
+tensor([0.6931])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(BALD_score(pred_A))</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(BALD_score(pred_B))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tensor([0.])
+tensor([0.1109])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="68">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> BALD_sampling(model, pool_idx, train_idx, random_seed, query_size, X, y, device):</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="co">    model: MC dropout model</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Evaluate the logits on the pool set for each MC pass</span></span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>    n_MC_passes <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> []</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>    model.train()</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> mc_pass <span class="kw">in</span> <span class="bu">range</span>(n_MC_passes):</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Set mode of model for MC dropout</span></span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>            logits.append(model(X[pool_idx].to(device)))</span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> torch.stack(logits)</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(logits.shape)</span></span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a>    bald_score <span class="op">=</span> BALD_score(logits)</span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>    bald_score_sorted <span class="op">=</span> bald_score.sort(descending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>    query_idx <span class="op">=</span> pool_idx.to(device)[bald_score_sorted.indices[:query_size]]</span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> query_idx.cpu()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="69">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> BALD_sampling(model_only_train, pool_idx, train_idx, <span class="dv">0</span>, <span class="dv">5</span>, X, y, device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>torch.Size([8, 39000, 10])
+torch.Size([39000, 10])
+torch.Size([39000])
+torch.Size([8, 39000])
+torch.Size([39000])
+torch.Size([39000])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="70">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>model_e <span class="op">=</span> copy.deepcopy(model_only_train)</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="co"># AL loop</span></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>m, p_idx, t_idx, test_acc_margin  <span class="op">=</span> al_loop(model_e, margin_sampling, num_al_iterations, <span class="dv">20</span>, train_idx, pool_idx, test_idx, query_size, X, y,device<span class="op">=</span>device,verbose<span class="op">=</span><span class="va">True</span>, random_seed<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3521
+Active learning iteration 1/50
+Train set size: 1020, Pool set size: 38980
+Test accuracy: 0.3521
+
+Active learning iteration 2/50
+Train set size: 1040, Pool set size: 38960
+Test accuracy: 0.3510
+
+Active learning iteration 3/50
+Train set size: 1060, Pool set size: 38940
+Test accuracy: 0.2814
+
+Active learning iteration 4/50
+Train set size: 1080, Pool set size: 38920
+Test accuracy: 0.3350
+
+Active learning iteration 5/50
+Train set size: 1100, Pool set size: 38900
+Test accuracy: 0.3204
+
+Active learning iteration 6/50
+Train set size: 1120, Pool set size: 38880
+Test accuracy: 0.3264
+
+Active learning iteration 7/50
+Train set size: 1140, Pool set size: 38860
+Test accuracy: 0.3409
+
+Active learning iteration 8/50
+Train set size: 1160, Pool set size: 38840
+Test accuracy: 0.3454
+
+Active learning iteration 9/50
+Train set size: 1180, Pool set size: 38820
+Test accuracy: 0.3625
+
+Active learning iteration 10/50
+Train set size: 1200, Pool set size: 38800
+Test accuracy: 0.3419
+
+Active learning iteration 11/50
+Train set size: 1220, Pool set size: 38780
+Test accuracy: 0.3574
+
+Active learning iteration 12/50
+Train set size: 1240, Pool set size: 38760
+Test accuracy: 0.3632
+
+Active learning iteration 13/50
+Train set size: 1260, Pool set size: 38740
+Test accuracy: 0.3593
+
+Active learning iteration 14/50
+Train set size: 1280, Pool set size: 38720
+Test accuracy: 0.3571
+
+Active learning iteration 15/50
+Train set size: 1300, Pool set size: 38700
+Test accuracy: 0.3683
+
+Active learning iteration 16/50
+Train set size: 1320, Pool set size: 38680
+Test accuracy: 0.3810
+
+Active learning iteration 17/50
+Train set size: 1340, Pool set size: 38660
+Test accuracy: 0.3817
+
+Active learning iteration 18/50
+Train set size: 1360, Pool set size: 38640
+Test accuracy: 0.3795
+
+Active learning iteration 19/50
+Train set size: 1380, Pool set size: 38620
+Test accuracy: 0.3812
+
+Active learning iteration 20/50
+Train set size: 1400, Pool set size: 38600
+Test accuracy: 0.3898
+
+Active learning iteration 21/50
+Train set size: 1420, Pool set size: 38580
+Test accuracy: 0.3847
+
+Active learning iteration 22/50
+Train set size: 1440, Pool set size: 38560
+Test accuracy: 0.3881
+
+Active learning iteration 23/50
+Train set size: 1460, Pool set size: 38540
+Test accuracy: 0.3826
+
+Active learning iteration 24/50
+Train set size: 1480, Pool set size: 38520
+Test accuracy: 0.3846
+
+Active learning iteration 25/50
+Train set size: 1500, Pool set size: 38500
+Test accuracy: 0.3821
+
+Active learning iteration 26/50
+Train set size: 1520, Pool set size: 38480
+Test accuracy: 0.3795
+
+Active learning iteration 27/50
+Train set size: 1540, Pool set size: 38460
+Test accuracy: 0.3668
+
+Active learning iteration 28/50
+Train set size: 1560, Pool set size: 38440
+Test accuracy: 0.3878
+
+Active learning iteration 29/50
+Train set size: 1580, Pool set size: 38420
+Test accuracy: 0.3817
+
+Active learning iteration 30/50
+Train set size: 1600, Pool set size: 38400
+Test accuracy: 0.3943
+
+Active learning iteration 31/50
+Train set size: 1620, Pool set size: 38380
+Test accuracy: 0.3880
+
+Active learning iteration 32/50
+Train set size: 1640, Pool set size: 38360
+Test accuracy: 0.3844
+
+Active learning iteration 33/50
+Train set size: 1660, Pool set size: 38340
+Test accuracy: 0.3962
+
+Active learning iteration 34/50
+Train set size: 1680, Pool set size: 38320
+Test accuracy: 0.3863
+
+Active learning iteration 35/50
+Train set size: 1700, Pool set size: 38300
+Test accuracy: 0.3951
+
+Active learning iteration 36/50
+Train set size: 1720, Pool set size: 38280
+Test accuracy: 0.4009
+
+Active learning iteration 37/50
+Train set size: 1740, Pool set size: 38260
+Test accuracy: 0.4013
+
+Active learning iteration 38/50
+Train set size: 1760, Pool set size: 38240
+Test accuracy: 0.4113
+
+Active learning iteration 39/50
+Train set size: 1780, Pool set size: 38220
+Test accuracy: 0.4067
+
+Active learning iteration 40/50
+Train set size: 1800, Pool set size: 38200
+Test accuracy: 0.4026
+
+Active learning iteration 41/50
+Train set size: 1820, Pool set size: 38180
+Test accuracy: 0.4134
+
+Active learning iteration 42/50
+Train set size: 1840, Pool set size: 38160
+Test accuracy: 0.4095
+
+Active learning iteration 43/50
+Train set size: 1860, Pool set size: 38140
+Test accuracy: 0.4150
+
+Active learning iteration 44/50
+Train set size: 1880, Pool set size: 38120
+Test accuracy: 0.4081
+
+Active learning iteration 45/50
+Train set size: 1900, Pool set size: 38100
+Test accuracy: 0.4110
+
+Active learning iteration 46/50
+Train set size: 1920, Pool set size: 38080
+Test accuracy: 0.4203
+
+Active learning iteration 47/50
+Train set size: 1940, Pool set size: 38060
+Test accuracy: 0.4192
+
+Active learning iteration 48/50
+Train set size: 1960, Pool set size: 38040
+Test accuracy: 0.4165
+
+Active learning iteration 49/50
+Train set size: 1980, Pool set size: 38020
+Test accuracy: 0.4135
+
+Active learning iteration 50/50
+Train set size: 2000, Pool set size: 38000
+Test accuracy: 0.4199
+</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="104">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>ax.plot(mean_acc, label<span class="op">=</span><span class="st">"Random sampling (mean)"</span>)</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mean_acc.index, mean_acc<span class="op">-</span>std_acc,</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>                 mean_acc<span class="op">+</span>std_acc, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Random sampling (std)"</span>)</span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_only_train.cpu(), color<span class="op">=</span><span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Only train'</span>)</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_train_plus_pool.cpu(), color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Train + pool'</span>)</span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_entropy).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Entropy sampling"</span>, color<span class="op">=</span><span class="st">'C2'</span>)</span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_margin).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Margin sampling"</span>, color<span class="op">=</span><span class="st">'C4'</span>)</span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Active learning iteration"</span>)</span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Test accuracy"</span>)</span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="104">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fe752c68c10&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-51-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>model_e <span class="op">=</span> copy.deepcopy(model_only_train)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="co"># AL loop</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>m, p_idx, t_idx, test_acc_diversity  <span class="op">=</span> al_loop(model_e, diversity_sampling, num_al_iterations, <span class="dv">20</span>, train_idx, pool_idx, test_idx, query_size, X, y,device<span class="op">=</span>device,verbose<span class="op">=</span><span class="va">True</span>, random_seed<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3542
+torch.Size([39000, 1000])
+tensor([23.6742, 16.5322, 23.8433,  ..., 25.6275, 19.5198, 21.9679],
+       device='cuda:0')
+Active learning iteration 1/50
+Train set size: 1020, Pool set size: 38980
+Test accuracy: 0.3542
+
+torch.Size([38980, 1020])
+tensor([22.4518, 17.6675, 18.1893,  ..., 20.2362, 19.4250, 20.4936],
+       device='cuda:0')
+Active learning iteration 2/50
+Train set size: 1040, Pool set size: 38960
+Test accuracy: 0.3567
+
+torch.Size([38960, 1040])
+tensor([18.6880, 14.2518, 21.2189,  ..., 23.0635, 16.1121, 19.2636],
+       device='cuda:0')
+Active learning iteration 3/50
+Train set size: 1060, Pool set size: 38940
+Test accuracy: 0.2866
+
+torch.Size([38940, 1060])
+tensor([19.6873, 18.1151, 18.7516,  ..., 22.0924, 15.2531, 17.8292],
+       device='cuda:0')
+Active learning iteration 4/50
+Train set size: 1080, Pool set size: 38920
+Test accuracy: 0.3207
+
+torch.Size([38920, 1080])
+tensor([18.8964, 17.3016, 17.7136,  ..., 21.9477, 16.0015, 18.8336],
+       device='cuda:0')
+Active learning iteration 5/50
+Train set size: 1100, Pool set size: 38900
+Test accuracy: 0.3307
+
+torch.Size([38900, 1100])
+tensor([17.6785, 15.6355, 21.0368,  ..., 24.9875, 18.3958, 19.8655],
+       device='cuda:0')
+Active learning iteration 6/50
+Train set size: 1120, Pool set size: 38880
+Test accuracy: 0.3469
+
+torch.Size([38880, 1120])
+tensor([17.3388, 19.3429, 19.3024,  ..., 22.3471, 19.8595, 17.8355],
+       device='cuda:0')
+Active learning iteration 7/50
+Train set size: 1140, Pool set size: 38860
+Test accuracy: 0.3280
+
+torch.Size([38860, 1140])
+tensor([20.5951, 14.4556, 17.5015,  ..., 23.5888, 17.3285, 17.5650],
+       device='cuda:0')
+Active learning iteration 8/50
+Train set size: 1160, Pool set size: 38840
+Test accuracy: 0.3269
+
+torch.Size([38840, 1160])
+tensor([19.8505, 16.7460, 16.7813,  ..., 21.0331, 14.3331, 18.0884],
+       device='cuda:0')
+Active learning iteration 9/50
+Train set size: 1180, Pool set size: 38820
+Test accuracy: 0.3533
+
+torch.Size([38820, 1180])
+tensor([17.8798, 16.4285, 19.6184,  ..., 22.6378, 16.6225, 16.5178],
+       device='cuda:0')
+Active learning iteration 10/50
+Train set size: 1200, Pool set size: 38800
+Test accuracy: 0.3647
+
+torch.Size([38800, 1200])
+tensor([14.8099, 20.4215, 17.6085,  ..., 17.5421, 17.3908, 15.8993],
+       device='cuda:0')
+Active learning iteration 11/50
+Train set size: 1220, Pool set size: 38780
+Test accuracy: 0.3538
+
+torch.Size([38780, 1220])
+tensor([12.3447, 16.7038, 19.9586,  ..., 16.9770, 13.5527, 16.1936],
+       device='cuda:0')
+Active learning iteration 12/50
+Train set size: 1240, Pool set size: 38760
+Test accuracy: 0.3765
+
+torch.Size([38760, 1240])
+tensor([10.8885, 15.6467, 17.1195,  ..., 17.9652, 14.7832, 14.1509],
+       device='cuda:0')
+Active learning iteration 13/50
+Train set size: 1260, Pool set size: 38740
+Test accuracy: 0.3505
+
+torch.Size([38740, 1260])
+tensor([10.9213, 16.9594, 14.1012,  ..., 16.9323, 18.8507, 20.4573],
+       device='cuda:0')
+Active learning iteration 14/50
+Train set size: 1280, Pool set size: 38720
+Test accuracy: 0.3765
+
+torch.Size([38720, 1280])
+tensor([15.6936, 12.4250, 13.8343,  ..., 20.8527, 11.3354, 17.0484],
+       device='cuda:0')
+Active learning iteration 15/50
+Train set size: 1300, Pool set size: 38700
+Test accuracy: 0.3702
+
+torch.Size([38700, 1300])
+tensor([11.7571, 11.6948, 15.0714,  ..., 22.1285, 11.6764, 18.9696],
+       device='cuda:0')
+Active learning iteration 16/50
+Train set size: 1320, Pool set size: 38680
+Test accuracy: 0.3780
+
+torch.Size([38680, 1320])
+tensor([11.6128, 13.6831, 19.4089,  ..., 19.8163, 13.5096, 17.7417],
+       device='cuda:0')
+Active learning iteration 17/50
+Train set size: 1340, Pool set size: 38660
+Test accuracy: 0.3753
+
+torch.Size([38660, 1340])
+tensor([12.7533, 12.5090, 13.7721,  ..., 21.9642, 11.7916, 16.0330],
+       device='cuda:0')
+Active learning iteration 18/50
+Train set size: 1360, Pool set size: 38640
+Test accuracy: 0.3789
+
+torch.Size([38640, 1360])
+tensor([13.6340, 18.0564, 16.5101,  ..., 17.5498, 13.4201, 14.1262],
+       device='cuda:0')
+Active learning iteration 19/50
+Train set size: 1380, Pool set size: 38620
+Test accuracy: 0.3869
+
+torch.Size([38620, 1380])
+tensor([14.3605, 13.9379, 13.9138,  ..., 16.9807, 11.0110, 17.9584],
+       device='cuda:0')
+Active learning iteration 20/50
+Train set size: 1400, Pool set size: 38600
+Test accuracy: 0.3820
+
+torch.Size([38600, 1400])
+tensor([ 9.3540, 15.1157, 15.3845,  ..., 20.5848, 13.5188, 20.3413],
+       device='cuda:0')
+Active learning iteration 21/50
+Train set size: 1420, Pool set size: 38580
+Test accuracy: 0.3829
+
+torch.Size([38580, 1420])
+tensor([10.9461, 13.1866, 12.9142,  ..., 19.3511, 18.5600, 15.6003],
+       device='cuda:0')
+Active learning iteration 22/50
+Train set size: 1440, Pool set size: 38560
+Test accuracy: 0.3918
+
+torch.Size([38560, 1440])
+tensor([15.2146, 13.9401,  9.8038,  ..., 18.6441, 13.0452, 14.2449],
+       device='cuda:0')
+Active learning iteration 23/50
+Train set size: 1460, Pool set size: 38540
+Test accuracy: 0.3908
+
+torch.Size([38540, 1460])
+tensor([14.3856, 16.2845, 14.8060,  ..., 18.1766, 11.5805, 15.7493],
+       device='cuda:0')
+Active learning iteration 24/50
+Train set size: 1480, Pool set size: 38520
+Test accuracy: 0.3958
+
+torch.Size([38520, 1480])
+tensor([16.1329, 12.1462, 12.3500,  ..., 20.0847, 14.8019, 18.0795],
+       device='cuda:0')
+Active learning iteration 25/50
+Train set size: 1500, Pool set size: 38500
+Test accuracy: 0.3991
+
+torch.Size([38500, 1500])
+tensor([14.5194, 17.3563, 11.2866,  ..., 17.4368, 17.8245, 15.1265],
+       device='cuda:0')
+Active learning iteration 26/50
+Train set size: 1520, Pool set size: 38480
+Test accuracy: 0.4013
+
+torch.Size([38480, 1520])
+tensor([ 8.8625, 14.8794, 16.4875,  ..., 15.7839, 19.6722, 18.8112],
+       device='cuda:0')
+Active learning iteration 27/50
+Train set size: 1540, Pool set size: 38460
+Test accuracy: 0.3947
+
+torch.Size([38460, 1540])
+tensor([15.0159, 16.4058, 11.9871,  ..., 12.9960, 13.1737, 16.7721],
+       device='cuda:0')
+Active learning iteration 28/50
+Train set size: 1560, Pool set size: 38440
+Test accuracy: 0.4047
+
+torch.Size([38440, 1560])
+tensor([13.5995, 16.1296, 13.3624,  ..., 17.0889, 16.3813, 17.3411],
+       device='cuda:0')
+Active learning iteration 29/50
+Train set size: 1580, Pool set size: 38420
+Test accuracy: 0.4072
+
+torch.Size([38420, 1580])
+tensor([12.3904, 15.0362, 17.8841,  ..., 17.0775, 18.0504, 11.0309],
+       device='cuda:0')
+Active learning iteration 30/50
+Train set size: 1600, Pool set size: 38400
+Test accuracy: 0.4116
+
+torch.Size([38400, 1600])
+tensor([12.9135,  9.6945, 15.8095,  ..., 17.2932, 15.5810, 16.3118],
+       device='cuda:0')
+Active learning iteration 31/50
+Train set size: 1620, Pool set size: 38380
+Test accuracy: 0.4063
+
+torch.Size([38380, 1620])
+tensor([15.4356, 10.6304, 16.7421,  ..., 17.1605, 11.3902, 15.2919],
+       device='cuda:0')
+Active learning iteration 32/50
+Train set size: 1640, Pool set size: 38360
+Test accuracy: 0.4078
+
+torch.Size([38360, 1640])
+tensor([16.1068,  9.7305, 13.4376,  ..., 17.2062, 15.9482, 16.0848],
+       device='cuda:0')
+Active learning iteration 33/50
+Train set size: 1660, Pool set size: 38340
+Test accuracy: 0.4086
+
+torch.Size([38340, 1660])
+tensor([15.3394, 13.6819, 14.6290,  ..., 18.6518, 14.8610, 17.4382],
+       device='cuda:0')
+Active learning iteration 34/50
+Train set size: 1680, Pool set size: 38320
+Test accuracy: 0.4124
+
+torch.Size([38320, 1680])
+tensor([14.2327,  9.8067, 15.7820,  ..., 16.4721, 14.0880, 16.4032],
+       device='cuda:0')
+Active learning iteration 35/50
+Train set size: 1700, Pool set size: 38300
+Test accuracy: 0.4086
+
+torch.Size([38300, 1700])
+tensor([14.0780,  9.1898, 14.8344,  ..., 14.7846, 16.5506, 12.5081],
+       device='cuda:0')
+Active learning iteration 36/50
+Train set size: 1720, Pool set size: 38280
+Test accuracy: 0.4203
+
+torch.Size([38280, 1720])
+tensor([13.1480, 14.5886, 18.0845,  ..., 12.8378, 17.5011, 10.9341],
+       device='cuda:0')
+Active learning iteration 37/50
+Train set size: 1740, Pool set size: 38260
+Test accuracy: 0.4083
+
+torch.Size([38260, 1740])
+tensor([14.2355, 13.3441, 16.4646,  ..., 15.7044, 17.7319, 10.2174],
+       device='cuda:0')
+Active learning iteration 38/50
+Train set size: 1760, Pool set size: 38240
+Test accuracy: 0.4027
+
+torch.Size([38240, 1760])
+tensor([16.9951, 10.9682, 16.2470,  ..., 15.9360, 17.6638, 13.6467],
+       device='cuda:0')
+Active learning iteration 39/50
+Train set size: 1780, Pool set size: 38220
+Test accuracy: 0.4056
+
+torch.Size([38220, 1780])
+tensor([16.6178, 15.3217, 19.2981,  ..., 12.2111, 17.7510, 15.2010],
+       device='cuda:0')
+Active learning iteration 40/50
+Train set size: 1800, Pool set size: 38200
+Test accuracy: 0.4103
+
+torch.Size([38200, 1800])
+tensor([10.2955, 12.8777, 16.5146,  ..., 14.0876, 11.8172, 14.9162],
+       device='cuda:0')
+Active learning iteration 41/50
+Train set size: 1820, Pool set size: 38180
+Test accuracy: 0.4151
+
+torch.Size([38180, 1820])
+tensor([11.0803, 11.2387, 15.0846,  ..., 15.4536, 13.5256, 13.8069],
+       device='cuda:0')
+Active learning iteration 42/50
+Train set size: 1840, Pool set size: 38160
+Test accuracy: 0.4102
+
+torch.Size([38160, 1840])
+tensor([12.8535,  9.4402, 12.2937,  ..., 16.5952,  8.8925, 15.5577],
+       device='cuda:0')
+Active learning iteration 43/50
+Train set size: 1860, Pool set size: 38140
+Test accuracy: 0.4118
+
+torch.Size([38140, 1860])
+tensor([13.1878, 10.5807, 10.3227,  ..., 14.9606,  8.5745, 12.8881],
+       device='cuda:0')
+Active learning iteration 44/50
+Train set size: 1880, Pool set size: 38120
+Test accuracy: 0.4146
+
+torch.Size([38120, 1880])
+tensor([12.5138,  9.2340, 12.3855,  ..., 15.4842,  9.8531, 14.1602],
+       device='cuda:0')
+Active learning iteration 45/50
+Train set size: 1900, Pool set size: 38100
+Test accuracy: 0.4131
+
+torch.Size([38100, 1900])
+tensor([ 9.8062, 12.2065, 13.1162,  ..., 15.4177,  9.6292, 12.2413],
+       device='cuda:0')
+Active learning iteration 46/50
+Train set size: 1920, Pool set size: 38080
+Test accuracy: 0.4139
+
+torch.Size([38080, 1920])
+tensor([11.2360, 11.6494, 14.7855,  ..., 13.6113,  9.9965, 12.6070],
+       device='cuda:0')
+Active learning iteration 47/50
+Train set size: 1940, Pool set size: 38060
+Test accuracy: 0.4215
+
+torch.Size([38060, 1940])
+tensor([ 9.1881, 12.8201, 10.3720,  ..., 19.3521,  9.2557, 13.7367],
+       device='cuda:0')
+Active learning iteration 48/50
+Train set size: 1960, Pool set size: 38040
+Test accuracy: 0.4202
+
+torch.Size([38040, 1960])
+tensor([ 9.4228,  9.1350, 12.4068,  ..., 16.4824,  8.6921, 14.4326],
+       device='cuda:0')
+Active learning iteration 49/50
+Train set size: 1980, Pool set size: 38020
+Test accuracy: 0.4300
+
+torch.Size([38020, 1980])
+tensor([ 8.9530, 10.3205, 14.8197,  ..., 16.3522,  8.9211, 11.4559],
+       device='cuda:0')
+Active learning iteration 50/50
+Train set size: 2000, Pool set size: 38000
+Test accuracy: 0.4309
+</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="105">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>ax.plot(mean_acc, label<span class="op">=</span><span class="st">"Random sampling (mean)"</span>)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mean_acc.index, mean_acc<span class="op">-</span>std_acc,</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>                 mean_acc<span class="op">+</span>std_acc, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Random sampling (std)"</span>)</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_only_train.cpu(), color<span class="op">=</span><span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Only train'</span>)</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_train_plus_pool.cpu(), color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Train + pool'</span>)</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_entropy).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Entropy sampling"</span>, color<span class="op">=</span><span class="st">'C2'</span>)</span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_margin).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Margin sampling"</span>, color<span class="op">=</span><span class="st">'C4'</span>)</span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_diversity).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Diversity sampling"</span>, color<span class="op">=</span><span class="st">'C5'</span>)</span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Active learning iteration"</span>)</span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Test accuracy"</span>)</span>
+<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="105">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fe752d57850&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-53-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>bald_verbose <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>model_e <span class="op">=</span> copy.deepcopy(model_only_train)</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="co"># AL loop</span></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>m, p_idx, t_idx, test_acc_bald  <span class="op">=</span> al_loop(model_e, BALD_sampling, num_al_iterations, <span class="dv">20</span>, train_idx, pool_idx, test_idx, query_size, X, y,device<span class="op">=</span>device,verbose<span class="op">=</span><span class="va">True</span>, random_seed<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial train size: torch.Size([1000])
+Initial pool size: torch.Size([39000])
+Test accuracy before AL: 0.3521
+Active learning iteration 1/50
+Train set size: 1020, Pool set size: 38980
+Test accuracy: 0.3521
+
+Active learning iteration 2/50
+Train set size: 1040, Pool set size: 38960
+Test accuracy: 0.3523
+
+Active learning iteration 3/50
+Train set size: 1060, Pool set size: 38940
+Test accuracy: 0.3150
+
+Active learning iteration 4/50
+Train set size: 1080, Pool set size: 38920
+Test accuracy: 0.3273
+
+Active learning iteration 5/50
+Train set size: 1100, Pool set size: 38900
+Test accuracy: 0.3360
+
+Active learning iteration 6/50
+Train set size: 1120, Pool set size: 38880
+Test accuracy: 0.3395
+
+Active learning iteration 7/50
+Train set size: 1140, Pool set size: 38860
+Test accuracy: 0.3402
+
+Active learning iteration 8/50
+Train set size: 1160, Pool set size: 38840
+Test accuracy: 0.3465
+
+Active learning iteration 9/50
+Train set size: 1180, Pool set size: 38820
+Test accuracy: 0.3492
+
+Active learning iteration 10/50
+Train set size: 1200, Pool set size: 38800
+Test accuracy: 0.3594
+
+Active learning iteration 11/50
+Train set size: 1220, Pool set size: 38780
+Test accuracy: 0.3620
+
+Active learning iteration 12/50
+Train set size: 1240, Pool set size: 38760
+Test accuracy: 0.3763
+
+Active learning iteration 13/50
+Train set size: 1260, Pool set size: 38740
+Test accuracy: 0.3712
+
+Active learning iteration 14/50
+Train set size: 1280, Pool set size: 38720
+Test accuracy: 0.3748
+
+Active learning iteration 15/50
+Train set size: 1300, Pool set size: 38700
+Test accuracy: 0.3703
+
+Active learning iteration 16/50
+Train set size: 1320, Pool set size: 38680
+Test accuracy: 0.3769
+
+Active learning iteration 17/50
+Train set size: 1340, Pool set size: 38660
+Test accuracy: 0.3837
+
+Active learning iteration 18/50
+Train set size: 1360, Pool set size: 38640
+Test accuracy: 0.3850
+
+Active learning iteration 19/50
+Train set size: 1380, Pool set size: 38620
+Test accuracy: 0.3856
+
+Active learning iteration 20/50
+Train set size: 1400, Pool set size: 38600
+Test accuracy: 0.3864
+
+Active learning iteration 21/50
+Train set size: 1420, Pool set size: 38580
+Test accuracy: 0.3983
+
+Active learning iteration 22/50
+Train set size: 1440, Pool set size: 38560
+Test accuracy: 0.3892
+
+Active learning iteration 23/50
+Train set size: 1460, Pool set size: 38540
+Test accuracy: 0.3960
+
+Active learning iteration 24/50
+Train set size: 1480, Pool set size: 38520
+Test accuracy: 0.3946
+
+Active learning iteration 25/50
+Train set size: 1500, Pool set size: 38500
+Test accuracy: 0.4018
+
+Active learning iteration 26/50
+Train set size: 1520, Pool set size: 38480
+Test accuracy: 0.4090
+
+Active learning iteration 27/50
+Train set size: 1540, Pool set size: 38460
+Test accuracy: 0.4011
+
+Active learning iteration 28/50
+Train set size: 1560, Pool set size: 38440
+Test accuracy: 0.3966
+
+Active learning iteration 29/50
+Train set size: 1580, Pool set size: 38420
+Test accuracy: 0.3931
+
+Active learning iteration 30/50
+Train set size: 1600, Pool set size: 38400
+Test accuracy: 0.4018
+
+Active learning iteration 31/50
+Train set size: 1620, Pool set size: 38380
+Test accuracy: 0.4026
+
+Active learning iteration 32/50
+Train set size: 1640, Pool set size: 38360
+Test accuracy: 0.4106
+
+Active learning iteration 33/50
+Train set size: 1660, Pool set size: 38340
+Test accuracy: 0.4172
+
+Active learning iteration 34/50
+Train set size: 1680, Pool set size: 38320
+Test accuracy: 0.4182
+
+Active learning iteration 35/50
+Train set size: 1700, Pool set size: 38300
+Test accuracy: 0.4261
+
+Active learning iteration 36/50
+Train set size: 1720, Pool set size: 38280
+Test accuracy: 0.4175
+
+Active learning iteration 37/50
+Train set size: 1740, Pool set size: 38260
+Test accuracy: 0.4292
+
+Active learning iteration 38/50
+Train set size: 1760, Pool set size: 38240
+Test accuracy: 0.4201
+
+Active learning iteration 39/50
+Train set size: 1780, Pool set size: 38220
+Test accuracy: 0.4175
+
+Active learning iteration 40/50
+Train set size: 1800, Pool set size: 38200
+Test accuracy: 0.4160
+
+Active learning iteration 41/50
+Train set size: 1820, Pool set size: 38180
+Test accuracy: 0.4215
+
+Active learning iteration 42/50
+Train set size: 1840, Pool set size: 38160
+Test accuracy: 0.4152
+
+Active learning iteration 43/50
+Train set size: 1860, Pool set size: 38140
+Test accuracy: 0.4373
+
+Active learning iteration 44/50
+Train set size: 1880, Pool set size: 38120
+Test accuracy: 0.4386
+
+Active learning iteration 45/50
+Train set size: 1900, Pool set size: 38100
+Test accuracy: 0.4318
+
+Active learning iteration 46/50
+Train set size: 1920, Pool set size: 38080
+Test accuracy: 0.4395
+
+Active learning iteration 47/50
+Train set size: 1940, Pool set size: 38060
+Test accuracy: 0.4304
+
+Active learning iteration 48/50
+Train set size: 1960, Pool set size: 38040
+Test accuracy: 0.4372
+
+Active learning iteration 49/50
+Train set size: 1980, Pool set size: 38020
+Test accuracy: 0.4413
+
+Active learning iteration 50/50
+Train set size: 2000, Pool set size: 38000
+Test accuracy: 0.4262
+</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="106">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>ax.plot(mean_acc, label<span class="op">=</span><span class="st">"Random sampling (mean)"</span>)</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mean_acc.index, mean_acc<span class="op">-</span>std_acc,</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>                 mean_acc<span class="op">+</span>std_acc, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"Random sampling (std)"</span>)</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_only_train.cpu(), color<span class="op">=</span><span class="st">'r'</span>, label<span class="op">=</span><span class="st">'Only train'</span>)</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>ax.axhline(accuracy_train_plus_pool.cpu(), color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Train + pool'</span>)</span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_entropy).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Entropy sampling"</span>, color<span class="op">=</span><span class="st">'C2'</span>)</span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_margin).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Margin sampling"</span>, color<span class="op">=</span><span class="st">'C4'</span>)</span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_diversity).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Diversity sampling"</span>, color<span class="op">=</span><span class="st">'C5'</span>)</span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>pd.Series(test_acc_bald).plot(ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"BALD sampling"</span>, color<span class="op">=</span><span class="st">'C6'</span>)</span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Active learning iteration"</span>)</span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Test accuracy"</span>)</span>
+<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="106">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fe752f24ed0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="active-learning_files/figure-html/cell-55-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
