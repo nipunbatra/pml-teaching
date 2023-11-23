@@ -1,0 +1,5 @@
+---
+title: "Probabilistic Machine Learning"
+---
+
+This website hosts the materials taught in the [Probabilistic Machine Learning course](https://nipunbatra.github.io/pml2023/).

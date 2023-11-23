@@ -1,0 +1,9 @@
+---
+listing:
+  contents: "slides/**/*.pdf"
+  type: table # `default`, `table`, `grid`, `custom`
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---

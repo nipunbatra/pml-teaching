@@ -1,0 +1,9 @@
+---
+listing:
+  contents: "notebooks/**/*.ipynb"
+  type: default # `default`, `table`, `grid`, `custom`
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---

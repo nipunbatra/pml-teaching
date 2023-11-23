@@ -1,0 +1,21 @@
+project:
+  type: website
+
+website:
+  title: "Probabilistic Machine Learning"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: notebooks.qmd
+        text: Notebooks
+      - href: slides.qmd
+        text: Slides
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+
+

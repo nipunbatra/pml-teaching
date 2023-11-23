@@ -308,3 +308,5 @@ TSWLatexianTemp*
 
 data/*
 data/
+/.quarto/
+_site
